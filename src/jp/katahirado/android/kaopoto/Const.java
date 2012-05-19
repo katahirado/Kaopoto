@@ -14,4 +14,5 @@ public class Const {
     public static final String BIRTHDAY = "birthday";
     public static final String CATEGORY = "category";
     public static final String FACEBOOK_PROF_URL = "https://m.facebook.com/profile.php?id=";
+    public static final String DATA = "data";
 }

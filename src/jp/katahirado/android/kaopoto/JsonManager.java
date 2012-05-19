@@ -33,12 +33,12 @@ public class JsonManager {
         return resultArray;
     }
 
-    public static JSONArray querySearchPages(String query){
+    public static JSONArray querySearchPages(String query) {
         JSONArray resultArray = new JSONArray();
-        for (int i=0;i< mJsonArray.length();i++){
+        for (int i = 0; i < mJsonArray.length(); i++) {
             try {
                 JSONObject object = mJsonArray.getJSONObject(i);
-                String name = object.getString("name").toLowerCase();
+                String name = object.getString(Const.NAME).toLowerCase();
                 if (name.contains(query)) {
                     resultArray.put(object);
                 }

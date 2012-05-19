@@ -39,7 +39,7 @@ public class PagesListActivity extends Activity implements
 
         Bundle extras = intent.getExtras();
         try {
-            jsonArray = new JSONObject(extras.getString(Const.API_RESPONSE)).getJSONArray("data");
+            jsonArray = new JSONObject(extras.getString(Const.API_RESPONSE)).getJSONArray(Const.DATA);
         } catch (JSONException e) {
             e.printStackTrace();
             jsonArray = new JSONArray();
