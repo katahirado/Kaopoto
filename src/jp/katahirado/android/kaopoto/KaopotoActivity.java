@@ -167,7 +167,7 @@ public class KaopotoActivity extends Activity implements AdapterView.OnItemClick
     private void requestUserData() {
         text.setText("取得中...");
         params = new Bundle();
-        params.putString("fields", "name, picture");
+        params.putString("fields", Const.NAME+","+Const.PICTURE);
         Utility.mAsyncRunner.request("me", params, new BaseRequestListener() {
             @Override
             public void onComplete(final String response, final Object state) {
