@@ -2,4 +2,6 @@
 <resources>
     <string name="app_name">かおポト</string>
     <string name="loading">取得中...</string>
+    <string name="firstLogin">初めにログインしてください</string>
+    <string name="warning">警告</string>
 </resources>

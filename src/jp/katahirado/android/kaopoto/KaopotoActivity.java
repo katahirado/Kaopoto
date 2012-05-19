@@ -124,7 +124,7 @@ public class KaopotoActivity extends Activity implements AdapterView.OnItemClick
                 break;
             case GET_FRIENDS:
                 if (!Utility.mFacebook.isSessionValid()) {
-                    Util.showAlert(this, "Warning", "You must first log in.");
+                    Util.showAlert(this,getString(R.string.warning), getString(R.string.firstLogin));
                 } else {
                     dialog = ProgressDialog.show(this, "",getString(R.string.loading), true, true);
                     params = new Bundle();
@@ -142,7 +142,7 @@ public class KaopotoActivity extends Activity implements AdapterView.OnItemClick
                 break;
             case GET_PAGES:
                 if (!Utility.mFacebook.isSessionValid()) {
-                    Util.showAlert(this, "Warning", "You must first log in.");
+                    Util.showAlert(this, getString(R.string.warning), getString(R.string.firstLogin));
                 } else {
                     dialog = ProgressDialog.show(this, "", getString(R.string.loading), true, true);
                     params = new Bundle();
@@ -162,7 +162,7 @@ public class KaopotoActivity extends Activity implements AdapterView.OnItemClick
                 intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://m.facebook.com/notifications"));
                 startActivity(intent);
 //                if (!Utility.mFacebook.isSessionValid()) {
-//                    Util.showAlert(this, "Warning", "You must first log in.");
+//                    Util.showAlert(this, getString(R.string.warning), getString(R.string.firstLogin));
 //                } else {
 //                    dialog = ProgressDialog.show(this, "", getString(R.string.loading), true, true);
 //                    params = new Bundle();
