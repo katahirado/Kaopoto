@@ -22,7 +22,8 @@ public class KaopotoActivity extends Activity implements AdapterView.OnItemClick
     private TextView text;
     private ImageView userPicture;
     private Handler handler;
-    private String[] permissions = {"publish_stream", "user_likes", "friends_birthday"};
+    private String[] permissions = {"publish_stream", "read_stream", "user_likes",
+            "manage_notifications", "friends_birthday"};
     private String[] main_items = {"Update Status", "Friends", "Pages", "Notifications"};
     private ProgressDialog dialog;
     private Bundle params;
@@ -125,9 +126,9 @@ public class KaopotoActivity extends Activity implements AdapterView.OnItemClick
                 if (!Utility.mFacebook.isSessionValid()) {
                     Util.showAlert(this, "Warning", "You must first log in.");
                 } else {
-                    dialog = ProgressDialog.show(this, "", "取得中...", true, true);
+                    dialog = ProgressDialog.show(this, "",getString(R.string.loading), true, true);
                     params = new Bundle();
-                    params.putString("fields", Const.NAME + "," + Const.PICTURE + "," + Const.BIRTHDAY);
+                    params.putString(Const.FIELDS, Const.NAME + "," + Const.PICTURE + "," + Const.BIRTHDAY);
                     Utility.mAsyncRunner.request("me/friends", params, new BaseRequestListener() {
                         @Override
                         public void onComplete(final String response, final Object state) {
@@ -143,9 +144,9 @@ public class KaopotoActivity extends Activity implements AdapterView.OnItemClick
                 if (!Utility.mFacebook.isSessionValid()) {
                     Util.showAlert(this, "Warning", "You must first log in.");
                 } else {
-                    dialog = ProgressDialog.show(this, "", "取得中...", true, true);
+                    dialog = ProgressDialog.show(this, "", getString(R.string.loading), true, true);
                     params = new Bundle();
-                    params.putString("fields", Const.NAME + "," + Const.PICTURE + "," + Const.CATEGORY);
+                    params.putString(Const.FIELDS, Const.NAME + "," + Const.PICTURE + "," + Const.CATEGORY);
                     Utility.mAsyncRunner.request("me/likes", params, new BaseRequestListener() {
                         @Override
                         public void onComplete(final String response, final Object state) {
@@ -160,14 +161,31 @@ public class KaopotoActivity extends Activity implements AdapterView.OnItemClick
             case NOTIFICATIONS:
                 intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://m.facebook.com/notifications"));
                 startActivity(intent);
+//                if (!Utility.mFacebook.isSessionValid()) {
+//                    Util.showAlert(this, "Warning", "You must first log in.");
+//                } else {
+//                    dialog = ProgressDialog.show(this, "", getString(R.string.loading), true, true);
+//                    params = new Bundle();
+//                    params.putString("include_read", "1");
+//                    Utility.mAsyncRunner.request("me/notifications", params, new BaseRequestListener() {
+//                        @Override
+//                        public void onComplete(final String response, final Object state) {
+//                            dialog.dismiss();
+//                            intent = new Intent(getApplicationContext(), NotificationsActivity.class);
+//                            intent.putExtra(Const.API_RESPONSE, response);
+//                            startActivity(intent);
+//                        }
+//                    });
+//
+//                }
                 break;
         }
     }
 
     private void requestUserData() {
-        text.setText("取得中...");
+        text.setText(getString(R.string.loading));
         params = new Bundle();
-        params.putString("fields", Const.NAME+","+Const.PICTURE);
+        params.putString(Const.FIELDS, Const.NAME + "," + Const.PICTURE);
         Utility.mAsyncRunner.request("me", params, new BaseRequestListener() {
             @Override
             public void onComplete(final String response, final Object state) {
