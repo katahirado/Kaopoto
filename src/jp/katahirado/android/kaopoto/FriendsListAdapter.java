@@ -1,13 +1,9 @@
 package jp.katahirado.android.kaopoto;
 
-import android.app.Activity;
-import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.facebook.android.FriendsGetProfilePics;
 import com.facebook.android.Utility;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,7 +16,7 @@ import org.json.JSONObject;
 public class FriendsListAdapter extends FacebookBaseAdapter {
 
     public FriendsListAdapter(FriendsListActivity context, JSONArray jsonArray) {
-        super(context,jsonArray);
+        super(context, jsonArray);
     }
 
     @Override
