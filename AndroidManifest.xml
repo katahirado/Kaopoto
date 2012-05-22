@@ -18,5 +18,7 @@
                   android:theme="@android:style/Theme.Light"/>
         <activity android:name=".PagesListActivity"
                   android:theme="@android:style/Theme.Light"/>
+        <activity android:name=".NotificationsActivity"
+                  android:theme="@android:style/Theme.Light"/>
     </application>
 </manifest> 
