@@ -3,7 +3,6 @@ package jp.katahirado.android.kaopoto;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -124,9 +123,9 @@ public class KaopotoActivity extends Activity implements AdapterView.OnItemClick
                 break;
             case GET_FRIENDS:
                 if (!Utility.mFacebook.isSessionValid()) {
-                    Util.showAlert(this,getString(R.string.warning), getString(R.string.firstLogin));
+                    Util.showAlert(this, getString(R.string.warning), getString(R.string.firstLogin));
                 } else {
-                    dialog = ProgressDialog.show(this, "",getString(R.string.loading), true, true);
+                    dialog = ProgressDialog.show(this, "", getString(R.string.loading), true, true);
                     params = new Bundle();
                     params.putString(Const.FIELDS, Const.NAME + "," + Const.PICTURE + "," + Const.BIRTHDAY);
                     Utility.mAsyncRunner.request("me/friends", params, new BaseRequestListener() {
@@ -159,25 +158,30 @@ public class KaopotoActivity extends Activity implements AdapterView.OnItemClick
                 }
                 break;
             case NOTIFICATIONS:
-                intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://m.facebook.com/notifications"));
-                startActivity(intent);
-//                if (!Utility.mFacebook.isSessionValid()) {
-//                    Util.showAlert(this, getString(R.string.warning), getString(R.string.firstLogin));
-//                } else {
-//                    dialog = ProgressDialog.show(this, "", getString(R.string.loading), true, true);
-//                    params = new Bundle();
-//                    params.putString("include_read", "1");
-//                    Utility.mAsyncRunner.request("me/notifications", params, new BaseRequestListener() {
-//                        @Override
-//                        public void onComplete(final String response, final Object state) {
-//                            dialog.dismiss();
-//                            intent = new Intent(getApplicationContext(), NotificationsActivity.class);
-//                            intent.putExtra(Const.API_RESPONSE, response);
-//                            startActivity(intent);
-//                        }
-//                    });
-//
-//                }
+                if (!Utility.mFacebook.isSessionValid()) {
+                    Util.showAlert(this, getString(R.string.warning), getString(R.string.firstLogin));
+                } else {
+                    dialog = ProgressDialog.show(this, "", getString(R.string.loading), true, true);
+                    String query1=
+                            "\"q1\":\"SELECT notification_id, recipient_id,sender_id,created_time," +
+                                    "updated_time,title_html,title_text, body_html,body_text, href,app_id," +
+                                    "is_unread,is_hidden,object_id,object_type,icon_url FROM" +
+                                    " notification WHERE recipient_id=me()\"";
+                    String query2 ="\"q2\":\"select id,pic_square from profile" +
+                            " where id in (select sender_id from #q1)\"";
+                    params = new Bundle();
+                    params.putString("q", "{"+query1+","+query2+"}");
+                    Utility.mAsyncRunner.request("fql", params, new BaseRequestListener() {
+                        @Override
+                        public void onComplete(final String response, final Object state) {
+                            dialog.dismiss();
+                            intent = new Intent(getApplicationContext(), NotificationsActivity.class);
+                            intent.putExtra(Const.API_RESPONSE, response);
+                            startActivity(intent);
+                        }
+                    });
+
+                }
                 break;
         }
     }
