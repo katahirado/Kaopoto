@@ -3,15 +3,13 @@ package jp.katahirado.android.kaopoto;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
+import android.widget.*;
+import com.facebook.android.BaseDialogListener;
+import com.facebook.android.Utility;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -72,14 +70,25 @@ public class FriendsListActivity extends Activity implements View.OnClickListene
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        String friendId = "me";
+        Bundle params = new Bundle();
+        long friendId = 0;
         try {
-            friendId = jsonArray.getJSONObject(position).getString(Const.ID);
+            friendId = jsonArray.getJSONObject(position).getLong("id");
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        intent = new Intent(Intent.ACTION_VIEW, Uri.parse(KaopotoUtil.getProfileURL(friendId)));
-        startActivity(intent);
+        params.putString("to", String.valueOf(friendId));
+        params.putString(Const.CAPTION, getString(jp.katahirado.android.kaopoto.R.string.app_name));
+        Utility.mFacebook.dialog(this, Const.FEED, params, new BaseDialogListener() {
+            @Override
+            public void onComplete(Bundle values) {
+                final String postId = values.getString(Const.POST_ID);
+                if (postId != null) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.PostedOnTheWall),
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
 

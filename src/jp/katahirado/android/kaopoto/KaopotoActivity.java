@@ -42,7 +42,6 @@ public class KaopotoActivity extends Activity implements AdapterView.OnItemClick
         text = (TextView) findViewById(jp.katahirado.android.kaopoto.R.id.txt);
         userPicture = (ImageView) findViewById(jp.katahirado.android.kaopoto.R.id.user_pic);
 
-
         SessionStore.restore(Utility.mFacebook, this);
         SessionEvents.addAuthListener(new SessionEvents.AuthListener() {
             @Override
@@ -109,14 +108,14 @@ public class KaopotoActivity extends Activity implements AdapterView.OnItemClick
         switch (position) {
             case UPDATE_STATUS:
                 params = new Bundle();
-                params.putString("caption", getString(jp.katahirado.android.kaopoto.R.string.app_name));
-                Utility.mFacebook.dialog(this, "feed", params, new BaseDialogListener() {
+                params.putString(Const.CAPTION, getString(jp.katahirado.android.kaopoto.R.string.app_name));
+                Utility.mFacebook.dialog(this, Const.FEED, params, new BaseDialogListener() {
                     @Override
                     public void onComplete(Bundle values) {
-                        final String postId = values.getString("post_id");
+                        final String postId = values.getString(Const.POST_ID);
                         if (postId != null) {
-                            Toast.makeText(getApplicationContext(), "投稿しました", Toast.LENGTH_LONG)
-                                    .show();
+                            Toast.makeText(getApplicationContext(), getString(R.string.PostedOnTheWall),
+                                    Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -162,15 +161,15 @@ public class KaopotoActivity extends Activity implements AdapterView.OnItemClick
                     Util.showAlert(this, getString(R.string.warning), getString(R.string.firstLogin));
                 } else {
                     dialog = ProgressDialog.show(this, "", getString(R.string.loading), true, true);
-                    String query1=
+                    String query1 =
                             "\"q1\":\"SELECT notification_id, recipient_id,sender_id,created_time," +
                                     "updated_time,title_html,title_text, body_html,body_text, href,app_id," +
                                     "is_unread,is_hidden,object_id,object_type,icon_url FROM" +
                                     " notification WHERE recipient_id=me()\"";
-                    String query2 ="\"q2\":\"select id,pic_square from profile" +
+                    String query2 = "\"q2\":\"select id,pic_square from profile" +
                             " where id in (select sender_id from #q1)\"";
                     params = new Bundle();
-                    params.putString("q", "{"+query1+","+query2+"}");
+                    params.putString("q", "{" + query1 + "," + query2 + "}");
                     Utility.mAsyncRunner.request("fql", params, new BaseRequestListener() {
                         @Override
                         public void onComplete(final String response, final Object state) {
