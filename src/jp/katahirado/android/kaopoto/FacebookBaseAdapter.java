@@ -24,7 +24,7 @@ public class FacebookBaseAdapter extends BaseAdapter {
     protected TextView firstText;
     protected TextView secondText;
 
-    public FacebookBaseAdapter(Activity context,JSONArray jsonArray) {
+    public FacebookBaseAdapter(Activity context, JSONArray jsonArray) {
         if (Utility.model == null) {
             Utility.model = new FriendsGetProfilePics();
         }
