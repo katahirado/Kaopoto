@@ -78,7 +78,7 @@ public class FriendsListActivity extends Activity implements View.OnClickListene
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        intent = new Intent(Intent.ACTION_VIEW, Uri.parse(Const.FACEBOOK_PROF_URL + friendId));
+        intent = new Intent(Intent.ACTION_VIEW, Uri.parse(KaopotoUtil.getProfileURL(friendId)));
         startActivity(intent);
     }
 

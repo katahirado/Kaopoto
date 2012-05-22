@@ -36,7 +36,6 @@ public class PagesListActivity extends Activity implements
         searchText = (EditText) findViewById(R.id.pages_search_text);
 
         intent = getIntent();
-
         Bundle extras = intent.getExtras();
         try {
             jsonArray = new JSONObject(extras.getString(Const.API_RESPONSE)).getJSONArray(Const.DATA);
@@ -60,7 +59,7 @@ public class PagesListActivity extends Activity implements
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        intent = new Intent(Intent.ACTION_VIEW, Uri.parse(Const.FACEBOOK_PROF_URL + pageId));
+        intent = new Intent(Intent.ACTION_VIEW, Uri.parse(KaopotoUtil.getProfileURL(pageId)));
         startActivity(intent);
     }
 
