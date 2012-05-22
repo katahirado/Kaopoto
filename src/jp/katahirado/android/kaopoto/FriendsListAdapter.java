@@ -1,10 +1,10 @@
 package jp.katahirado.android.kaopoto;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.facebook.android.FriendsGetProfilePics;
@@ -17,35 +17,15 @@ import org.json.JSONObject;
  * Created with IntelliJ IDEA.
  * Author: yuichi_katahira
  */
-public class FriendsListAdapter extends BaseAdapter {
-    private LayoutInflater layoutInflater;
-    private JSONArray _jsonArray;
-    ImageView profile_pic;
-    TextView name;
-    TextView birthday_text;
+public class FriendsListAdapter extends FacebookBaseAdapter {
 
     public FriendsListAdapter(FriendsListActivity context, JSONArray jsonArray) {
-        if (Utility.model == null) {
-            Utility.model = new FriendsGetProfilePics();
-        }
-        Utility.model.setListener(this);
-        _jsonArray = jsonArray;
-        layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        super(context,jsonArray);
     }
 
     @Override
     public int getCount() {
         return _jsonArray.length();
-    }
-
-    @Override
-    public Object getItem(int i) {
-        return null;
-    }
-
-    @Override
-    public long getItemId(int i) {
-        return 0;
     }
 
     @Override
@@ -62,23 +42,23 @@ public class FriendsListAdapter extends BaseAdapter {
         }
 
         profile_pic = (ImageView) view.findViewById(R.id.friend_profile_pic);
-        name = (TextView) view.findViewById(R.id.friend_name);
-        birthday_text = (TextView) view.findViewById(R.id.friend_birthday_text);
+        firstText = (TextView) view.findViewById(R.id.friend_name);
+        secondText = (TextView) view.findViewById(R.id.friend_birthday_text);
         try {
             profile_pic.setImageBitmap(Utility.model.getImage(
                     jsonObject.getString(Const.ID), jsonObject.getString(Const.PICTURE)));
         } catch (JSONException e) {
-            name.setText("");
+            e.printStackTrace();
         }
         try {
-            name.setText(jsonObject.getString(Const.NAME));
+            firstText.setText(jsonObject.getString(Const.NAME));
         } catch (JSONException e) {
-            name.setText("");
+            firstText.setText("");
         }
         try {
-            birthday_text.setText(jsonObject.getString(Const.BIRTHDAY));
+            secondText.setText(jsonObject.getString(Const.BIRTHDAY));
         } catch (JSONException e) {
-            birthday_text.setText("");
+            secondText.setText("");
         }
         return view;
     }
