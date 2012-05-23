@@ -48,4 +48,20 @@ public class JsonManager {
         }
         return resultArray;
     }
+
+    public static JSONObject getImageObject(String senderId) {
+        JSONObject resultObject = new JSONObject();
+        for(int i=0;i<mJsonArray.length(); i++){
+            try {
+                JSONObject object = mJsonArray.getJSONObject(i);
+                String id = object.getString(Const.ID);
+                if(id.equals(senderId)){
+                    resultObject=object;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return resultObject;
+    }
 }
