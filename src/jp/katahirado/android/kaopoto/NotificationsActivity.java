@@ -34,12 +34,35 @@ public class NotificationsActivity extends ListActivity {
         } catch (JSONException e) {
             e.printStackTrace();
             notificationArray = new JSONArray();
+            profileArray = new JSONArray();
         }
-        setListAdapter(new NotificationsAdapter(this, notificationArray, profileArray));
+        JsonManager.mJsonArray = profileArray;
+//        KaopotoDBHelper dbHelper = new KaopotoDBHelper(this);
+//        SQLiteDatabase database = dbHelper.getWritableDatabase();
+//        SQLiteManager.setProfileData(profileArray, database);
+        setListAdapter(new NotificationsAdapter(this, notificationArray));
     }
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
+//        String objectId = "";
+//        int typeId = 0;
+//        try {
+//            JSONObject object = notificationArray.getJSONObject(position);
+//            objectId = object.getString(Const.OBJECT_ID);
+//            typeId = KaopotoUtil.stringToTypeID(object.getString("object_type"));
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        switch (typeId) {
+//            case Const.STREAM_ID:
+//                intent = new Intent(this, PostItemActivity.class);
+//                intent.putExtra(Const.OBJECT_ID, objectId);
+//                startActivity(intent);
+//                break;
+//            case Const.EVENT_ID:
+//                break;
+//        }
         String fUrl = "";
         try {
             String url = notificationArray.getJSONObject(position).getString("href");

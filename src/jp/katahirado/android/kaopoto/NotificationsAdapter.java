@@ -14,11 +14,9 @@ import org.json.JSONObject;
  * Author: yuichi_katahira
  */
 public class NotificationsAdapter extends FacebookBaseAdapter {
-    private JSONArray profileImages;
 
-    public NotificationsAdapter(NotificationsActivity context, JSONArray jsonArray, JSONArray images) {
+    public NotificationsAdapter(NotificationsActivity context, JSONArray jsonArray) {
         super(context, jsonArray);
-        profileImages = images;
     }
 
     @Override
@@ -30,9 +28,11 @@ public class NotificationsAdapter extends FacebookBaseAdapter {
     public View getView(int position, View convertView, ViewGroup viewGroup) {
         JSONObject jsonObject = null;
         JSONObject imageObject = null;
+        String senderId = "";
         try {
             jsonObject = _jsonArray.getJSONObject(position);
-            imageObject = profileImages.getJSONObject(position);
+            senderId = jsonObject.getString(Const.SENDER_ID);
+            imageObject = JsonManager.getImageObject(senderId);
         } catch (JSONException e1) {
             e1.printStackTrace();
         }
@@ -45,7 +45,7 @@ public class NotificationsAdapter extends FacebookBaseAdapter {
         firstText = (TextView) view.findViewById(R.id.notification_title);
 
         try {
-            profile_pic.setImageBitmap(Utility.model.getImage(jsonObject.getString("sender_id"),
+            profile_pic.setImageBitmap(Utility.model.getImage(senderId,
                     imageObject.getString("pic_square")));
         } catch (JSONException e) {
             e.printStackTrace();
