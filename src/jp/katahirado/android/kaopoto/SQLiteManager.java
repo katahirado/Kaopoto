@@ -62,7 +62,7 @@ public class SQLiteManager {
         String result = "";
         Cursor cursor = database.rawQuery(SELECT_PROFILES_PICTURE, new String[]{uid});
         if (cursor.moveToFirst()) {
-            result = cursor.getString(0);
+            result = cursor.getString(cursor.getColumnIndex(Const.PICTURE));
         }
         cursor.close();
         return result;
