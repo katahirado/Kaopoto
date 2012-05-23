@@ -18,4 +18,14 @@ public class Const {
     public static final String DATA = "data";
     public static final String FIELDS = "fields";
     public static final String FQL_RESULT_SET = "fql_result_set";
+    public static final String CAPTION = "caption";
+    public static final String FEED = "feed";
+    public static final String POST_ID = "post_id";
+    public static final String SENDER_ID = "sender_id";
+    public static final String OBJECT_ID = "object_id";
+    public static final String STREAM = "stream";
+    public static final String EVENT = "event";
+    public static final int STREAM_ID = 0;
+    public static final int EVENT_ID = 1;
+    public static final String PIC_SQUARE = "pic_square";
 }
