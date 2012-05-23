@@ -3,6 +3,7 @@ package jp.katahirado.android.kaopoto;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -27,6 +28,9 @@ public class KaopotoActivity extends Activity implements AdapterView.OnItemClick
     private ProgressDialog dialog;
     private Bundle params;
     private Intent intent;
+    private DBOpenHelper dbHelper;
+    private String uid;
+    private String picURL;
 
 
     @Override
@@ -196,9 +200,19 @@ public class KaopotoActivity extends Activity implements AdapterView.OnItemClick
                 try {
                     jsonObject = new JSONObject(response);
 
-                    final String picURL = jsonObject.getString(Const.PICTURE);
+                    uid = jsonObject.getString(Const.ID);
+                    picURL = jsonObject.getString(Const.PICTURE);
                     final String name = jsonObject.getString(Const.NAME);
-                    Utility.userUID = jsonObject.getString(Const.ID);
+                    dbHelper = new DBOpenHelper(getApplicationContext());
+                    (new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            SQLiteDatabase database = dbHelper.getWritableDatabase();
+                            SQLiteManager.setProfileDatum(database, new ProfileData(uid, picURL));
+                            database.close();
+                        }
+                    })).start();
+                    Utility.userUID = uid;
 
                     handler.post(new Runnable() {
                         @Override
