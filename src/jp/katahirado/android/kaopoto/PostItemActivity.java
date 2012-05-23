@@ -35,9 +35,14 @@ public class PostItemActivity extends Activity {
         }
         TextView message = (TextView) findViewById(R.id.post_item_message);
         postFromPicView = (ImageView) findViewById(R.id.post_item_from_pic);
-
-        message.setText(postData.getMessage());
-        fromUid = postData.getFromData().getUid();
+        fromUid = postData.getFromUser().getUid();
+        String fromUserName = postData.getFromUser().getName()+"->";
+        if(postData.getToUsers().size()>0){
+            for(UserData data:postData.getToUsers()){
+                fromUserName+= data.getName()+" :";
+            }
+        }
+        message.setText(fromUserName+postData.getMessage());
         dbHelper = new DBOpenHelper(this);
         (new Thread(new Runnable() {
             @Override

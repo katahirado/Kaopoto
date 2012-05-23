@@ -1,38 +1,54 @@
 package jp.katahirado.android.kaopoto;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * Created with IntelliJ IDEA.
  * Author: yuichi_katahira
  */
 public class PostData {
-    private UserData fromData;
+    private UserData fromUser;
     private String postId;
     private String message;
+    private ArrayList<UserData> toUsers;
 
-    public PostData(JSONObject jsonObject) throws JSONException{
-        String pId = jsonObject.getString(Const.ID);
-        if(pId!=null){
-            postId = pId;
+    public PostData(JSONObject jsonObject) {
+        try {
+            postId = jsonObject.getString(Const.ID);
+        } catch (JSONException e) {
+            postId="";
         }
-        JSONObject fObject = jsonObject.getJSONObject("from");
-        if(fObject!=null){
-            fromData = new UserData(fObject);
+        try {
+            fromUser= new UserData(jsonObject.getJSONObject("from"));
+        } catch (JSONException e) {
+            fromUser =new UserData(new JSONObject());
         }
-        String mess = jsonObject.getString("message");
-        if(mess!=null){
-           message = mess;
+        toUsers = new ArrayList<UserData>();
+        try {
+            JSONArray toUserArray=jsonObject.getJSONObject("to").getJSONArray(Const.DATA);
+            for (int i = 0; i < toUserArray.length(); i++) {
+                toUsers.add(new UserData(toUserArray.getJSONObject(i)));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            message = jsonObject.getString("message");
+        } catch (JSONException e) {
+            message="";
         }
     }
 
-    public UserData getFromData() {
-        return fromData;
+    public UserData getFromUser() {
+        return fromUser;
     }
 
-    public void setFromData(UserData fromData) {
-        this.fromData = fromData;
+    public void setFromUser(UserData fromUser) {
+        this.fromUser = fromUser;
     }
 
     public String getPostId() {
@@ -49,5 +65,13 @@ public class PostData {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public ArrayList<UserData> getToUsers() {
+        return toUsers;
+    }
+
+    public void setToUsers(ArrayList<UserData> toUsers) {
+        this.toUsers = toUsers;
     }
 }
