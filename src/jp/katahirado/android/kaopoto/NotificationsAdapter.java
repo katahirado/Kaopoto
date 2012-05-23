@@ -46,7 +46,7 @@ public class NotificationsAdapter extends FacebookBaseAdapter {
 
         try {
             profile_pic.setImageBitmap(Utility.model.getImage(senderId,
-                    imageObject.getString("pic_square")));
+                    imageObject.getString(Const.PIC_SQUARE)));
         } catch (JSONException e) {
             e.printStackTrace();
         }
