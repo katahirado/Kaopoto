@@ -1,7 +1,9 @@
 package jp.katahirado.android.kaopoto;
 
 import android.app.ListActivity;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -18,6 +20,8 @@ public class NotificationsActivity extends ListActivity {
     private JSONArray notificationArray;
     private Intent intent;
     private JSONArray profileArray;
+    private ProgressDialog dialog;
+    private DBOpenHelper dbHelper;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,9 +41,16 @@ public class NotificationsActivity extends ListActivity {
             profileArray = new JSONArray();
         }
         JsonManager.mJsonArray = profileArray;
-//        KaopotoDBHelper dbHelper = new KaopotoDBHelper(this);
-//        SQLiteDatabase database = dbHelper.getWritableDatabase();
-//        SQLiteManager.setProfileData(profileArray, database);
+        dbHelper = new DBOpenHelper(this);
+        (new Thread(new Runnable() {
+            @Override
+            public void run() {
+                JsonManager.setAList(Const.PIC_SQUARE);
+                SQLiteDatabase database = dbHelper.getWritableDatabase();
+                SQLiteManager.setProfileData(database);
+                database.close();
+            }
+        })).start();
         setListAdapter(new NotificationsAdapter(this, notificationArray));
     }
 
@@ -56,9 +67,16 @@ public class NotificationsActivity extends ListActivity {
 //        }
 //        switch (typeId) {
 //            case Const.STREAM_ID:
-//                intent = new Intent(this, PostItemActivity.class);
-//                intent.putExtra(Const.OBJECT_ID, objectId);
-//                startActivity(intent);
+//                dialog = ProgressDialog.show(this, "", getString(R.string.loading), true, true);
+//                Utility.mAsyncRunner.request(objectId, new BaseRequestListener() {
+//                    @Override
+//                    public void onComplete(final String response, final Object state) {
+//                        dialog.dismiss();
+//                        intent = new Intent(getApplicationContext(), PostItemActivity.class);
+//                        intent.putExtra(Const.API_RESPONSE, response);
+//                        startActivity(intent);
+//                    }
+//                });
 //                break;
 //            case Const.EVENT_ID:
 //                break;
