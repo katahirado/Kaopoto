@@ -3,6 +3,7 @@ package jp.katahirado.android.kaopoto;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.view.View;
@@ -23,6 +24,7 @@ public class FriendsListActivity extends Activity implements View.OnClickListene
     private EditText searchText;
     private ListView listView;
     private Intent intent;
+    private DBOpenHelper dbHelper;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +45,16 @@ public class FriendsListActivity extends Activity implements View.OnClickListene
             jsonArray = new JSONArray();
         }
         JsonManager.mJsonArray = jsonArray;
+        dbHelper = new DBOpenHelper(this);
+        (new Thread(new Runnable() {
+            @Override
+            public void run() {
+                JsonManager.setAList(Const.PICTURE);
+                SQLiteDatabase database = dbHelper.getWritableDatabase();
+                SQLiteManager.setProfileData(database);
+                database.close();
+            }
+        })).start();
         listView.setAdapter(new FriendsListAdapter(this, jsonArray));
         listView.setOnItemClickListener(this);
         listView.requestFocus();
