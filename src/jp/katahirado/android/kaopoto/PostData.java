@@ -17,9 +17,9 @@ public class PostData {
         if(pId!=null){
             postId = pId;
         }
-        JSONObject jObject = jsonObject.getJSONObject("from");
-        if(jObject!=null){
-            fromData = new UserData(jsonObject);
+        JSONObject fObject = jsonObject.getJSONObject("from");
+        if(fObject!=null){
+            fromData = new UserData(fObject);
         }
         String mess = jsonObject.getString("message");
         if(mess!=null){

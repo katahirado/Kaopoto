@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.facebook.android.Utility;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,6 +19,8 @@ import org.json.JSONObject;
 public class PostItemActivity extends Activity {
     private PostData postData;
     private ImageView postFromPicView;
+    private DBOpenHelper dbHelper;
+    private String fromUid;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,21 +37,24 @@ public class PostItemActivity extends Activity {
         postFromPicView = (ImageView) findViewById(R.id.post_item_from_pic);
 
         message.setText(postData.getMessage());
-        String fromUid = postData.getFromData().getUid();
-
-        DBOpenHelper dbHelper = new DBOpenHelper(this);
-        SQLiteDatabase database = dbHelper.getWritableDatabase();
-        String fromPic = SQLiteManager.getImageUrl(database,fromUid);
-        database.close();
-        GetProfilePicTask getProfilePicTask = new GetProfilePicTask();
-        getProfilePicTask.execute(fromUid,fromPic);
+        fromUid = postData.getFromData().getUid();
+        dbHelper = new DBOpenHelper(this);
+        (new Thread(new Runnable() {
+            @Override
+            public void run() {
+                SQLiteDatabase database = dbHelper.getReadableDatabase();
+                String fromPic = SQLiteManager.getImageUrl(database, fromUid);
+                database.close();
+                GetProfilePicTask getProfilePicTask = new GetProfilePicTask();
+                getProfilePicTask.execute(fromPic);
+            }
+        })).start();
     }
 
-    private class GetProfilePicTask extends AsyncTask<String,Integer,Bitmap>{
-
+    private class GetProfilePicTask extends AsyncTask<String, Integer, Bitmap> {
         @Override
         protected Bitmap doInBackground(String... strings) {
-            return null;  //To change body of implemented methods use File | Settings | File Templates.
+            return Utility.getBitmap(strings[0]);
         }
 
         @Override

@@ -3,6 +3,7 @@ package jp.katahirado.android.kaopoto;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -24,6 +25,7 @@ public class SQLiteManager {
             if (!cursor.moveToFirst()) {
                 aList.add(data);
             }
+            cursor.close();
         }
         if (aList.size() > 0) {
             setProfileDatum(database, aList);
@@ -53,14 +55,16 @@ public class SQLiteManager {
             statement.bindString(2, profileData.getPicture());
             statement.executeInsert();
         }
+        cursor.close();
     }
 
-    public static String getImageUrl(SQLiteDatabase database,String uid) {
+    public static String getImageUrl(SQLiteDatabase database, String uid) {
         String result = "";
         Cursor cursor = database.rawQuery(SELECT_PROFILES_PICTURE, new String[]{uid});
-        if(cursor.moveToFirst()){
-           result = cursor.getString(1);
+        if (cursor.moveToFirst()) {
+            result = cursor.getString(0);
         }
+        cursor.close();
         return result;
     }
 }
