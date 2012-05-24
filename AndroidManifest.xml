@@ -22,6 +22,7 @@
                   android:theme="@android:style/Theme.Light"/>
         <activity android:name=".activity.PostItemActivity"
                   android:theme="@android:style/Theme.Light"/>
-        <activity android:name=".activity.EventItemActivity"/>
+        <activity android:name=".activity.EventItemActivity"
+                  android:theme="@android:style/Theme.Light"/>
     </application>
 </manifest> 
