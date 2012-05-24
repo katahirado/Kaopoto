@@ -1,4 +1,4 @@
-package jp.katahirado.android.kaopoto;
+package jp.katahirado.android.kaopoto.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,6 +9,9 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.facebook.android.Utility;
+import jp.katahirado.android.kaopoto.*;
+import jp.katahirado.android.kaopoto.model.PostData;
+import jp.katahirado.android.kaopoto.model.UserData;
 import org.json.JSONException;
 import org.json.JSONObject;
 

@@ -1,4 +1,4 @@
-package jp.katahirado.android.kaopoto;
+package jp.katahirado.android.kaopoto.model;
 
 /**
  * Created with IntelliJ IDEA.

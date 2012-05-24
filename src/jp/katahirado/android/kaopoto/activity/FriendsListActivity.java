@@ -1,4 +1,4 @@
-package jp.katahirado.android.kaopoto;
+package jp.katahirado.android.kaopoto.activity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,6 +11,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import com.facebook.android.BaseDialogListener;
 import com.facebook.android.Utility;
+import jp.katahirado.android.kaopoto.*;
+import jp.katahirado.android.kaopoto.adapter.FriendsListAdapter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

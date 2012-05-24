@@ -1,4 +1,4 @@
-package jp.katahirado.android.kaopoto;
+package jp.katahirado.android.kaopoto.activity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,6 +12,8 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import jp.katahirado.android.kaopoto.*;
+import jp.katahirado.android.kaopoto.adapter.PagesListAdapter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

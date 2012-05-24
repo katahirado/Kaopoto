@@ -1,4 +1,4 @@
-package jp.katahirado.android.kaopoto;
+package jp.katahirado.android.kaopoto.activity;
 
 import android.app.ListActivity;
 import android.app.ProgressDialog;
@@ -8,6 +8,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
+import com.facebook.android.BaseRequestListener;
+import com.facebook.android.Utility;
+import jp.katahirado.android.kaopoto.*;
+import jp.katahirado.android.kaopoto.activity.PostItemActivity;
+import jp.katahirado.android.kaopoto.adapter.NotificationsAdapter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -56,39 +61,39 @@ public class NotificationsActivity extends ListActivity {
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-//        String objectId = "";
-//        int typeId = 0;
-//        try {
-//            JSONObject object = notificationArray.getJSONObject(position);
-//            objectId = object.getString(Const.OBJECT_ID);
-//            typeId = KaopotoUtil.stringToTypeID(object.getString("object_type"));
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//        switch (typeId) {
-//            case Const.STREAM_ID:
-//                dialog = ProgressDialog.show(this, "", getString(R.string.loading), true, true);
-//                Utility.mAsyncRunner.request(objectId, new BaseRequestListener() {
-//                    @Override
-//                    public void onComplete(final String response, final Object state) {
-//                        dialog.dismiss();
-//                        intent = new Intent(getApplicationContext(), PostItemActivity.class);
-//                        intent.putExtra(Const.API_RESPONSE, response);
-//                        startActivity(intent);
-//                    }
-//                });
-//                break;
-//            case Const.EVENT_ID:
-//                break;
-//        }
-        String fUrl = "";
+        String objectId = "";
+        int typeId = 0;
         try {
-            String url = notificationArray.getJSONObject(position).getString("href");
-            fUrl = url.replace("http://www.facebook.com/", Const.FACEBOOK_MOBILE_URL);
+            JSONObject object = notificationArray.getJSONObject(position);
+            objectId = object.getString(Const.OBJECT_ID);
+            typeId = KaopotoUtil.stringToTypeID(object.getString("object_type"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        intent = new Intent(Intent.ACTION_VIEW, Uri.parse(fUrl));
-        startActivity(intent);
+        switch (typeId) {
+            case Const.STREAM_ID:
+                dialog = ProgressDialog.show(this, "", getString(R.string.loading), true, true);
+                Utility.mAsyncRunner.request(objectId, new BaseRequestListener() {
+                    @Override
+                    public void onComplete(final String response, final Object state) {
+                        dialog.dismiss();
+                        intent = new Intent(getApplicationContext(), PostItemActivity.class);
+                        intent.putExtra(Const.API_RESPONSE, response);
+                        startActivity(intent);
+                    }
+                });
+                break;
+            case Const.EVENT_ID:
+                String fUrl = "";
+                try {
+                    String url = notificationArray.getJSONObject(position).getString("href");
+                    fUrl = url.replace("http://www.facebook.com/", Const.FACEBOOK_MOBILE_URL);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                intent = new Intent(Intent.ACTION_VIEW, Uri.parse(fUrl));
+                startActivity(intent);
+                break;
+        }
     }
 }

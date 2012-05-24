@@ -1,10 +1,14 @@
-package jp.katahirado.android.kaopoto;
+package jp.katahirado.android.kaopoto.adapter;
 
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.facebook.android.Utility;
+import jp.katahirado.android.kaopoto.Const;
+import jp.katahirado.android.kaopoto.JsonManager;
+import jp.katahirado.android.kaopoto.R;
+import jp.katahirado.android.kaopoto.activity.NotificationsActivity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

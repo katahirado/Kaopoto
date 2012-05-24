@@ -3,7 +3,7 @@ package jp.katahirado.android.kaopoto;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
-import android.util.Log;
+import jp.katahirado.android.kaopoto.model.ProfileData;
 
 import java.util.ArrayList;
 

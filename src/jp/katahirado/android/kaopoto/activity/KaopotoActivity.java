@@ -1,4 +1,4 @@
-package jp.katahirado.android.kaopoto;
+package jp.katahirado.android.kaopoto.activity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -9,6 +9,8 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.*;
 import com.facebook.android.*;
+import jp.katahirado.android.kaopoto.*;
+import jp.katahirado.android.kaopoto.model.ProfileData;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -42,7 +44,7 @@ public class KaopotoActivity extends Activity implements AdapterView.OnItemClick
         Utility.mFacebook = new Facebook(Const.APP_ID);
         Utility.mAsyncRunner = new AsyncFacebookRunner(Utility.mFacebook);
 
-        LoginButton login = (LoginButton) findViewById(R.id.login);
+        LoginButton login = (LoginButton) findViewById(jp.katahirado.android.kaopoto.R.id.login);
         text = (TextView) findViewById(jp.katahirado.android.kaopoto.R.id.txt);
         userPicture = (ImageView) findViewById(jp.katahirado.android.kaopoto.R.id.user_pic);
 
@@ -78,7 +80,7 @@ public class KaopotoActivity extends Activity implements AdapterView.OnItemClick
             requestUserData();
         }
 
-        ListView mainList = (ListView) findViewById(R.id.main_list);
+        ListView mainList = (ListView) findViewById(jp.katahirado.android.kaopoto.R.id.main_list);
 
         mainList.setOnItemClickListener(this);
         mainList.setAdapter(new ArrayAdapter<String>(this, jp.katahirado.android.kaopoto.R.layout.main_list_item, main_items));
@@ -118,7 +120,7 @@ public class KaopotoActivity extends Activity implements AdapterView.OnItemClick
                     public void onComplete(Bundle values) {
                         final String postId = values.getString(Const.POST_ID);
                         if (postId != null) {
-                            Toast.makeText(getApplicationContext(), getString(R.string.PostedOnTheWall),
+                            Toast.makeText(getApplicationContext(), getString(jp.katahirado.android.kaopoto.R.string.PostedOnTheWall),
                                     Toast.LENGTH_LONG).show();
                         }
                     }
@@ -126,9 +128,9 @@ public class KaopotoActivity extends Activity implements AdapterView.OnItemClick
                 break;
             case GET_FRIENDS:
                 if (!Utility.mFacebook.isSessionValid()) {
-                    Util.showAlert(this, getString(R.string.warning), getString(R.string.firstLogin));
+                    Util.showAlert(this, getString(jp.katahirado.android.kaopoto.R.string.warning), getString(jp.katahirado.android.kaopoto.R.string.firstLogin));
                 } else {
-                    dialog = ProgressDialog.show(this, "", getString(R.string.loading), true, true);
+                    dialog = ProgressDialog.show(this, "", getString(jp.katahirado.android.kaopoto.R.string.loading), true, true);
                     params = new Bundle();
                     params.putString(Const.FIELDS, Const.NAME + "," + Const.PICTURE + "," + Const.BIRTHDAY);
                     Utility.mAsyncRunner.request("me/friends", params, new BaseRequestListener() {
@@ -144,9 +146,9 @@ public class KaopotoActivity extends Activity implements AdapterView.OnItemClick
                 break;
             case GET_PAGES:
                 if (!Utility.mFacebook.isSessionValid()) {
-                    Util.showAlert(this, getString(R.string.warning), getString(R.string.firstLogin));
+                    Util.showAlert(this, getString(jp.katahirado.android.kaopoto.R.string.warning), getString(jp.katahirado.android.kaopoto.R.string.firstLogin));
                 } else {
-                    dialog = ProgressDialog.show(this, "", getString(R.string.loading), true, true);
+                    dialog = ProgressDialog.show(this, "", getString(jp.katahirado.android.kaopoto.R.string.loading), true, true);
                     params = new Bundle();
                     params.putString(Const.FIELDS, Const.NAME + "," + Const.PICTURE + "," + Const.CATEGORY);
                     Utility.mAsyncRunner.request("me/likes", params, new BaseRequestListener() {
@@ -162,9 +164,9 @@ public class KaopotoActivity extends Activity implements AdapterView.OnItemClick
                 break;
             case NOTIFICATIONS:
                 if (!Utility.mFacebook.isSessionValid()) {
-                    Util.showAlert(this, getString(R.string.warning), getString(R.string.firstLogin));
+                    Util.showAlert(this, getString(jp.katahirado.android.kaopoto.R.string.warning), getString(jp.katahirado.android.kaopoto.R.string.firstLogin));
                 } else {
-                    dialog = ProgressDialog.show(this, "", getString(R.string.loading), true, true);
+                    dialog = ProgressDialog.show(this, "", getString(jp.katahirado.android.kaopoto.R.string.loading), true, true);
                     String query1 =
                             "\"q1\":\"SELECT notification_id, recipient_id,sender_id,created_time," +
                                     "updated_time,title_html,title_text, body_html,body_text, href,app_id," +
@@ -190,7 +192,7 @@ public class KaopotoActivity extends Activity implements AdapterView.OnItemClick
     }
 
     private void requestUserData() {
-        text.setText(getString(R.string.loading));
+        text.setText(getString(jp.katahirado.android.kaopoto.R.string.loading));
         params = new Bundle();
         params.putString(Const.FIELDS, Const.NAME + "," + Const.PICTURE);
         Utility.mAsyncRunner.request("me", params, new BaseRequestListener() {

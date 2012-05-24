@@ -1,5 +1,6 @@
-package jp.katahirado.android.kaopoto;
+package jp.katahirado.android.kaopoto.model;
 
+import jp.katahirado.android.kaopoto.Const;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -1,4 +1,4 @@
-package jp.katahirado.android.kaopoto;
+package jp.katahirado.android.kaopoto.adapter;
 
 import android.app.Activity;
 import android.content.Context;
