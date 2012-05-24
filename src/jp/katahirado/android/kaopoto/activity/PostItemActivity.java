@@ -9,7 +9,10 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.facebook.android.Utility;
-import jp.katahirado.android.kaopoto.*;
+import jp.katahirado.android.kaopoto.Const;
+import jp.katahirado.android.kaopoto.DBOpenHelper;
+import jp.katahirado.android.kaopoto.R;
+import jp.katahirado.android.kaopoto.SQLiteManager;
 import jp.katahirado.android.kaopoto.model.PostData;
 import jp.katahirado.android.kaopoto.model.UserData;
 import org.json.JSONException;
@@ -24,10 +27,20 @@ public class PostItemActivity extends Activity {
     private ImageView postFromPicView;
     private DBOpenHelper dbHelper;
     private String fromUid;
+        private ImageView mediaView;
+//    private TextView mediaView;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.post_item);
+
+        TextView message = (TextView) findViewById(R.id.post_item_message);
+        postFromPicView = (ImageView) findViewById(R.id.post_item_from_pic);
+        mediaView = (ImageView) findViewById(R.id.media_item);
+//        mediaView = (TextView) findViewById(R.id.media_item);
+        TextView name = (TextView) findViewById(R.id.post_item_name);
+        TextView caption = (TextView) findViewById(R.id.post_item_caption);
+        TextView description = (TextView) findViewById(R.id.post_item_description);
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
@@ -36,16 +49,19 @@ public class PostItemActivity extends Activity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        TextView message = (TextView) findViewById(R.id.post_item_message);
-        postFromPicView = (ImageView) findViewById(R.id.post_item_from_pic);
         fromUid = postData.getFromUser().getUid();
-        String fromUserName = postData.getFromUser().getName()+"->";
-        if(postData.getToUsers().size()>0){
-            for(UserData data:postData.getToUsers()){
-                fromUserName+= data.getName()+" :";
+        String fromUserName = postData.getFromUser().getName() + "->";
+        if (postData.getToUsers().size() > 0) {
+            for (UserData data : postData.getToUsers()) {
+                fromUserName += data.getName() + " :";
             }
         }
-        message.setText(fromUserName+postData.getMessage());
+        message.setText(fromUserName + postData.getMessage());
+        name.setText(postData.getName());
+        caption.setText(postData.getCaption());
+        description.setText(postData.getDescription());
+        mediaView.setImageBitmap(Utility.getBitmap(postData.getPicture()));
+
         dbHelper = new DBOpenHelper(this);
         (new Thread(new Runnable() {
             @Override
