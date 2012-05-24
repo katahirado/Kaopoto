@@ -27,8 +27,6 @@ public class PostItemActivity extends Activity {
     private ImageView postFromPicView;
     private DBOpenHelper dbHelper;
     private String fromUid;
-        private ImageView mediaView;
-//    private TextView mediaView;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,8 +34,7 @@ public class PostItemActivity extends Activity {
 
         TextView message = (TextView) findViewById(R.id.post_item_message);
         postFromPicView = (ImageView) findViewById(R.id.post_item_from_pic);
-        mediaView = (ImageView) findViewById(R.id.media_item);
-//        mediaView = (TextView) findViewById(R.id.media_item);
+        ImageView mediaView = (ImageView) findViewById(R.id.media_item);
         TextView name = (TextView) findViewById(R.id.post_item_name);
         TextView caption = (TextView) findViewById(R.id.post_item_caption);
         TextView description = (TextView) findViewById(R.id.post_item_description);
