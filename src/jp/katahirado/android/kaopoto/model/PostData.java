@@ -27,16 +27,16 @@ public class PostData {
         try {
             postId = jsonObject.getString(Const.ID);
         } catch (JSONException e) {
-            postId="";
+            postId = "";
         }
         try {
-            fromUser= new UserData(jsonObject.getJSONObject("from"));
+            fromUser = new UserData(jsonObject.getJSONObject("from"));
         } catch (JSONException e) {
-            fromUser =new UserData(new JSONObject());
+            fromUser = new UserData(new JSONObject());
         }
         toUsers = new ArrayList<UserData>();
         try {
-            JSONArray toUserArray=jsonObject.getJSONObject("to").getJSONArray(Const.DATA);
+            JSONArray toUserArray = jsonObject.getJSONObject("to").getJSONArray(Const.DATA);
             for (int i = 0; i < toUserArray.length(); i++) {
                 toUsers.add(new UserData(toUserArray.getJSONObject(i)));
             }
@@ -46,7 +46,7 @@ public class PostData {
         try {
             message = jsonObject.getString("message");
         } catch (JSONException e) {
-            message="";
+            message = "";
         }
         try {
             link = jsonObject.getString("link");
@@ -56,17 +56,17 @@ public class PostData {
         try {
             name = jsonObject.getString(Const.NAME);
         } catch (JSONException e) {
-            name="";
+            name = "";
         }
-        try{
+        try {
             caption = jsonObject.getString("caption");
-        }catch (JSONException e){
-            caption ="";
+        } catch (JSONException e) {
+            caption = "";
         }
-        try{
+        try {
             description = jsonObject.getString("description");
-        }catch (JSONException e){
-            description ="";
+        } catch (JSONException e) {
+            description = "";
         }
         try {
             picture = jsonObject.getString(Const.PICTURE);
@@ -84,79 +84,41 @@ public class PostData {
         return fromUser;
     }
 
-    public void setFromUser(UserData fromUser) {
-        this.fromUser = fromUser;
-    }
-
     public String getPostId() {
         return postId;
-    }
-
-    public void setPostId(String postId) {
-        this.postId = postId;
     }
 
     public String getMessage() {
         return message;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
     public ArrayList<UserData> getToUsers() {
         return toUsers;
-    }
-
-    public void setToUsers(ArrayList<UserData> toUsers) {
-        this.toUsers = toUsers;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getCaption() {
         return caption;
-    }
-
-    public void setCaption(String caption) {
-        this.caption = caption;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getPicture() {
         return picture;
-    }
-
-    public void setPicture(String picture) {
-        this.picture = picture;
     }
 
     public String getSource() {
         return source;
     }
 
-    public void setSource(String source) {
-        this.source = source;
-    }
-
     public String getLink() {
         return link;
     }
 
-    public void setLink(String link) {
-        this.link = link;
-    }
 }
