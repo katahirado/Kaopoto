@@ -4,14 +4,33 @@
               android:orientation="vertical"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent">
-    <ImageView
-            android:id="@+id/post_item_from_pic"
-            android:layout_width="wrap_content"
+    <LinearLayout android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  android:layout_width="fill_parent">
+        <ImageView
+                android:id="@+id/post_item_from_pic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="6dip"/>
+        <TextView
+                android:id="@+id/post_item_message"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+    </LinearLayout>
+    <LinearLayout
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginRight="6dip" />
-    <TextView android:id="@+id/post_item_message"
-              android:layout_height="wrap_content"
-              android:layout_width="wrap_content"/>
+            android:layout_width="wrap_content"
+            android:orientation="horizontal">
+        <ImageView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:id="@+id/media_item"/>
+        <LinearLayout android:layout_height="wrap_content"
+                      android:layout_width="wrap_content"
+                      android:orientation="vertical">
+
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>
