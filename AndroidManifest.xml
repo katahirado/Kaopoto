@@ -22,5 +22,6 @@
                   android:theme="@android:style/Theme.Light"/>
         <activity android:name=".activity.PostItemActivity"
                   android:theme="@android:style/Theme.Light"/>
+        <activity android:name=".activity.EventItemActivity"/>
     </application>
 </manifest> 
