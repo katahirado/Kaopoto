@@ -58,6 +58,7 @@ public class PostItemActivity extends Activity {
         caption.setText(postData.getCaption());
         description.setText(postData.getDescription());
         mediaView.setImageBitmap(Utility.getBitmap(postData.getPicture()));
+//        ThumbnailUtils utils= new ThumbnailUtils();
 
         dbHelper = new DBOpenHelper(this);
         (new Thread(new Runnable() {

@@ -20,6 +20,8 @@ public class PostData {
     private String caption;
     private String description;
     private String picture;
+    private String source;
+    private String link;
 
     public PostData(JSONObject jsonObject) {
         try {
@@ -47,6 +49,11 @@ public class PostData {
             message="";
         }
         try {
+            link = jsonObject.getString("link");
+        } catch (JSONException e) {
+            link = "";
+        }
+        try {
             name = jsonObject.getString(Const.NAME);
         } catch (JSONException e) {
             name="";
@@ -62,9 +69,14 @@ public class PostData {
             description ="";
         }
         try {
-            picture = jsonObject.getString("picture");
+            picture = jsonObject.getString(Const.PICTURE);
         } catch (JSONException e) {
             picture = "";
+        }
+        try {
+            source = jsonObject.getString("source");
+        } catch (JSONException e) {
+            source = "";
         }
     }
 
@@ -130,5 +142,21 @@ public class PostData {
 
     public void setPicture(String picture) {
         this.picture = picture;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
     }
 }
