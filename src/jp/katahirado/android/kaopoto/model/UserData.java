@@ -18,8 +18,8 @@ public class UserData {
             name = object.getString(Const.NAME);
         } catch (JSONException e) {
             e.printStackTrace();
-            uid="";
-            name="";
+            uid = "";
+            name = "";
         }
     }
 
@@ -27,15 +27,8 @@ public class UserData {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getUid() {
         return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
     }
 }
