@@ -59,12 +59,12 @@ public class PostData {
             name = "";
         }
         try {
-            caption = jsonObject.getString("caption");
+            caption = jsonObject.getString(Const.CAPTION);
         } catch (JSONException e) {
             caption = "";
         }
         try {
-            description = jsonObject.getString("description");
+            description = jsonObject.getString(Const.DESCRIPTION);
         } catch (JSONException e) {
             description = "";
         }
