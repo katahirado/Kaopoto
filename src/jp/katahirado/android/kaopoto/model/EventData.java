@@ -1,6 +1,7 @@
 package jp.katahirado.android.kaopoto.model;
 
 import jp.katahirado.android.kaopoto.Const;
+import jp.katahirado.android.kaopoto.KaopotoUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -29,7 +30,7 @@ public class EventData {
         try {
             name = jsonObject.getString(Const.NAME);
         } catch (JSONException e) {
-            name="";
+            name = "";
         }
         try {
             description = jsonObject.getString(Const.DESCRIPTION);
@@ -37,12 +38,14 @@ public class EventData {
             description = "";
         }
         try {
-            startTime = new Date(jsonObject.getLong("start_time"));
+            startTime = new Date(jsonObject.getLong("start_time") *
+                    Const.MILLISECOND + Const.TIMEZONE_OFFSET);
         } catch (JSONException e) {
             startTime = null;
         }
         try {
-            endTime = new Date(jsonObject.getLong("end_time"));
+            endTime = new Date(jsonObject.getLong("end_time") *
+                    Const.MILLISECOND + Const.TIMEZONE_OFFSET);
         } catch (JSONException e) {
             endTime = null;
         }
@@ -75,12 +78,8 @@ public class EventData {
         return description;
     }
 
-    public Date getStartTime() {
-        return startTime;
-    }
-
-    public Date getEndTime() {
-        return endTime;
+    public String getStartAndEnd() {
+        return KaopotoUtil.formattedDateString(startTime) + " - " + KaopotoUtil.formattedTimeString(endTime);
     }
 
     public String getLocation() {
@@ -88,7 +87,15 @@ public class EventData {
     }
 
     public String getPrivacy() {
-        return privacy;
+        String result = "";
+        if (privacy.equals("OPEN")) {
+            result = "公開イベント";
+        } else if (privacy.equals("SECRET")) {
+            result = "招待者のみのイベント";
+        } else if (privacy.equals("CLOSED")) {
+            result = privacy;
+        }
+        return result;
     }
 
     public Date getUpdatedTime() {

@@ -28,4 +28,7 @@ public class Const {
     public static final int STREAM_ID = 0;
     public static final int EVENT_ID = 1;
     public static final String PIC_SQUARE = "pic_square";
+    public static final String DESCRIPTION = "description";
+    public static final int MILLISECOND = 1000;
+    public static final int TIMEZONE_OFFSET = 32400000;
 }
