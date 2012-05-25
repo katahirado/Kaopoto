@@ -1,5 +1,6 @@
 package jp.katahirado.android.kaopoto.activity;
 
+import android.app.Activity;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -27,6 +28,7 @@ public class NotificationsActivity extends ListActivity {
     private JSONArray profileArray;
     private ProgressDialog dialog;
     private DBOpenHelper dbHelper;
+    private Class<?> cls;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,28 +74,32 @@ public class NotificationsActivity extends ListActivity {
         }
         switch (typeId) {
             case Const.STREAM_ID:
-                dialog = ProgressDialog.show(this, "", getString(R.string.loading), true, true);
-                Utility.mAsyncRunner.request(objectId, new BaseRequestListener() {
-                    @Override
-                    public void onComplete(final String response, final Object state) {
-                        dialog.dismiss();
-                        intent = new Intent(getApplicationContext(), PostItemActivity.class);
-                        intent.putExtra(Const.API_RESPONSE, response);
-                        startActivity(intent);
-                    }
-                });
+                cls = PostItemActivity.class;
                 break;
             case Const.EVENT_ID:
-                String fUrl = "";
-                try {
-                    String url = notificationArray.getJSONObject(position).getString("href");
-                    fUrl = url.replace("http://www.facebook.com/", Const.FACEBOOK_MOBILE_URL);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                intent = new Intent(Intent.ACTION_VIEW, Uri.parse(fUrl));
-                startActivity(intent);
+                cls = EventItemActivity.class;
                 break;
         }
+        dialog = ProgressDialog.show(this, "", getString(R.string.loading), true, true);
+        Bundle params = new Bundle();
+        params.putString("date_format","U");
+        Utility.mAsyncRunner.request(objectId,params,new BaseRequestListener() {
+            @Override
+            public void onComplete(final String response, final Object state) {
+                dialog.dismiss();
+                intent = new Intent(getApplicationContext(), cls);
+                intent.putExtra(Const.API_RESPONSE, response);
+                startActivity(intent);
+            }
+        });
+//        String fUrl = "";
+//        try {
+//            String url = notificationArray.getJSONObject(position).getString("href");
+//            fUrl = url.replace("http://www.facebook.com/", Const.FACEBOOK_MOBILE_URL);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        intent = new Intent(Intent.ACTION_VIEW, Uri.parse(fUrl));
+//        startActivity(intent);
     }
 }
