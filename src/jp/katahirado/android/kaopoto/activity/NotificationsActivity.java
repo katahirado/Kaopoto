@@ -1,18 +1,15 @@
 package jp.katahirado.android.kaopoto.activity;
 
-import android.app.Activity;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 import com.facebook.android.BaseRequestListener;
 import com.facebook.android.Utility;
 import jp.katahirado.android.kaopoto.*;
-import jp.katahirado.android.kaopoto.activity.PostItemActivity;
 import jp.katahirado.android.kaopoto.adapter.NotificationsAdapter;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -82,8 +79,8 @@ public class NotificationsActivity extends ListActivity {
         }
         dialog = ProgressDialog.show(this, "", getString(R.string.loading), true, true);
         Bundle params = new Bundle();
-        params.putString("date_format","U");
-        Utility.mAsyncRunner.request(objectId,params,new BaseRequestListener() {
+        params.putString("date_format", "U");
+        Utility.mAsyncRunner.request(objectId, params, new BaseRequestListener() {
             @Override
             public void onComplete(final String response, final Object state) {
                 dialog.dismiss();
@@ -92,14 +89,5 @@ public class NotificationsActivity extends ListActivity {
                 startActivity(intent);
             }
         });
-//        String fUrl = "";
-//        try {
-//            String url = notificationArray.getJSONObject(position).getString("href");
-//            fUrl = url.replace("http://www.facebook.com/", Const.FACEBOOK_MOBILE_URL);
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//        intent = new Intent(Intent.ACTION_VIEW, Uri.parse(fUrl));
-//        startActivity(intent);
     }
 }
