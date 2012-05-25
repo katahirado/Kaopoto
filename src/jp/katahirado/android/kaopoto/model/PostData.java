@@ -36,7 +36,7 @@ public class PostData {
         }
         toUsers = new ArrayList<UserData>();
         try {
-            JSONArray toUserArray = jsonObject.getJSONObject("to").getJSONArray(Const.DATA);
+            JSONArray toUserArray = jsonObject.getJSONObject(Const.TO).getJSONArray(Const.DATA);
             for (int i = 0; i < toUserArray.length(); i++) {
                 toUsers.add(new UserData(toUserArray.getJSONObject(i)));
             }

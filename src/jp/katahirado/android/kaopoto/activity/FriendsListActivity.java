@@ -87,11 +87,11 @@ public class FriendsListActivity extends Activity implements View.OnClickListene
         Bundle params = new Bundle();
         long friendId = 0;
         try {
-            friendId = jsonArray.getJSONObject(position).getLong("id");
+            friendId = jsonArray.getJSONObject(position).getLong(Const.ID);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        params.putString("to", String.valueOf(friendId));
+        params.putString(Const.TO, String.valueOf(friendId));
         params.putString(Const.CAPTION, getString(jp.katahirado.android.kaopoto.R.string.app_name));
         Utility.mFacebook.dialog(this, Const.FEED, params, new BaseDialogListener() {
             @Override

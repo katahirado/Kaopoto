@@ -31,4 +31,5 @@ public class Const {
     public static final String DESCRIPTION = "description";
     public static final int MILLISECOND = 1000;
     public static final int TIMEZONE_OFFSET = 32400000;
+    public static final String TO = "to";
 }
