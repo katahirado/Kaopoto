@@ -24,5 +24,12 @@
                   android:theme="@android:style/Theme.Light"/>
         <activity android:name=".activity.EventItemActivity"
                   android:theme="@android:style/Theme.Light"/>
+        <activity android:name=".activity.LikeUrlReceiveActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="*/*"/>
+            </intent-filter>
+        </activity>
     </application>
 </manifest> 
