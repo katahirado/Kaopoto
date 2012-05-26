@@ -24,6 +24,9 @@ public class JsonManager {
     }
 
     public static JSONArray querySearchFriends(String query) {
+        if(query.equals("*")){
+            return mJsonArray;
+        }
         JSONArray resultArray = new JSONArray();
         String key;
         if (query.matches("^[0-9/]*")) {
@@ -46,6 +49,9 @@ public class JsonManager {
     }
 
     public static JSONArray querySearchPages(String query) {
+        if(query.equals("*")){
+            return mJsonArray;
+        }
         JSONArray resultArray = new JSONArray();
         for (int i = 0; i < mJsonArray.length(); i++) {
             try {
