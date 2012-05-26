@@ -24,11 +24,14 @@
                   android:theme="@android:style/Theme.Light"/>
         <activity android:name=".activity.EventItemActivity"
                   android:theme="@android:style/Theme.Light"/>
-        <activity android:name=".activity.LikeUrlReceiveActivity">
+        <activity android:name=".activity.LikeUrlReceiveActivity"
+                  android:theme="@android:style/Theme.Light">
             <intent-filter>
                 <action android:name="android.intent.action.SEND"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <data android:mimeType="text/*"/>
+                <data android:scheme="http"/>
+                <data android:scheme="https"/>
             </intent-filter>
         </activity>
     </application>
