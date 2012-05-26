@@ -85,7 +85,8 @@ public class KaopotoActivity extends Activity implements AdapterView.OnItemClick
         ListView mainList = (ListView) findViewById(jp.katahirado.android.kaopoto.R.id.main_list);
 
         mainList.setOnItemClickListener(this);
-        mainList.setAdapter(new ArrayAdapter<String>(this, jp.katahirado.android.kaopoto.R.layout.main_list_item, main_items));
+        mainList.setAdapter(new ArrayAdapter<String>(this,
+                jp.katahirado.android.kaopoto.R.layout.main_list_item, main_items));
     }
 
     @Override
@@ -122,7 +123,8 @@ public class KaopotoActivity extends Activity implements AdapterView.OnItemClick
                     public void onComplete(Bundle values) {
                         final String postId = values.getString(Const.POST_ID);
                         if (postId != null) {
-                            Toast.makeText(getApplicationContext(), getString(jp.katahirado.android.kaopoto.R.string.PostedOnTheWall),
+                            Toast.makeText(getApplicationContext(),
+                                    getString(jp.katahirado.android.kaopoto.R.string.PostedOnTheWall),
                                     Toast.LENGTH_LONG).show();
                         }
                     }
@@ -130,9 +132,11 @@ public class KaopotoActivity extends Activity implements AdapterView.OnItemClick
                 break;
             case GET_FRIENDS:
                 if (!Utility.mFacebook.isSessionValid()) {
-                    Util.showAlert(this, getString(jp.katahirado.android.kaopoto.R.string.warning), getString(jp.katahirado.android.kaopoto.R.string.firstLogin));
+                    Util.showAlert(this, getString(jp.katahirado.android.kaopoto.R.string.warning),
+                            getString(jp.katahirado.android.kaopoto.R.string.firstLogin));
                 } else {
-                    dialog = ProgressDialog.show(this, "", getString(jp.katahirado.android.kaopoto.R.string.loading), true, true);
+                    dialog = ProgressDialog.show(this, "",
+                            getString(jp.katahirado.android.kaopoto.R.string.loading), true, true);
                     params = new Bundle();
                     params.putString(Const.FIELDS, Const.NAME + "," + Const.PICTURE + "," + Const.BIRTHDAY);
                     Utility.mAsyncRunner.request("me/friends", params, new BaseRequestListener() {
@@ -148,9 +152,11 @@ public class KaopotoActivity extends Activity implements AdapterView.OnItemClick
                 break;
             case GET_PAGES:
                 if (!Utility.mFacebook.isSessionValid()) {
-                    Util.showAlert(this, getString(jp.katahirado.android.kaopoto.R.string.warning), getString(jp.katahirado.android.kaopoto.R.string.firstLogin));
+                    Util.showAlert(this, getString(jp.katahirado.android.kaopoto.R.string.warning),
+                            getString(jp.katahirado.android.kaopoto.R.string.firstLogin));
                 } else {
-                    dialog = ProgressDialog.show(this, "", getString(jp.katahirado.android.kaopoto.R.string.loading), true, true);
+                    dialog = ProgressDialog.show(this, "",
+                            getString(jp.katahirado.android.kaopoto.R.string.loading), true, true);
                     params = new Bundle();
                     params.putString(Const.FIELDS, Const.NAME + "," + Const.PICTURE + "," + Const.CATEGORY);
                     Utility.mAsyncRunner.request("me/likes", params, new BaseRequestListener() {
@@ -166,9 +172,11 @@ public class KaopotoActivity extends Activity implements AdapterView.OnItemClick
                 break;
             case NOTIFICATIONS:
                 if (!Utility.mFacebook.isSessionValid()) {
-                    Util.showAlert(this, getString(jp.katahirado.android.kaopoto.R.string.warning), getString(jp.katahirado.android.kaopoto.R.string.firstLogin));
+                    Util.showAlert(this, getString(jp.katahirado.android.kaopoto.R.string.warning),
+                            getString(jp.katahirado.android.kaopoto.R.string.firstLogin));
                 } else {
-                    dialog = ProgressDialog.show(this, "", getString(jp.katahirado.android.kaopoto.R.string.loading), true, true);
+                    dialog = ProgressDialog.show(this, "",
+                            getString(jp.katahirado.android.kaopoto.R.string.loading), true, true);
                     String query1 =
                             "\"q1\":\"SELECT notification_id, recipient_id,sender_id,created_time," +
                                     "updated_time,title_html,title_text, body_html,body_text, href,app_id," +

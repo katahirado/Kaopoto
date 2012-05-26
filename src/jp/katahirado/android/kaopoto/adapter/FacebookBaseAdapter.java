@@ -35,21 +35,21 @@ public class FacebookBaseAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+        return 0;
     }
 
     @Override
     public Object getItem(int i) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     @Override
     public long getItemId(int i) {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+        return 0;
     }
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 }
