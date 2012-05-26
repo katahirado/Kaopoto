@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
@@ -60,6 +61,13 @@ public class FriendsListActivity extends Activity implements View.OnClickListene
         listView.setAdapter(new FriendsListAdapter(this, jsonArray));
         listView.setOnItemClickListener(this);
         listView.requestFocus();
+        listView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                hideIME();
+                return false;
+            }
+        });
 
         searchButton.setOnClickListener(this);
     }

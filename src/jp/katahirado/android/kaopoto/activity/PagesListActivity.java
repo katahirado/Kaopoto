@@ -6,13 +6,17 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import jp.katahirado.android.kaopoto.*;
+import jp.katahirado.android.kaopoto.Const;
+import jp.katahirado.android.kaopoto.JsonManager;
+import jp.katahirado.android.kaopoto.KaopotoUtil;
+import jp.katahirado.android.kaopoto.R;
 import jp.katahirado.android.kaopoto.adapter.PagesListAdapter;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,6 +53,13 @@ public class PagesListActivity extends Activity implements
         listView.setAdapter(new PagesListAdapter(this, jsonArray));
         listView.setOnItemClickListener(this);
         listView.requestFocus();
+        listView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                hideIME();
+                return false;
+            }
+        });
 
         searchButton.setOnClickListener(this);
     }
