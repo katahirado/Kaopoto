@@ -13,7 +13,7 @@ public class DBOpenHelper extends SQLiteOpenHelper {
     private static final int DB_VERSION = 1;
     private static final String CREATE_PROFILE_TABLE ="create table profiles (" +
             " _id integer primary key autoincrement, uid text not null," +
-            " picture text not null)";
+            " name text not null, picture text not null)";
 
 
     public DBOpenHelper(Context context) {
