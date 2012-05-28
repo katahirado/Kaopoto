@@ -24,6 +24,7 @@ public class CommentsListAdapter extends BaseAdapter {
     private ImageView image;
     private TextView name;
     private TextView message;
+    private TextView likes;
     private ArrayList<CommentData> commentsList;
     private PostItemActivity activity;
 
@@ -70,6 +71,13 @@ public class CommentsListAdapter extends BaseAdapter {
             name.setText(commentData.getFromUser().getName());
             message = (TextView) view.findViewById(R.id.comment_row_message);
             message.setText(commentData.getMessage());
+            likes = (TextView) view.findViewById(R.id.comment_row_likes);
+            if (commentData.getLikes() == 0) {
+                likes.setVisibility(View.GONE);
+            } else {
+                likes.setVisibility(View.VISIBLE);
+                likes.setText(commentData.getLikes()+activity.getString(R.string.people_likes));
+            }
         }
         return view;
     }
