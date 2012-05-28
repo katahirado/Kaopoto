@@ -56,10 +56,6 @@ public class CommentData {
         return likes;
     }
 
-    public void setCommentId(String commentId) {
-        this.commentId = commentId;
-    }
-
     public void setFromUser(UserData fromUser) {
         this.fromUser = fromUser;
     }
