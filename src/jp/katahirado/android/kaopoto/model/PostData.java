@@ -103,9 +103,9 @@ public class PostData {
         }
         comments = new ArrayList<CommentData>();
         try {
-            JSONArray likesArray = jsonObject.getJSONObject(Const.COMMENTS).getJSONArray(Const.DATA);
-            for (int i = 0; i < likesArray.length(); i++) {
-                comments.add(new CommentData(likesArray.getJSONObject(i)));
+            JSONArray cArray = jsonObject.getJSONObject(Const.COMMENTS).getJSONArray(Const.DATA);
+            for (int i = 0; i < cArray.length(); i++) {
+                comments.add(new CommentData(cArray.getJSONObject(i)));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -167,6 +167,19 @@ public class PostData {
 
     public int getCommentsCount() {
         return commentsCount;
+    }
+
+    public void setComments(String response) {
+        try {
+            JSONArray cArray = new JSONObject(response).getJSONArray(Const.DATA);
+            comments = new ArrayList<CommentData>();
+            for (int i = 0; i < cArray.length(); i++) {
+                comments.add(new CommentData(cArray.getJSONObject(i)));
+            }
+            commentsCount = comments.size();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public void incrementCommentsCount() {
