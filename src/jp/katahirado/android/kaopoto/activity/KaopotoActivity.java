@@ -86,7 +86,7 @@ public class KaopotoActivity extends Activity implements AdapterView.OnItemClick
 
         mainList.setOnItemClickListener(this);
         mainList.setAdapter(new ArrayAdapter<String>(this,
-                jp.katahirado.android.kaopoto.R.layout.main_list_item, main_items));
+                jp.katahirado.android.kaopoto.R.layout.main_list_row, main_items));
     }
 
     @Override
@@ -220,7 +220,7 @@ public class KaopotoActivity extends Activity implements AdapterView.OnItemClick
                         @Override
                         public void run() {
                             SQLiteDatabase database = dbHelper.getWritableDatabase();
-                            SQLiteManager.setProfileDatum(database, new ProfileData(uid, picURL));
+                            SQLiteManager.setProfileDatum(database, new ProfileData(uid,name,picURL));
                             database.close();
                         }
                     })).start();
