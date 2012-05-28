@@ -26,7 +26,8 @@ import org.json.JSONObject;
  * Created with IntelliJ IDEA.
  * Author: yuichi_katahira
  */
-public class PostItemActivity extends Activity implements View.OnClickListener {
+public class PostItemActivity extends Activity implements
+        View.OnClickListener, AdapterView.OnItemClickListener {
     private PostData postData;
     private ImageView postFromPicView;
     private ListView commentsList;
@@ -93,6 +94,7 @@ public class PostItemActivity extends Activity implements View.OnClickListener {
 
         commentButton.setOnClickListener(this);
         likeButton.setOnClickListener(this);
+        commentsList.setOnItemClickListener(this);
 
         //videoのthumbnail生成
         //  ThumbnailUtils utils= new ThumbnailUtils();
@@ -164,11 +166,38 @@ public class PostItemActivity extends Activity implements View.OnClickListener {
         }
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, final View view, int position, long id) {
+        dialog = ProgressDialog.show(this, "",
+                getString(jp.katahirado.android.kaopoto.R.string.loading), true, true);
+        Utility.mAsyncRunner.request(postData.getComments().get(position).getCommentId() + "/" + Const.LIKES,
+                new Bundle(), Const.POST, new BaseRequestListener() {
+            @Override
+            public void onComplete(String response, Object state) {
+                //ここで再びcomments全体を再取得する
+                Utility.mAsyncRunner.request(postData.getPostId() + "/" + Const.COMMENTS, new BaseRequestListener() {
+                    @Override
+                    public void onComplete(final String res, Object state) {
+                        dialog.dismiss();
+                        //adapterに再セットする
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                postData.setComments(res);
+                                setCommentsListAdapter();
+                            }
+                        });
+                    }
+                });
+            }
+        }, null);
+    }
+
     private void populateLikeCountAndUserText() {
         if (postData.getLikesCount() == 0) {
             likesCountAndUsers.setVisibility(View.GONE);
         } else {
-            String s = String.valueOf(postData.getLikesCount()) + "人がいいね!";
+            String s = String.valueOf(postData.getLikesCount()) + getString(R.string.people_likes);
             for (UserData u : postData.getLikes()) {
                 s = s + "," + u.getName();
             }
