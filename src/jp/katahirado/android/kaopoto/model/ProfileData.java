@@ -7,11 +7,14 @@ package jp.katahirado.android.kaopoto.model;
 public class ProfileData {
     private String uid;
     private String picture;
+    private String name;
 
-    public ProfileData(String id, String pic) {
+    public ProfileData(String id,String n, String pic) {
         uid = id;
+        name =n;
         picture = pic;
     }
+
 
     public String getUid() {
         return uid;
@@ -19,5 +22,9 @@ public class ProfileData {
 
     public String getPicture() {
         return picture;
+    }
+
+    public String getName() {
+        return name;
     }
 }

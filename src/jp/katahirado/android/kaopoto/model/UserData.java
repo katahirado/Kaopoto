@@ -15,12 +15,19 @@ public class UserData {
     public UserData(JSONObject object) {
         try {
             uid = object.getString(Const.ID);
+        } catch (JSONException e) {
+            uid = "";
+        }
+        try {
             name = object.getString(Const.NAME);
         } catch (JSONException e) {
-            e.printStackTrace();
-            uid = "";
             name = "";
         }
+    }
+
+    public UserData(String userUID, String userName) {
+        uid = userUID;
+        name = userName;
     }
 
     public String getName() {
