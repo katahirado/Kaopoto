@@ -30,7 +30,6 @@ public class PostItemActivity extends Activity implements View.OnClickListener {
     private PostData postData;
     private ImageView postFromPicView;
     private DBOpenHelper dbHelper;
-    private String fromUid;
     private ProgressDialog dialog;
     private Bundle params;
     private Intent intent;
@@ -62,7 +61,6 @@ public class PostItemActivity extends Activity implements View.OnClickListener {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        fromUid = postData.getFromUser().getUid();
         String fromUserName = postData.getFromUser().getName() + "->";
         if (postData.getToUsers().size() > 0) {
             for (UserData data : postData.getToUsers()) {
@@ -104,9 +102,11 @@ public class PostItemActivity extends Activity implements View.OnClickListener {
         if (postData.getCommentsCount() == 0) {
             commentsList.setVisibility(View.GONE);
         }
-        commentButton.setOnClickListener(this);
-        adapter = new CommentsListAdapter(this,postData.getComments());
+        adapter = new CommentsListAdapter(this, postData.getComments());
         commentsList.setAdapter(adapter);
+
+        commentButton.setOnClickListener(this);
+        likeButton.setOnClickListener(this);
 
         //videoのthumbnail生成
         //  ThumbnailUtils utils= new ThumbnailUtils();
@@ -115,18 +115,25 @@ public class PostItemActivity extends Activity implements View.OnClickListener {
         (new Thread(new Runnable() {
             @Override
             public void run() {
-                SQLiteDatabase database = dbHelper.getReadableDatabase();
-                String fromPic = SQLiteManager.getImageUrl(database, fromUid);
-                database.close();
+                String fromPic = getImageURLFromDB(postData.getFromUser().getUid());
                 GetProfilePicTask getProfilePicTask = new GetProfilePicTask();
                 getProfilePicTask.execute(fromPic);
             }
         })).start();
     }
 
+    public String getImageURLFromDB(String fromUid) {
+        SQLiteDatabase database = dbHelper.getReadableDatabase();
+        String fromPic = SQLiteManager.getImageUrl(database, fromUid);
+//        database.close();
+        return fromPic;
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.post_like_button:
+                break;
             case R.id.post_comment_button:
                 message = commentText.getText().toString();
                 if (message.isEmpty()) {
@@ -143,10 +150,10 @@ public class PostItemActivity extends Activity implements View.OnClickListener {
                         dialog.dismiss();
                         //CommentData生成
                         SQLiteDatabase database = dbHelper.getReadableDatabase();
-                        String userName = SQLiteManager.getUserName(database,Utility.userUID);
-                        UserData fromData= new UserData(Utility.userUID,userName);
+                        String userName = SQLiteManager.getUserName(database, Utility.userUID);
+                        UserData fromData = new UserData(Utility.userUID, userName);
                         database.close();
-                        CommentData.buildCommentData(response, message,fromData);
+                        CommentData.buildCommentData(response, message, fromData);
                     }
                 }, null);
                 break;
