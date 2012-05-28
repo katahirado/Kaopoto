@@ -29,13 +29,12 @@ import org.json.JSONObject;
 public class PostItemActivity extends Activity implements View.OnClickListener {
     private PostData postData;
     private ImageView postFromPicView;
+    private ListView commentsList;
     private DBOpenHelper dbHelper;
     private ProgressDialog dialog;
-    private Bundle params;
-    private Intent intent;
     private EditText commentText;
     private String message;
-    private CommentsListAdapter adapter;
+    private TextView likesCountAndUsers;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -48,13 +47,13 @@ public class PostItemActivity extends Activity implements View.OnClickListener {
         TextView name = (TextView) findViewById(R.id.post_item_name);
         TextView caption = (TextView) findViewById(R.id.post_item_caption);
         TextView description = (TextView) findViewById(R.id.post_item_description);
-        TextView likesCountAndUsers = (TextView) findViewById(R.id.post_likes_count_and_users_text);
-        ListView commentsList = (ListView) findViewById(R.id.post_comments_list_view);
+        likesCountAndUsers = (TextView) findViewById(R.id.post_likes_count_and_users_text);
+        commentsList = (ListView) findViewById(R.id.post_comments_list_view);
         Button likeButton = (Button) findViewById(R.id.post_like_button);
         commentText = (EditText) findViewById(R.id.post_comment_text);
         Button commentButton = (Button) findViewById(R.id.post_comment_button);
 
-        intent = getIntent();
+        Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         try {
             postData = new PostData(new JSONObject(extras.getString(Const.API_RESPONSE)));
@@ -89,21 +88,8 @@ public class PostItemActivity extends Activity implements View.OnClickListener {
         }
         mediaView.setImageBitmap(Utility.getBitmap(postData.getPicture()));
 
-        if (postData.getLikesCount() == 0) {
-            likesCountAndUsers.setVisibility(View.GONE);
-        } else {
-            String s = String.valueOf(postData.getLikesCount()) + "人がいいね!";
-            for (UserData u : postData.getLikes()) {
-                s = s + "," + u.getName();
-            }
-            likesCountAndUsers.setText(s);
-        }
-
-        if (postData.getCommentsCount() == 0) {
-            commentsList.setVisibility(View.GONE);
-        }
-        adapter = new CommentsListAdapter(this, postData.getComments());
-        commentsList.setAdapter(adapter);
+        populateLikeCountAndUserText();
+        setCommentsListAdapter();
 
         commentButton.setOnClickListener(this);
         likeButton.setOnClickListener(this);
@@ -122,17 +108,32 @@ public class PostItemActivity extends Activity implements View.OnClickListener {
         })).start();
     }
 
-    public String getImageURLFromDB(String fromUid) {
-        SQLiteDatabase database = dbHelper.getReadableDatabase();
-        String fromPic = SQLiteManager.getImageUrl(database, fromUid);
-//        database.close();
-        return fromPic;
-    }
-
     @Override
     public void onClick(View view) {
+        Bundle params;
         switch (view.getId()) {
             case R.id.post_like_button:
+                params = new Bundle();
+                if (!isLike()) {
+                    params.putString("method", "delete");
+                }
+                dialog = ProgressDialog.show(this, "",
+                        getString(jp.katahirado.android.kaopoto.R.string.loading), true, true);
+                Utility.mAsyncRunner.request(postData.getPostId() + "/" + Const.LIKES, params,
+                        Const.POST, new BaseRequestListener() {
+                    @Override
+                    public void onComplete(final String response, final Object state) {
+                        dialog.dismiss();
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                postData.increaseOrDecreaseLikesCount(isLike());
+                                postData.addOrRemoveLike(getUserDataFromDB(), isLike());
+                                populateLikeCountAndUserText();
+                            }
+                        });
+                    }
+                }, null);
                 break;
             case R.id.post_comment_button:
                 message = commentText.getText().toString();
@@ -148,16 +149,65 @@ public class PostItemActivity extends Activity implements View.OnClickListener {
                     @Override
                     public void onComplete(final String response, final Object state) {
                         dialog.dismiss();
-                        //CommentData生成
-                        SQLiteDatabase database = dbHelper.getReadableDatabase();
-                        String userName = SQLiteManager.getUserName(database, Utility.userUID);
-                        UserData fromData = new UserData(Utility.userUID, userName);
-                        database.close();
-                        CommentData.buildCommentData(response, message, fromData);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                postData.incrementCommentsCount();
+                                postData.addComment(CommentData.buildCommentData(response, message,
+                                        getUserDataFromDB()));
+                                setCommentsListAdapter();
+                            }
+                        });
                     }
                 }, null);
                 break;
         }
+    }
+
+    private void populateLikeCountAndUserText() {
+        if (postData.getLikesCount() == 0) {
+            likesCountAndUsers.setVisibility(View.GONE);
+        } else {
+            String s = String.valueOf(postData.getLikesCount()) + "人がいいね!";
+            for (UserData u : postData.getLikes()) {
+                s = s + "," + u.getName();
+            }
+            likesCountAndUsers.setVisibility(View.VISIBLE);
+            likesCountAndUsers.setText(s);
+        }
+    }
+
+    private void setCommentsListAdapter() {
+        if (postData.getCommentsCount() == 0) {
+            commentsList.setVisibility(View.GONE);
+        } else {
+            commentsList.setVisibility(View.VISIBLE);
+        }
+        CommentsListAdapter adapter = new CommentsListAdapter(this, postData.getComments());
+        commentsList.setAdapter(adapter);
+    }
+
+    private UserData getUserDataFromDB() {
+        SQLiteDatabase database = dbHelper.getReadableDatabase();
+        String userName = SQLiteManager.getUserName(database, Utility.userUID);
+        //        database.close();
+        return new UserData(Utility.userUID, userName);
+    }
+
+    public String getImageURLFromDB(String fromUid) {
+        SQLiteDatabase database = dbHelper.getReadableDatabase();
+        //        database.close();
+        return SQLiteManager.getImageUrl(database, fromUid);
+    }
+
+    private boolean isLike() {
+        boolean result = true;
+        for (UserData data : postData.getLikes()) {
+            if (data.getUid().equals(Utility.userUID)) {
+                result = false;
+            }
+        }
+        return result;
     }
 
     private class GetProfilePicTask extends AsyncTask<String, Integer, Bitmap> {
