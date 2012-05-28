@@ -37,7 +37,7 @@ public class FriendsListAdapter extends FacebookBaseAdapter {
         }
         View view = convertView;
         if (convertView == null) {
-            view = layoutInflater.inflate(R.layout.friend_item, null);
+            view = layoutInflater.inflate(R.layout.friend_row, null);
         }
 
         profile_pic = (ImageView) view.findViewById(R.id.friend_profile_pic);

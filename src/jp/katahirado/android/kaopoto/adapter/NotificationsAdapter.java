@@ -42,7 +42,7 @@ public class NotificationsAdapter extends FacebookBaseAdapter {
         }
         View view = convertView;
         if (convertView == null) {
-            view = layoutInflater.inflate(R.layout.notification_item, null);
+            view = layoutInflater.inflate(R.layout.notification_row, null);
         }
 
         profile_pic = (ImageView) view.findViewById(R.id.notification_pic);

@@ -1,12 +1,9 @@
 package jp.katahirado.android.kaopoto.adapter;
 
-import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.facebook.android.FriendsGetProfilePics;
 import com.facebook.android.Utility;
 import jp.katahirado.android.kaopoto.Const;
 import jp.katahirado.android.kaopoto.R;
@@ -40,7 +37,7 @@ public class PagesListAdapter extends FacebookBaseAdapter {
         }
         View view = convertView;
         if (convertView == null) {
-            view = layoutInflater.inflate(R.layout.page_item, null);
+            view = layoutInflater.inflate(R.layout.page_row, null);
         }
 
         profile_pic = (ImageView) view.findViewById(R.id.page_profile_pic);
