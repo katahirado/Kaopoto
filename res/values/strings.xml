@@ -5,4 +5,5 @@
     <string name="firstLogin">You must first log in.</string>
     <string name="warning">Warning</string>
     <string name="PostedOnTheWall">Message posted on the wall.</string>
+    <string name="people_likes"> Likes</string>
 </resources>
