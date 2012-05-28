@@ -7,6 +7,7 @@
     <ImageView
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
+            android:layout_marginRight="6dip"
             android:id="@+id/comment_row_image"/>
     <LinearLayout
             android:orientation="vertical"
@@ -15,9 +16,11 @@
         <TextView
                 android:id="@+id/comment_row_name"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="2dip"
                 android:layout_width="wrap_content"/>
         <TextView
                 android:id="@+id/comment_row_message"
+                android:layout_marginLeft="2dip"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"/>
     </LinearLayout>
