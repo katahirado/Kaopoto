@@ -84,27 +84,27 @@ public class PostData {
         }
         likes = new ArrayList<UserData>();
         try {
-            likesCount= jsonObject.getJSONObject(Const.LIKES).getInt(Const.COUNT);
+            likesCount = jsonObject.getJSONObject(Const.LIKES).getInt(Const.COUNT);
         } catch (JSONException e) {
             likesCount = 0;
         }
         try {
             JSONArray likesArray = jsonObject.getJSONObject(Const.LIKES).getJSONArray(Const.DATA);
-            for(int i = 0;i<likesArray.length();i++){
+            for (int i = 0; i < likesArray.length(); i++) {
                 likes.add(new UserData(likesArray.getJSONObject(i)));
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
         try {
-            commentsCount= jsonObject.getJSONObject(Const.COMMENTS).getInt(Const.COUNT);
+            commentsCount = jsonObject.getJSONObject(Const.COMMENTS).getInt(Const.COUNT);
         } catch (JSONException e) {
             commentsCount = 0;
         }
         comments = new ArrayList<CommentData>();
         try {
             JSONArray likesArray = jsonObject.getJSONObject(Const.COMMENTS).getJSONArray(Const.DATA);
-            for(int i = 0;i<likesArray.length();i++){
+            for (int i = 0; i < likesArray.length(); i++) {
                 comments.add(new CommentData(likesArray.getJSONObject(i)));
             }
         } catch (JSONException e) {
@@ -167,5 +167,49 @@ public class PostData {
 
     public int getCommentsCount() {
         return commentsCount;
+    }
+
+    public void incrementCommentsCount() {
+        commentsCount++;
+    }
+
+    public void addComment(CommentData commentData) {
+        comments.add(commentData);
+    }
+
+    private void addLike(UserData userData) {
+        likes.add(userData);
+    }
+
+    private void removeLike(UserData userData) {
+        for (UserData data : likes) {
+            if (data.getUid().equals(userData.getUid())) {
+                likes.remove(data);
+            }
+        }
+    }
+
+    public void addOrRemoveLike(UserData userData, boolean isLike) {
+        if (isLike) {
+            addLike(userData);
+        } else {
+            removeLike(userData);
+        }
+    }
+
+    private void incrementLikesCount() {
+        likesCount++;
+    }
+
+    private void decrementLikesCount() {
+        likesCount--;
+    }
+
+    public void increaseOrDecreaseLikesCount(boolean isLike) {
+        if (isLike) {
+            incrementLikesCount();
+        } else {
+            decrementLikesCount();
+        }
     }
 }
