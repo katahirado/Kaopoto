@@ -17,6 +17,8 @@ import java.util.ArrayList;
  */
 public class CommentsListAdapter extends ArrayAdapter<CommentData> {
     private LayoutInflater layoutInflater;
+    private TextView name;
+    private TextView message;
 
     public CommentsListAdapter(Context context, ArrayList<CommentData> comments) {
         super(context, 0, comments);
@@ -28,11 +30,15 @@ public class CommentsListAdapter extends ArrayAdapter<CommentData> {
         View view = convertView;
 
         if (convertView == null) {
-            view = layoutInflater.inflate(R.layout.comment_item,null);
+            view = layoutInflater.inflate(R.layout.comment_row,null);
         }
 
         CommentData commentData = this.getItem(position);
         if (commentData != null) {
+            name = (TextView) view.findViewById(R.id.comment_row_name);
+            name.setText(commentData.getFromUser().getName());
+            message = (TextView) view.findViewById(R.id.comment_row_message);
+            message.setText(commentData.getMessage());
 //            screenName = (TextView) view.findViewById(R.id.row_screen_name);
 //            screenName.setText(status.getUser().getScreenName());
 //            createdAt = (TextView) view.findViewById(R.id.row_created_at);
