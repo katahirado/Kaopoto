@@ -1,6 +1,7 @@
 package jp.katahirado.android.kaopoto.model;
 
 import jp.katahirado.android.kaopoto.Const;
+import jp.katahirado.android.kaopoto.SQLiteManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -56,15 +57,31 @@ public class CommentData {
         return likes;
     }
 
-    public static void buildCommentData(String response, String message) {
+    public void setCommentId(String commentId) {
+        this.commentId = commentId;
+    }
+
+    public void setFromUser(UserData fromUser) {
+        this.fromUser = fromUser;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
+    }
+
+    public static void buildCommentData(String response, String message,UserData userData) {
         CommentData commentData = new CommentData();
         try {
            commentData.commentId  = new JSONObject(response).getString(Const.ID);
         } catch (JSONException e) {
             commentData.commentId="";
         }
-        //TODO fromで自分のデータを入れたいが、Utilityにはnameが入っていないので、SharedPreferencesを使うなどする。
-        commentData.message = message;
-        commentData.likes=0;
+        commentData.setMessage(message);
+        commentData.setLikes(0);
+        commentData.setFromUser(userData);
     }
 }

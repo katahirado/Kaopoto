@@ -22,6 +22,10 @@ public class PostData {
     private String picture;
     private String source;
     private String link;
+    private ArrayList<UserData> likes;
+    private ArrayList<CommentData> comments;
+    private int likesCount;
+    private int commentsCount;
 
     public PostData(JSONObject jsonObject) {
         try {
@@ -30,7 +34,7 @@ public class PostData {
             postId = "";
         }
         try {
-            fromUser = new UserData(jsonObject.getJSONObject("from"));
+            fromUser = new UserData(jsonObject.getJSONObject(Const.FROM));
         } catch (JSONException e) {
             fromUser = new UserData(new JSONObject());
         }
@@ -44,7 +48,7 @@ public class PostData {
             e.printStackTrace();
         }
         try {
-            message = jsonObject.getString("message");
+            message = jsonObject.getString(Const.MESSAGE);
         } catch (JSONException e) {
             message = "";
         }
@@ -77,6 +81,34 @@ public class PostData {
             source = jsonObject.getString("source");
         } catch (JSONException e) {
             source = "";
+        }
+        likes = new ArrayList<UserData>();
+        try {
+            likesCount= jsonObject.getJSONObject(Const.LIKES).getInt(Const.COUNT);
+        } catch (JSONException e) {
+            likesCount = 0;
+        }
+        try {
+            JSONArray likesArray = jsonObject.getJSONObject(Const.LIKES).getJSONArray(Const.DATA);
+            for(int i = 0;i<likesArray.length();i++){
+                likes.add(new UserData(likesArray.getJSONObject(i)));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            commentsCount= jsonObject.getJSONObject(Const.COMMENTS).getInt(Const.COUNT);
+        } catch (JSONException e) {
+            commentsCount = 0;
+        }
+        comments = new ArrayList<CommentData>();
+        try {
+            JSONArray likesArray = jsonObject.getJSONObject(Const.COMMENTS).getJSONArray(Const.DATA);
+            for(int i = 0;i<likesArray.length();i++){
+                comments.add(new CommentData(likesArray.getJSONObject(i)));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 
@@ -121,4 +153,19 @@ public class PostData {
         return link;
     }
 
+    public ArrayList<UserData> getLikes() {
+        return likes;
+    }
+
+    public ArrayList<CommentData> getComments() {
+        return comments;
+    }
+
+    public int getLikesCount() {
+        return likesCount;
+    }
+
+    public int getCommentsCount() {
+        return commentsCount;
+    }
 }
