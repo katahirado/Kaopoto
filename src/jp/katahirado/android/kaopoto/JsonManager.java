@@ -87,17 +87,19 @@ public class JsonManager {
         JSONObject object;
         String picture = "";
         String uid;
+        String name;
         ArrayList<ProfileData> arrayList= new ArrayList<ProfileData>();
         for (int i = 0; i < mJsonArray.length(); i++) {
             try {
                 object = mJsonArray.getJSONObject(i);
                 uid = object.getString(Const.ID);
+                name = object.getString(Const.NAME);
                 if (pictureName.equals(Const.PIC_SQUARE)) {
                     picture = object.getString(Const.PIC_SQUARE);
                 } else if (pictureName.equals(Const.PICTURE)) {
                     picture = object.getString(Const.PICTURE);
                 }
-                arrayList.add(new ProfileData(uid, picture));
+                arrayList.add(new ProfileData(uid,name,picture));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
