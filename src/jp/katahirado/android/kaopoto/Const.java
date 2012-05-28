@@ -32,4 +32,10 @@ public class Const {
     public static final int MILLISECOND = 1000;
     public static final int TIMEZONE_OFFSET = 32400000;
     public static final String TO = "to";
+    public static final String COUNT = "count";
+    public static final String COMMENTS = "comments";
+    public static final String LIKES = "likes";
+    public static final String MESSAGE = "message";
+    public static final String POST = "POST";
+    public static final String FROM = "from";
 }
