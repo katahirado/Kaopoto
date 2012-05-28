@@ -1,7 +1,6 @@
 package jp.katahirado.android.kaopoto.model;
 
 import jp.katahirado.android.kaopoto.Const;
-import jp.katahirado.android.kaopoto.SQLiteManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -19,7 +18,7 @@ public class CommentData {
         try {
             commentId = jsonObject.getString(Const.ID);
         } catch (JSONException e) {
-            commentId="";
+            commentId = "";
         }
         try {
             fromUser = new UserData(jsonObject.getJSONObject(Const.FROM));
@@ -34,7 +33,7 @@ public class CommentData {
         try {
             likes = jsonObject.getInt(Const.LIKES);
         } catch (JSONException e) {
-            likes=0;
+            likes = 0;
         }
     }
 
@@ -73,15 +72,16 @@ public class CommentData {
         this.likes = likes;
     }
 
-    public static void buildCommentData(String response, String message,UserData userData) {
+    public static CommentData buildCommentData(String response, String message, UserData userData) {
         CommentData commentData = new CommentData();
         try {
-           commentData.commentId  = new JSONObject(response).getString(Const.ID);
+            commentData.commentId = new JSONObject(response).getString(Const.ID);
         } catch (JSONException e) {
-            commentData.commentId="";
+            commentData.commentId = "";
         }
         commentData.setMessage(message);
         commentData.setLikes(0);
         commentData.setFromUser(userData);
+        return commentData;
     }
 }
