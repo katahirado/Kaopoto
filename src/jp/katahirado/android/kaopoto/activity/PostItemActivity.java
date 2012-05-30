@@ -42,7 +42,7 @@ public class PostItemActivity extends Activity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.post_item);
 
-        TextView message = (TextView) findViewById(R.id.post_item_message);
+        TextView messageView = (TextView) findViewById(R.id.post_item_message);
         postFromPicView = (ImageView) findViewById(R.id.post_item_from_pic);
         ImageView mediaView = (ImageView) findViewById(R.id.media_item);
         TextView name = (TextView) findViewById(R.id.post_item_name);
@@ -67,7 +67,7 @@ public class PostItemActivity extends Activity implements
                 fromUserName += data.getName() + " :";
             }
         }
-        message.setText(fromUserName + postData.getMessage());
+        messageView.setText(fromUserName + postData.getMessage());
 
         if (postData.getName().isEmpty()) {
             name.setVisibility(View.GONE);
