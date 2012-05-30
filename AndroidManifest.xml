@@ -32,5 +32,7 @@
                 <data android:mimeType="text/*"/>
             </intent-filter>
         </activity>
+        <activity android:name=".activity.CommentsListActivity"
+                  android:theme="@android:style/Theme.Light"/>
     </application>
 </manifest> 
