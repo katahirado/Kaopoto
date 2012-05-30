@@ -1,7 +1,6 @@
 package jp.katahirado.android.kaopoto.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,7 @@ import android.widget.TextView;
 import com.facebook.android.FriendsGetProfilePics;
 import com.facebook.android.Utility;
 import jp.katahirado.android.kaopoto.R;
-import jp.katahirado.android.kaopoto.activity.PostItemActivity;
+import jp.katahirado.android.kaopoto.activity.CommentsListActivity;
 import jp.katahirado.android.kaopoto.model.CommentData;
 
 import java.util.ArrayList;
@@ -27,9 +26,9 @@ public class CommentsListAdapter extends BaseAdapter {
     private TextView message;
     private TextView likes;
     private ArrayList<CommentData> commentsList;
-    private PostItemActivity activity;
+    private CommentsListActivity activity;
 
-    public CommentsListAdapter(PostItemActivity context, ArrayList<CommentData> comments) {
+    public CommentsListAdapter(CommentsListActivity context, ArrayList<CommentData> comments) {
         if (Utility.model == null) {
             Utility.model = new FriendsGetProfilePics();
         }
@@ -77,7 +76,7 @@ public class CommentsListAdapter extends BaseAdapter {
                 likes.setVisibility(View.GONE);
             } else {
                 likes.setVisibility(View.VISIBLE);
-                likes.setText(commentData.getLikes()+activity.getString(R.string.people_likes));
+                likes.setText(commentData.getLikes() + activity.getString(R.string.people_likes));
             }
         }
         return view;
