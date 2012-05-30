@@ -106,6 +106,23 @@ public class PostItemActivity extends Activity implements View.OnClickListener {
         })).start();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Utility.mAsyncRunner.request(postData.getPostId() + "/" + Const.COMMENTS, new BaseRequestListener() {
+            @Override
+            public void onComplete(final String res, Object state) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        postData.setComments(res);
+                        populateCommentCount();
+                    }
+                });
+            }
+        });
+    }
+
     private void populateCommentCount() {
         int cCount = postData.getCommentsCount();
         if (cCount > 0) {

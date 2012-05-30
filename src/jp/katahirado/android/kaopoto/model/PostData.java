@@ -165,6 +165,19 @@ public class PostData {
         return commentsCount;
     }
 
+    public void setComments(String response){
+        try {
+            JSONArray cArray = new JSONObject(response).getJSONArray(Const.DATA);
+            comments = new ArrayList<CommentData>();
+            for (int i = 0; i < cArray.length(); i++) {
+                comments.add(new CommentData(cArray.getJSONObject(i)));
+            }
+        } catch (JSONException e) {
+            comments = new ArrayList<CommentData>();
+        }
+        commentsCount=comments.size();
+    }
+
     private void addLike(UserData userData) {
         likes.add(userData);
     }
