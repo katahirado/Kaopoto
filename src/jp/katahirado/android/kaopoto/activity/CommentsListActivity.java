@@ -39,6 +39,7 @@ public class CommentsListActivity extends Activity
     private DialogInterface dialog;
     private String postItemId;
     private String message;
+    private CommentsListAdapter adapter;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,16 +53,12 @@ public class CommentsListActivity extends Activity
         Bundle extras = intent.getExtras();
         comments = parseComments(extras.getString(Const.API_RESPONSE));
         postItemId = extras.getString(Const.ID);
-        setCommentsListAdapter();
+        adapter = new CommentsListAdapter(this, comments);
+        commentsListView.setAdapter(adapter);
         commentsListView.setOnItemClickListener(this);
 
         commentButton.setOnClickListener(this);
 
-    }
-
-    private void setCommentsListAdapter() {
-        CommentsListAdapter adapter = new CommentsListAdapter(this, comments);
-        commentsListView.setAdapter(adapter);
     }
 
     @Override
@@ -85,8 +82,8 @@ public class CommentsListActivity extends Activity
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                addComment(CommentData.buildCommentData(response, message, getUserDataFromDB()));
-                                setCommentsListAdapter();
+                                adapter.add(CommentData.buildCommentData(response, message, getUserDataFromDB()));
+                                commentText.setText("");
                             }
                         });
                     }
@@ -112,8 +109,8 @@ public class CommentsListActivity extends Activity
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                parseComments(res);
-                                setCommentsListAdapter();
+                                ArrayList<CommentData> results = parseComments(res);
+                                adapter.addAll(results);
                             }
                         });
                     }
@@ -146,9 +143,4 @@ public class CommentsListActivity extends Activity
         }
         return resultList;
     }
-
-    private void addComment(CommentData commentData) {
-        comments.add(commentData);
-    }
-
 }

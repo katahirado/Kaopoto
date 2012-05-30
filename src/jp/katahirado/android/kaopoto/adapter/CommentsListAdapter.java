@@ -53,6 +53,11 @@ public class CommentsListAdapter extends BaseAdapter {
         return position;
     }
 
+    public void add(CommentData commentData) {
+        commentsList.add(commentData);
+        this.notifyDataSetChanged();
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
@@ -80,5 +85,10 @@ public class CommentsListAdapter extends BaseAdapter {
             }
         }
         return view;
+    }
+
+    public void addAll(ArrayList<CommentData> comments) {
+        commentsList = comments;
+        this.notifyDataSetChanged();
     }
 }
