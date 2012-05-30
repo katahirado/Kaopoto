@@ -157,37 +157,12 @@ public class PostData {
         return likes;
     }
 
-    public ArrayList<CommentData> getComments() {
-        return comments;
-    }
-
     public int getLikesCount() {
         return likesCount;
     }
 
     public int getCommentsCount() {
         return commentsCount;
-    }
-
-    public void setComments(String response) {
-        try {
-            JSONArray cArray = new JSONObject(response).getJSONArray(Const.DATA);
-            comments = new ArrayList<CommentData>();
-            for (int i = 0; i < cArray.length(); i++) {
-                comments.add(new CommentData(cArray.getJSONObject(i)));
-            }
-            commentsCount = comments.size();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void incrementCommentsCount() {
-        commentsCount++;
-    }
-
-    public void addComment(CommentData commentData) {
-        comments.add(commentData);
     }
 
     private void addLike(UserData userData) {
