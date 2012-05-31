@@ -31,11 +31,11 @@ public class ProfilesDao {
             aList.add(data);
         }
         if (aList.size() > 0) {
-            setProfileDatum(aList);
+            internalBulkInsert(aList);
         }
     }
 
-    private void setProfileDatum(ArrayList<ProfileData> aList) {
+    private void internalBulkInsert(ArrayList<ProfileData> aList) {
         database.beginTransaction();
         try {
             SQLiteStatement statement = database.compileStatement(INSERT_PROFILES);
