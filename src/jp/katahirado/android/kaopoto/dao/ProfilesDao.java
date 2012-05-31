@@ -1,9 +1,10 @@
-package jp.katahirado.android.kaopoto;
+package jp.katahirado.android.kaopoto.dao;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
-import jp.katahirado.android.kaopoto.model.ProfileData;
+import jp.katahirado.android.kaopoto.Const;
+import jp.katahirado.android.kaopoto.JsonManager;
 
 import java.util.ArrayList;
 

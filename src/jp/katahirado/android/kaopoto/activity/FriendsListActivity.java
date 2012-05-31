@@ -12,6 +12,8 @@ import com.facebook.android.BaseDialogListener;
 import com.facebook.android.Utility;
 import jp.katahirado.android.kaopoto.*;
 import jp.katahirado.android.kaopoto.adapter.FriendsListAdapter;
+import jp.katahirado.android.kaopoto.dao.DBOpenHelper;
+import jp.katahirado.android.kaopoto.dao.ProfilesDao;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

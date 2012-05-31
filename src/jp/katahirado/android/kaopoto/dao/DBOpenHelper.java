@@ -1,4 +1,4 @@
-package jp.katahirado.android.kaopoto;
+package jp.katahirado.android.kaopoto.dao;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

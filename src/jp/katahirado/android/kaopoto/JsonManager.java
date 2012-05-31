@@ -1,6 +1,6 @@
 package jp.katahirado.android.kaopoto;
 
-import jp.katahirado.android.kaopoto.model.ProfileData;
+import jp.katahirado.android.kaopoto.dao.ProfileData;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

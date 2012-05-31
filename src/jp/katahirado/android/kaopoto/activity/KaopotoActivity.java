@@ -9,9 +9,9 @@ import android.view.View;
 import android.widget.*;
 import com.facebook.android.*;
 import jp.katahirado.android.kaopoto.Const;
-import jp.katahirado.android.kaopoto.DBOpenHelper;
-import jp.katahirado.android.kaopoto.ProfilesDao;
-import jp.katahirado.android.kaopoto.model.ProfileData;
+import jp.katahirado.android.kaopoto.dao.DBOpenHelper;
+import jp.katahirado.android.kaopoto.dao.ProfilesDao;
+import jp.katahirado.android.kaopoto.dao.ProfileData;
 import org.json.JSONException;
 import org.json.JSONObject;
 
