@@ -3,7 +3,6 @@ package jp.katahirado.android.kaopoto.activity;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,8 +14,8 @@ import com.facebook.android.BaseRequestListener;
 import com.facebook.android.Utility;
 import jp.katahirado.android.kaopoto.Const;
 import jp.katahirado.android.kaopoto.DBOpenHelper;
+import jp.katahirado.android.kaopoto.ProfilesDao;
 import jp.katahirado.android.kaopoto.R;
-import jp.katahirado.android.kaopoto.SQLiteManager;
 import jp.katahirado.android.kaopoto.model.PostData;
 import jp.katahirado.android.kaopoto.model.UserData;
 import org.json.JSONException;
@@ -29,11 +28,11 @@ import org.json.JSONObject;
 public class PostItemActivity extends Activity implements View.OnClickListener {
     private PostData postData;
     private ImageView postFromPicView;
-    private DBOpenHelper dbHelper;
     private ProgressDialog dialog;
     private TextView likesCountAndUsers;
     private Button commentViewButton;
     private String commentsResponse;
+    private ProfilesDao profilesDao;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -50,8 +49,7 @@ public class PostItemActivity extends Activity implements View.OnClickListener {
         Button likeButton = (Button) findViewById(R.id.post_like_button);
         commentViewButton = (Button) findViewById(R.id.post_comment_view_button);
 
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
+        Bundle extras = getIntent().getExtras();
         try {
             postData = new PostData(new JSONObject(extras.getString(Const.API_RESPONSE)));
             commentsResponse = new JSONObject((extras.getString(Const.API_RESPONSE))).getString(Const.COMMENTS);
@@ -95,7 +93,7 @@ public class PostItemActivity extends Activity implements View.OnClickListener {
         //videoのthumbnail生成
         //  ThumbnailUtils utils= new ThumbnailUtils();
 
-        dbHelper = new DBOpenHelper(this);
+        profilesDao = new ProfilesDao(new DBOpenHelper(this).getReadableDatabase());
         (new Thread(new Runnable() {
             @Override
             public void run() {
@@ -183,14 +181,12 @@ public class PostItemActivity extends Activity implements View.OnClickListener {
     }
 
     private UserData getUserDataFromDB() {
-        SQLiteDatabase database = dbHelper.getReadableDatabase();
-        String userName = SQLiteManager.getUserName(database, Utility.userUID);
+        String userName = profilesDao.getUserName(Utility.userUID);
         return new UserData(Utility.userUID, userName);
     }
 
     public String getImageURLFromDB(String fromUid) {
-        SQLiteDatabase database = dbHelper.getReadableDatabase();
-        return SQLiteManager.getImageUrl(database, fromUid);
+        return profilesDao.getImageUrl(fromUid);
     }
 
     private boolean isLike() {

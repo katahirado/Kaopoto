@@ -2,8 +2,6 @@ package jp.katahirado.android.kaopoto.activity;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.view.MotionEvent;
@@ -26,8 +24,7 @@ public class FriendsListActivity extends Activity implements View.OnClickListene
     private JSONArray jsonArray;
     private EditText searchText;
     private ListView listView;
-    private Intent intent;
-    private DBOpenHelper dbHelper;
+    private ProfilesDao profilesDao;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,9 +35,7 @@ public class FriendsListActivity extends Activity implements View.OnClickListene
         Button searchButton = (Button) findViewById(R.id.friends_search_button);
         searchText = (EditText) findViewById(R.id.friends_search_text);
 
-        intent = getIntent();
-
-        Bundle extras = intent.getExtras();
+        Bundle extras = getIntent().getExtras();
         try {
             jsonArray = new JSONObject(extras.getString(Const.API_RESPONSE)).getJSONArray(Const.DATA);
         } catch (JSONException e) {
@@ -48,14 +43,12 @@ public class FriendsListActivity extends Activity implements View.OnClickListene
             jsonArray = new JSONArray();
         }
         JsonManager.mJsonArray = jsonArray;
-        dbHelper = new DBOpenHelper(this);
+        profilesDao = new ProfilesDao(new DBOpenHelper(this).getWritableDatabase());
         (new Thread(new Runnable() {
             @Override
             public void run() {
                 JsonManager.setAList(Const.PICTURE);
-                SQLiteDatabase database = dbHelper.getWritableDatabase();
-                SQLiteManager.setProfileData(database);
-                database.close();
+                profilesDao.bulkInsert();
             }
         })).start();
         listView.setAdapter(new FriendsListAdapter(this, jsonArray));

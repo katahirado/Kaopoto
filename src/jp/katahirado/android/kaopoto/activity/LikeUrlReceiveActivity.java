@@ -41,9 +41,8 @@ public class LikeUrlReceiveActivity extends Activity {
     }
 
     private String buildHTMLBody(String iFrame) {
-        String html = "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>" +
+        return "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>" +
                 "<style type=\"text/css\">body { font-size: small; color: #CCCCCC ; }</style><body>" + iFrame +
                 "</body></html>";
-        return html;
     }
 }

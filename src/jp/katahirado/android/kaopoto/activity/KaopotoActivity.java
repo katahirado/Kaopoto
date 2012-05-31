@@ -3,7 +3,6 @@ package jp.katahirado.android.kaopoto.activity;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -11,7 +10,7 @@ import android.widget.*;
 import com.facebook.android.*;
 import jp.katahirado.android.kaopoto.Const;
 import jp.katahirado.android.kaopoto.DBOpenHelper;
-import jp.katahirado.android.kaopoto.SQLiteManager;
+import jp.katahirado.android.kaopoto.ProfilesDao;
 import jp.katahirado.android.kaopoto.model.ProfileData;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,9 +31,9 @@ public class KaopotoActivity extends Activity implements AdapterView.OnItemClick
     private ProgressDialog dialog;
     private Bundle params;
     private Intent intent;
-    private DBOpenHelper dbHelper;
     private String uid;
     private String picURL;
+    private ProfilesDao profilesDao;
 
 
     @Override
@@ -215,13 +214,11 @@ public class KaopotoActivity extends Activity implements AdapterView.OnItemClick
                     uid = jsonObject.getString(Const.ID);
                     picURL = jsonObject.getString(Const.PICTURE);
                     final String name = jsonObject.getString(Const.NAME);
-                    dbHelper = new DBOpenHelper(getApplicationContext());
+                    profilesDao = new ProfilesDao(new DBOpenHelper(getApplicationContext()).getWritableDatabase());
                     (new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            SQLiteDatabase database = dbHelper.getWritableDatabase();
-                            SQLiteManager.setProfileDatum(database, new ProfileData(uid,name,picURL));
-                            database.close();
+                            profilesDao.insert(new ProfileData(uid, name, picURL));
                         }
                     })).start();
                     Utility.userUID = uid;

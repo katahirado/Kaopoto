@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,8 +14,8 @@ import com.facebook.android.BaseRequestListener;
 import com.facebook.android.Utility;
 import jp.katahirado.android.kaopoto.Const;
 import jp.katahirado.android.kaopoto.DBOpenHelper;
+import jp.katahirado.android.kaopoto.ProfilesDao;
 import jp.katahirado.android.kaopoto.R;
-import jp.katahirado.android.kaopoto.SQLiteManager;
 import jp.katahirado.android.kaopoto.adapter.CommentsListAdapter;
 import jp.katahirado.android.kaopoto.model.CommentData;
 import jp.katahirado.android.kaopoto.model.UserData;
@@ -32,22 +31,21 @@ import java.util.ArrayList;
  */
 public class CommentsListActivity extends Activity
         implements View.OnClickListener, AdapterView.OnItemClickListener {
-    private ListView commentsListView;
     private EditText commentText;
     private ArrayList<CommentData> comments;
-    private DBOpenHelper dbHelper;
     private DialogInterface dialog;
     private String postItemId;
     private String message;
     private CommentsListAdapter adapter;
+    private ProfilesDao profilesDao;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.comments_list);
-        commentsListView = (ListView) findViewById(R.id.comments_list_listview);
+        ListView commentsListView = (ListView) findViewById(R.id.comments_list_listview);
         commentText = (EditText) findViewById(R.id.comments_list_post_text);
         Button commentButton = (Button) findViewById(R.id.comments_list_post_button);
-        dbHelper = new DBOpenHelper(this);
+        profilesDao = new ProfilesDao(new DBOpenHelper(this).getReadableDatabase());
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
@@ -120,14 +118,12 @@ public class CommentsListActivity extends Activity
     }
 
     private UserData getUserDataFromDB() {
-        SQLiteDatabase database = dbHelper.getReadableDatabase();
-        String userName = SQLiteManager.getUserName(database, Utility.userUID);
+        String userName = profilesDao.getUserName(Utility.userUID);
         return new UserData(Utility.userUID, userName);
     }
 
     public String getImageURLFromDB(String fromUid) {
-        SQLiteDatabase database = dbHelper.getReadableDatabase();
-        return SQLiteManager.getImageUrl(database, fromUid);
+        return profilesDao.getImageUrl(fromUid);
     }
 
     private ArrayList<CommentData> parseComments(String response) {

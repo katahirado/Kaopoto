@@ -3,7 +3,6 @@ package jp.katahirado.android.kaopoto.activity;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
@@ -22,10 +21,9 @@ import org.json.JSONObject;
 public class NotificationsActivity extends ListActivity {
     private JSONArray notificationArray;
     private Intent intent;
-    private JSONArray profileArray;
     private ProgressDialog dialog;
-    private DBOpenHelper dbHelper;
     private Class<?> cls;
+    private ProfilesDao profilesDao;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +31,7 @@ public class NotificationsActivity extends ListActivity {
 
         intent = getIntent();
         Bundle extras = intent.getExtras();
+        JSONArray profileArray;
         try {
             JSONArray array = new JSONObject(extras.getString(Const.API_RESPONSE)).getJSONArray(Const.DATA);
             JSONObject q1 = array.getJSONObject(0);
@@ -45,14 +44,12 @@ public class NotificationsActivity extends ListActivity {
             profileArray = new JSONArray();
         }
         JsonManager.mJsonArray = profileArray;
-        dbHelper = new DBOpenHelper(this);
+        profilesDao = new ProfilesDao(new DBOpenHelper(this).getWritableDatabase());
         (new Thread(new Runnable() {
             @Override
             public void run() {
                 JsonManager.setAList(Const.PIC_SQUARE);
-                SQLiteDatabase database = dbHelper.getWritableDatabase();
-                SQLiteManager.setProfileData(database);
-                database.close();
+                profilesDao.bulkInsert();
             }
         })).start();
         setListAdapter(new NotificationsAdapter(this, notificationArray));
