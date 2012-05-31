@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 public class SQLiteManager {
 
-    private static final String INSERT_PROFILES = "insert into profiles (uid,name,picture) values (?,?,?);";
+    private static final String INSERT_PROFILES = "insert or replace into profiles (uid,name,picture) values (?,?,?);";
     private static final String SELECT_PROFILES_UID = "select uid from profiles where uid = ?";
     private static final String SELECT_PROFILES_PICTURE = "select picture from profiles where uid = ?";
     private static final String SELECT_PROFILES_NAME = "select name from profiles where uid = ?";
@@ -22,11 +22,7 @@ public class SQLiteManager {
     public static void setProfileData(SQLiteDatabase database) {
         ArrayList<ProfileData> aList = new ArrayList<ProfileData>();
         for (ProfileData data : JsonManager.getAList()) {
-            Cursor cursor = database.rawQuery(SELECT_PROFILES_UID, new String[]{data.getUid()});
-            if (!cursor.moveToFirst()) {
-                aList.add(data);
-            }
-            cursor.close();
+            aList.add(data);
         }
         if (aList.size() > 0) {
             setProfileDatum(database, aList);
@@ -50,15 +46,11 @@ public class SQLiteManager {
     }
 
     public static void setProfileDatum(SQLiteDatabase database, ProfileData profileData) {
-        Cursor cursor = database.rawQuery(SELECT_PROFILES_UID, new String[]{profileData.getUid()});
-        if (!cursor.moveToFirst()) {
-            SQLiteStatement statement = database.compileStatement(INSERT_PROFILES);
-            statement.bindString(1, profileData.getUid());
-            statement.bindString(2, profileData.getName());
-            statement.bindString(3, profileData.getPicture());
-            statement.executeInsert();
-        }
-        cursor.close();
+        SQLiteStatement statement = database.compileStatement(INSERT_PROFILES);
+        statement.bindString(1, profileData.getUid());
+        statement.bindString(2, profileData.getName());
+        statement.bindString(3, profileData.getPicture());
+        statement.executeInsert();
     }
 
     public static String getImageUrl(SQLiteDatabase database, String uid) {
@@ -71,7 +63,7 @@ public class SQLiteManager {
         return result;
     }
 
-    public static String getUserName(SQLiteDatabase database,String uid) {
+    public static String getUserName(SQLiteDatabase database, String uid) {
         String result = "";
         Cursor cursor = database.rawQuery(SELECT_PROFILES_NAME, new String[]{uid});
         if (cursor.moveToFirst()) {
