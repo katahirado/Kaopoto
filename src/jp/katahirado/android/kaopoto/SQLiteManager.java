@@ -15,7 +15,6 @@ import java.util.ArrayList;
 public class SQLiteManager {
 
     private static final String INSERT_PROFILES = "insert or replace into profiles (uid,name,picture) values (?,?,?);";
-    private static final String SELECT_PROFILES_UID = "select uid from profiles where uid = ?";
     private static final String SELECT_PROFILES_PICTURE = "select picture from profiles where uid = ?";
     private static final String SELECT_PROFILES_NAME = "select name from profiles where uid = ?";
 
