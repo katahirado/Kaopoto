@@ -1,13 +1,9 @@
 package jp.katahirado.android.kaopoto.adapter;
 
-import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.facebook.android.FriendsGetProfilePics;
 import com.facebook.android.Utility;
 import jp.katahirado.android.kaopoto.R;
 import jp.katahirado.android.kaopoto.activity.CommentsListActivity;
@@ -19,23 +15,16 @@ import java.util.ArrayList;
  * Created with IntelliJ IDEA.
  * Author: yuichi_katahira
  */
-public class CommentsListAdapter extends BaseAdapter {
-    private LayoutInflater layoutInflater;
-    private ImageView image;
-    private TextView name;
-    private TextView message;
+public class CommentsListAdapter extends FacebookBaseAdapter {
     private TextView likes;
     private ArrayList<CommentData> commentsList;
     private CommentsListActivity activity;
+    private CommentData commentData;
 
     public CommentsListAdapter(CommentsListActivity context, ArrayList<CommentData> comments) {
-        if (Utility.model == null) {
-            Utility.model = new FriendsGetProfilePics();
-        }
+        super(context);
         activity = context;
-        Utility.model.setListener(this);
         commentsList = comments;
-        layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
@@ -48,13 +37,14 @@ public class CommentsListAdapter extends BaseAdapter {
         return commentsList.get(i);
     }
 
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
     public void add(CommentData commentData) {
         commentsList.add(commentData);
+        this.notifyDataSetChanged();
+    }
+
+
+    public void addAll(ArrayList<CommentData> comments) {
+        commentsList = comments;
         this.notifyDataSetChanged();
     }
 
@@ -66,16 +56,16 @@ public class CommentsListAdapter extends BaseAdapter {
             view = layoutInflater.inflate(R.layout.comment_row, null);
         }
 
-        CommentData commentData = commentsList.get(position);
+        commentData = commentsList.get(position);
         if (commentData != null) {
             String fromPic = activity.getImageURLFromDB(commentData.getFromUser().getUid());
-            image = (ImageView) view.findViewById(R.id.comment_row_image);
-            image.setImageBitmap(Utility.model.getImage(commentData.getCommentId(), fromPic));
+            profile_pic = (ImageView) view.findViewById(R.id.comment_row_image);
+            profile_pic.setImageBitmap(Utility.model.getImage(commentData.getCommentId(), fromPic));
 
-            name = (TextView) view.findViewById(R.id.comment_row_name);
-            name.setText(commentData.getFromUser().getName());
-            message = (TextView) view.findViewById(R.id.comment_row_message);
-            message.setText(commentData.getMessage());
+            firstText = (TextView) view.findViewById(R.id.comment_row_name);
+            firstText.setText(commentData.getFromUser().getName());
+            secondText = (TextView) view.findViewById(R.id.comment_row_message);
+            secondText.setText(commentData.getMessage());
             likes = (TextView) view.findViewById(R.id.comment_row_likes);
             if (commentData.getLikes() == 0) {
                 likes.setVisibility(View.GONE);
@@ -85,10 +75,5 @@ public class CommentsListAdapter extends BaseAdapter {
             }
         }
         return view;
-    }
-
-    public void addAll(ArrayList<CommentData> comments) {
-        commentsList = comments;
-        this.notifyDataSetChanged();
     }
 }

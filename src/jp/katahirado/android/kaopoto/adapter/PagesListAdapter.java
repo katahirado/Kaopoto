@@ -1,13 +1,9 @@
 package jp.katahirado.android.kaopoto.adapter;
 
-import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.facebook.android.FriendsGetProfilePics;
 import com.facebook.android.Utility;
 import jp.katahirado.android.kaopoto.R;
 import jp.katahirado.android.kaopoto.activity.PagesListActivity;
@@ -19,37 +15,19 @@ import java.util.ArrayList;
  * Created with IntelliJ IDEA.
  * Author: yuichi_katahira
  */
-public class PagesListAdapter extends BaseAdapter {
+public class PagesListAdapter extends FacebookBaseAdapter {
 
     private ArrayList<PageData> pageList;
-    private LayoutInflater layoutInflater;
-    private ImageView profile_pic;
-    private TextView firstText;
-    private TextView secondText;
     private PageData pageData;
 
     public PagesListAdapter(PagesListActivity context, ArrayList<PageData> pageList) {
-        if (Utility.model == null) {
-            Utility.model = new FriendsGetProfilePics();
-        }
+        super(context);
         this.pageList = pageList;
-        Utility.model.setListener(this);
-        layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public int getCount() {
         return pageList.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return null;
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return 0;
     }
 
     @Override

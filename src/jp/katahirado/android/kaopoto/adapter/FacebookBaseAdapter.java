@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.facebook.android.FriendsGetProfilePics;
 import com.facebook.android.Utility;
-import org.json.JSONArray;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,18 +17,16 @@ import org.json.JSONArray;
  */
 public class FacebookBaseAdapter extends BaseAdapter {
     protected LayoutInflater layoutInflater;
-    protected JSONArray _jsonArray;
 
     protected ImageView profile_pic;
     protected TextView firstText;
     protected TextView secondText;
 
-    public FacebookBaseAdapter(Activity context, JSONArray jsonArray) {
+    public FacebookBaseAdapter(Activity context) {
         if (Utility.model == null) {
             Utility.model = new FriendsGetProfilePics();
         }
         Utility.model.setListener(this);
-        _jsonArray = jsonArray;
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -44,8 +41,8 @@ public class FacebookBaseAdapter extends BaseAdapter {
     }
 
     @Override
-    public long getItemId(int i) {
-        return 0;
+    public long getItemId(int position) {
+        return position;
     }
 
     @Override

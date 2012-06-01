@@ -13,10 +13,10 @@ import android.widget.ListView;
 import com.facebook.android.BaseRequestListener;
 import com.facebook.android.Utility;
 import jp.katahirado.android.kaopoto.Const;
-import jp.katahirado.android.kaopoto.dao.DBOpenHelper;
-import jp.katahirado.android.kaopoto.dao.ProfilesDao;
 import jp.katahirado.android.kaopoto.R;
 import jp.katahirado.android.kaopoto.adapter.CommentsListAdapter;
+import jp.katahirado.android.kaopoto.dao.DBOpenHelper;
+import jp.katahirado.android.kaopoto.dao.ProfilesDao;
 import jp.katahirado.android.kaopoto.model.CommentData;
 import jp.katahirado.android.kaopoto.model.UserData;
 import org.json.JSONArray;
@@ -76,12 +76,12 @@ public class CommentsListActivity extends Activity
                         Const.POST, new BaseRequestListener() {
                     @Override
                     public void onComplete(final String response, final Object state) {
-                        dialog.dismiss();
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 adapter.add(CommentData.buildCommentData(response, message, getUserDataFromDB()));
                                 commentText.setText("");
+                                dialog.dismiss();
                             }
                         });
                     }
@@ -102,13 +102,13 @@ public class CommentsListActivity extends Activity
                 Utility.mAsyncRunner.request(postItemId + "/" + Const.COMMENTS, new BaseRequestListener() {
                     @Override
                     public void onComplete(final String res, Object state) {
-                        dialog.dismiss();
                         //adapterに再セットする
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 ArrayList<CommentData> results = parseComments(res);
                                 adapter.addAll(results);
+                                dialog.dismiss();
                             }
                         });
                     }
