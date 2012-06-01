@@ -1,4 +1,4 @@
-package jp.katahirado.android.kaopoto.dao;
+package jp.katahirado.android.kaopoto.model;
 
 import jp.katahirado.android.kaopoto.Const;
 import org.json.JSONException;
@@ -8,19 +8,13 @@ import org.json.JSONObject;
  * Created with IntelliJ IDEA.
  * Author: yuichi_katahira
  */
-public class ProfileData {
+public class PageData {
     private String uid;
     private String name;
     private String picture;
-    private String birthday;
+    private String category;
 
-    public ProfileData(String uid, String name, String picture) {
-        this.uid = uid;
-        this.name = name;
-        this.picture = picture;
-    }
-
-    public ProfileData(JSONObject jsonObject) {
+    public PageData(JSONObject jsonObject) {
         try {
             uid = jsonObject.getString(Const.ID);
         } catch (JSONException e) {
@@ -37,9 +31,9 @@ public class ProfileData {
             picture = "";
         }
         try {
-            birthday = jsonObject.getString(Const.BIRTHDAY);
+            category = jsonObject.getString(Const.CATEGORY);
         } catch (JSONException e) {
-            birthday = "";
+            category = "";
         }
     }
 
@@ -47,15 +41,15 @@ public class ProfileData {
         return uid;
     }
 
-    public String getPicture() {
-        return picture;
-    }
-
     public String getName() {
         return name;
     }
 
-    public String getBirthday() {
-        return birthday;
+    public String getPicture() {
+        return picture;
+    }
+
+    public String getCategory() {
+        return category;
     }
 }

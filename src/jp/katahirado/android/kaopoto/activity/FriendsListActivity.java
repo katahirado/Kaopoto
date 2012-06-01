@@ -31,7 +31,6 @@ public class FriendsListActivity extends Activity implements View.OnClickListene
     private ListView listView;
     private ProfilesDao profilesDao;
     private ArrayList<ProfileData> friendsList;
-    private ArrayList<ProfileData> originalFriendsList;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +43,6 @@ public class FriendsListActivity extends Activity implements View.OnClickListene
 
         Bundle extras = getIntent().getExtras();
         friendsList = parseFriends(extras.getString(Const.API_RESPONSE));
-        originalFriendsList = parseFriends(extras.getString(Const.API_RESPONSE));
         profilesDao = new ProfilesDao(new DBOpenHelper(this).getWritableDatabase());
         (new Thread(new Runnable() {
             @Override
@@ -75,8 +73,7 @@ public class FriendsListActivity extends Activity implements View.OnClickListene
                 if (query.length() == 0) {
                     return;
                 }
-                friendsList = friendsListFilter(query);
-                listView.setAdapter(new FriendsListAdapter(this, friendsList));
+                listView.setAdapter(new FriendsListAdapter(this, friendsListFilter(query)));
                 searchText.setText("");
                 setTitle(getString(R.string.app_name) + " : Friends Search : " + query);
                 hideIME();
@@ -86,10 +83,10 @@ public class FriendsListActivity extends Activity implements View.OnClickListene
 
     private ArrayList<ProfileData> friendsListFilter(String query) {
         if (query.equals("*")) {
-            return originalFriendsList;
+            return friendsList;
         }
         ArrayList<ProfileData> resultList = new ArrayList<ProfileData>();
-        for (ProfileData object : originalFriendsList) {
+        for (ProfileData object : friendsList) {
             String name;
             if (query.matches("^[0-9/]*")) {
                 name = object.getBirthday();

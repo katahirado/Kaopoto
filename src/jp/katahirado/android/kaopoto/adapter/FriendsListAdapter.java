@@ -27,6 +27,7 @@ public class FriendsListAdapter extends BaseAdapter {
     private ImageView profile_pic;
     private TextView firstText;
     private TextView secondText;
+    private ProfileData friendData;
 
     public FriendsListAdapter(FriendsListActivity context, ArrayList<ProfileData> friendsList) {
         if (Utility.model == null) {
@@ -55,7 +56,7 @@ public class FriendsListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup viewGroup) {
-        ProfileData friendData = friendsList.get(position);
+        friendData = friendsList.get(position);
         View view = convertView;
         if (convertView == null) {
             view = layoutInflater.inflate(R.layout.friend_row, null);

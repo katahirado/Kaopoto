@@ -14,13 +14,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import jp.katahirado.android.kaopoto.Const;
-import jp.katahirado.android.kaopoto.JsonManager;
 import jp.katahirado.android.kaopoto.KaopotoUtil;
 import jp.katahirado.android.kaopoto.R;
 import jp.katahirado.android.kaopoto.adapter.PagesListAdapter;
+import jp.katahirado.android.kaopoto.model.PageData;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * Created with IntelliJ IDEA.
@@ -31,7 +33,7 @@ public class PagesListActivity extends Activity implements
     private ListView listView;
     private EditText searchText;
     private Intent intent;
-    private JSONArray jsonArray;
+    private ArrayList<PageData> pageList;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,14 +45,8 @@ public class PagesListActivity extends Activity implements
 
         intent = getIntent();
         Bundle extras = intent.getExtras();
-        try {
-            jsonArray = new JSONObject(extras.getString(Const.API_RESPONSE)).getJSONArray(Const.DATA);
-        } catch (JSONException e) {
-            e.printStackTrace();
-            jsonArray = new JSONArray();
-        }
-        JsonManager.mJsonArray = jsonArray;
-        listView.setAdapter(new PagesListAdapter(this, jsonArray));
+        pageList = parsePageList(extras.getString(Const.API_RESPONSE));
+        listView.setAdapter(new PagesListAdapter(this, pageList));
         listView.setOnItemClickListener(this);
         listView.requestFocus();
         listView.setOnTouchListener(new View.OnTouchListener() {
@@ -66,13 +62,7 @@ public class PagesListActivity extends Activity implements
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        String pageId = "me";
-        try {
-            pageId = jsonArray.getJSONObject(position).getString(Const.ID);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        intent = new Intent(Intent.ACTION_VIEW, Uri.parse(KaopotoUtil.getProfileURL(pageId)));
+        intent = new Intent(Intent.ACTION_VIEW, Uri.parse(KaopotoUtil.getProfileURL(pageList.get(position).getUid())));
         startActivity(intent);
     }
 
@@ -85,13 +75,39 @@ public class PagesListActivity extends Activity implements
                 if (query.length() == 0) {
                     return;
                 }
-                jsonArray = JsonManager.querySearchPages(query);
-                listView.setAdapter(new PagesListAdapter(this, jsonArray));
+                pageList = pageListFilter(query);
+                listView.setAdapter(new PagesListAdapter(this, pageListFilter(query)));
                 searchText.setText("");
                 setTitle(getString(R.string.app_name) + " : Pages Search : " + query);
                 hideIME();
                 break;
         }
+    }
+
+    private ArrayList<PageData> pageListFilter(String query) {
+        if (query.equals("*")) {
+            return pageList;
+        }
+        ArrayList<PageData> resultList = new ArrayList<PageData>();
+        for (PageData object : pageList) {
+            if (object.getName().toLowerCase().contains(query)) {
+                resultList.add(object);
+            }
+        }
+        return resultList;
+    }
+
+    private ArrayList<PageData> parsePageList(String response) {
+        ArrayList<PageData> resultList = new ArrayList<PageData>();
+        try {
+            JSONArray jsonArray = new JSONObject(response).getJSONArray(Const.DATA);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                resultList.add(new PageData(jsonArray.getJSONObject(i)));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return resultList;
     }
 
     private void hideIME() {
