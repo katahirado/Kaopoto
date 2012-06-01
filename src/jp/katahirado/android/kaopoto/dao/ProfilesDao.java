@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import jp.katahirado.android.kaopoto.Const;
 import jp.katahirado.android.kaopoto.JsonManager;
+import jp.katahirado.android.kaopoto.model.FriendData;
 
 import java.util.ArrayList;
 
@@ -77,5 +78,21 @@ public class ProfilesDao {
         }
         cursor.close();
         return result;
+    }
+
+    public void bulkInsert(ArrayList<FriendData> friendsList) {
+        database.beginTransaction();
+        try {
+            SQLiteStatement statement = database.compileStatement(INSERT_PROFILES);
+            for (FriendData object : friendsList) {
+                statement.bindString(1, object.getUid());
+                statement.bindString(2, object.getName());
+                statement.bindString(3, object.getPicture());
+                statement.executeInsert();
+            }
+            database.setTransactionSuccessful();
+        } finally {
+            database.endTransaction();
+        }
     }
 }

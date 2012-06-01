@@ -1,40 +1,61 @@
 package jp.katahirado.android.kaopoto.adapter;
 
+import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.facebook.android.FriendsGetProfilePics;
 import com.facebook.android.Utility;
-import jp.katahirado.android.kaopoto.Const;
 import jp.katahirado.android.kaopoto.R;
 import jp.katahirado.android.kaopoto.activity.FriendsListActivity;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import jp.katahirado.android.kaopoto.model.FriendData;
+
+import java.util.ArrayList;
 
 /**
  * Created with IntelliJ IDEA.
  * Author: yuichi_katahira
  */
-public class FriendsListAdapter extends FacebookBaseAdapter {
+public class FriendsListAdapter extends BaseAdapter {
 
-    public FriendsListAdapter(FriendsListActivity context, JSONArray jsonArray) {
-        super(context, jsonArray);
+    private FriendsListActivity activity;
+    private ArrayList<FriendData> friendsList;
+    private LayoutInflater layoutInflater;
+    private ImageView profile_pic;
+    private TextView firstText;
+    private TextView secondText;
+
+    public FriendsListAdapter(FriendsListActivity context, ArrayList<FriendData> friendsList) {
+        if (Utility.model == null) {
+            Utility.model = new FriendsGetProfilePics();
+        }
+        activity = context;
+        Utility.model.setListener(this);
+        this.friendsList = friendsList;
+        layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public int getCount() {
-        return _jsonArray.length();
+        return friendsList.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return null;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup viewGroup) {
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = _jsonArray.getJSONObject(position);
-        } catch (JSONException e1) {
-            e1.printStackTrace();
-        }
+        FriendData friendData = friendsList.get(position);
         View view = convertView;
         if (convertView == null) {
             view = layoutInflater.inflate(R.layout.friend_row, null);
@@ -43,22 +64,9 @@ public class FriendsListAdapter extends FacebookBaseAdapter {
         profile_pic = (ImageView) view.findViewById(R.id.friend_profile_pic);
         firstText = (TextView) view.findViewById(R.id.friend_name);
         secondText = (TextView) view.findViewById(R.id.friend_birthday_text);
-        try {
-            profile_pic.setImageBitmap(Utility.model.getImage(
-                    jsonObject.getString(Const.ID), jsonObject.getString(Const.PICTURE)));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        try {
-            firstText.setText(jsonObject.getString(Const.NAME));
-        } catch (JSONException e) {
-            firstText.setText("");
-        }
-        try {
-            secondText.setText(jsonObject.getString(Const.BIRTHDAY));
-        } catch (JSONException e) {
-            secondText.setText("");
-        }
+        profile_pic.setImageBitmap(Utility.model.getImage(friendData.getUid(), friendData.getPicture()));
+        firstText.setText(friendData.getName());
+        secondText.setText(friendData.getBirthday());
         return view;
     }
 }
