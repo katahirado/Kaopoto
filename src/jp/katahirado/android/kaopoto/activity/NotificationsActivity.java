@@ -30,7 +30,6 @@ public class NotificationsActivity extends ListActivity {
     private Intent intent;
     private ProgressDialog dialog;
     private ProfilesDao profilesDao;
-    private ArrayList<NotificationData> notificationList;
     private ArrayList<ProfileData> profileList;
     private NotificationsAdapter adapter;
 
@@ -39,6 +38,7 @@ public class NotificationsActivity extends ListActivity {
         setContentView(R.layout.notifications);
 
         Bundle extras = getIntent().getExtras();
+        ArrayList<NotificationData> notificationList;
         try {
             JSONArray array = new JSONObject(extras.getString(Const.API_RESPONSE)).getJSONArray(Const.DATA);
             notificationList = parseNotifications(array.getJSONObject(0));
@@ -55,7 +55,7 @@ public class NotificationsActivity extends ListActivity {
                 profilesDao.bulkInsert(profileList);
             }
         })).start();
-        adapter = new NotificationsAdapter(this,notificationList);
+        adapter = new NotificationsAdapter(this, notificationList);
         setListAdapter(adapter);
     }
 
