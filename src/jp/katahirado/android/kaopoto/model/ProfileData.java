@@ -1,4 +1,4 @@
-package jp.katahirado.android.kaopoto.dao;
+package jp.katahirado.android.kaopoto.model;
 
 import jp.katahirado.android.kaopoto.Const;
 import org.json.JSONException;
@@ -14,13 +14,7 @@ public class ProfileData {
     private String picture;
     private String birthday;
 
-    public ProfileData(String uid, String name, String picture) {
-        this.uid = uid;
-        this.name = name;
-        this.picture = picture;
-    }
-
-    public ProfileData(JSONObject jsonObject) {
+    public ProfileData(JSONObject jsonObject, String pictureName) {
         try {
             uid = jsonObject.getString(Const.ID);
         } catch (JSONException e) {
@@ -32,7 +26,11 @@ public class ProfileData {
             name = "";
         }
         try {
-            picture = jsonObject.getString(Const.PICTURE);
+            if (pictureName.equals(Const.PICTURE)) {
+                picture = jsonObject.getString(Const.PICTURE);
+            } else if (pictureName.equals(Const.PIC_SQUARE)) {
+                picture = jsonObject.getString(Const.PIC_SQUARE);
+            }
         } catch (JSONException e) {
             picture = "";
         }
