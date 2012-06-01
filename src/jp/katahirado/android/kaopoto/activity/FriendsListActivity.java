@@ -31,6 +31,7 @@ public class FriendsListActivity extends Activity implements View.OnClickListene
     private ListView listView;
     private ProfilesDao profilesDao;
     private ArrayList<ProfileData> friendsList;
+    private FriendsListAdapter adapter;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +51,8 @@ public class FriendsListActivity extends Activity implements View.OnClickListene
                 profilesDao.bulkInsert(friendsList);
             }
         })).start();
-        listView.setAdapter(new FriendsListAdapter(this, friendsList));
+        adapter = new FriendsListAdapter(this,friendsList);
+        listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
         listView.requestFocus();
         listView.setOnTouchListener(new View.OnTouchListener() {
@@ -73,7 +75,8 @@ public class FriendsListActivity extends Activity implements View.OnClickListene
                 if (query.length() == 0) {
                     return;
                 }
-                listView.setAdapter(new FriendsListAdapter(this, friendsListFilter(query)));
+                adapter = new FriendsListAdapter(this,friendsListFilter(query));
+                listView.setAdapter(adapter);
                 searchText.setText("");
                 setTitle(getString(R.string.app_name) + " : Friends Search : " + query);
                 hideIME();
@@ -103,7 +106,7 @@ public class FriendsListActivity extends Activity implements View.OnClickListene
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         Bundle params = new Bundle();
-        params.putString(Const.TO, friendsList.get(position).getUid());
+        params.putString(Const.TO, adapter.getItem(position).getUid());
         params.putString(Const.CAPTION, getString(jp.katahirado.android.kaopoto.R.string.app_name));
         Utility.mFacebook.dialog(this, Const.FEED, params, new BaseDialogListener() {
             @Override

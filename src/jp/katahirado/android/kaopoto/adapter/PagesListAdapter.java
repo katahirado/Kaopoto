@@ -31,6 +31,11 @@ public class PagesListAdapter extends FacebookBaseAdapter {
     }
 
     @Override
+    public PageData getItem(int position) {
+        return pageList.get(position);
+    }
+
+    @Override
     public View getView(int position, View convertView, ViewGroup viewGroup) {
         View view = convertView;
         pageData = pageList.get(position);

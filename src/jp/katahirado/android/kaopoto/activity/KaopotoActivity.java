@@ -206,18 +206,12 @@ public class KaopotoActivity extends Activity implements AdapterView.OnItemClick
             @Override
             public void onComplete(final String response, final Object state) {
                 final ProfileData currentUser;
-//                JSONObject jsonObject;
                 try {
-                    currentUser = new ProfileData(new JSONObject(response),Const.PICTURE);
-
-//                    uid = jsonObject.getString(Const.ID);
-//                    picURL = jsonObject.getString(Const.PICTURE);
-//                    final String name = jsonObject.getString(Const.NAME);
+                    currentUser = new ProfileData(new JSONObject(response), Const.PICTURE);
                     profilesDao = new ProfilesDao(new DBOpenHelper(getApplicationContext()).getWritableDatabase());
                     (new Thread(new Runnable() {
                         @Override
                         public void run() {
-//                            profilesDao.insert(new ProfileData(uid, name, picURL));
                             profilesDao.insert(currentUser);
                         }
                     })).start();

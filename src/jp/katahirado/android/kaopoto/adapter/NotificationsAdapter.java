@@ -35,6 +35,11 @@ public class NotificationsAdapter extends FacebookBaseAdapter {
     }
 
     @Override
+    public NotificationData getItem(int position) {
+        return notificationList.get(position);
+    }
+
+    @Override
     public View getView(int position, View convertView, ViewGroup viewGroup) {
         notificationData = notificationList.get(position);
         profileData = activity.getImageProfile(notificationData.getSenderId());

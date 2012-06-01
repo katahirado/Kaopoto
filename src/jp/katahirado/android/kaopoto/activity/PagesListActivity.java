@@ -34,6 +34,7 @@ public class PagesListActivity extends Activity implements
     private EditText searchText;
     private Intent intent;
     private ArrayList<PageData> pageList;
+    private PagesListAdapter adapter;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +47,8 @@ public class PagesListActivity extends Activity implements
         intent = getIntent();
         Bundle extras = intent.getExtras();
         pageList = parsePageList(extras.getString(Const.API_RESPONSE));
-        listView.setAdapter(new PagesListAdapter(this, pageList));
+        adapter = new PagesListAdapter(this, pageList);
+        listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
         listView.requestFocus();
         listView.setOnTouchListener(new View.OnTouchListener() {
@@ -62,7 +64,8 @@ public class PagesListActivity extends Activity implements
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        intent = new Intent(Intent.ACTION_VIEW, Uri.parse(KaopotoUtil.getProfileURL(pageList.get(position).getUid())));
+        intent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse(KaopotoUtil.getProfileURL(adapter.getItem(position).getUid())));
         startActivity(intent);
     }
 
@@ -76,7 +79,8 @@ public class PagesListActivity extends Activity implements
                     return;
                 }
                 pageList = pageListFilter(query);
-                listView.setAdapter(new PagesListAdapter(this, pageListFilter(query)));
+                adapter = new PagesListAdapter(this, pageListFilter(query));
+                listView.setAdapter(adapter);
                 searchText.setText("");
                 setTitle(getString(R.string.app_name) + " : Pages Search : " + query);
                 hideIME();

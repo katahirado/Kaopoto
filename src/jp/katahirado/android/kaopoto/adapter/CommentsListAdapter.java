@@ -33,8 +33,8 @@ public class CommentsListAdapter extends FacebookBaseAdapter {
     }
 
     @Override
-    public Object getItem(int i) {
-        return commentsList.get(i);
+    public CommentData getItem(int position) {
+        return commentsList.get(position);
     }
 
     public void add(CommentData commentData) {

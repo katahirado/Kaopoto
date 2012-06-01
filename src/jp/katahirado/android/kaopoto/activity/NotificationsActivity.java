@@ -32,6 +32,7 @@ public class NotificationsActivity extends ListActivity {
     private ProfilesDao profilesDao;
     private ArrayList<NotificationData> notificationList;
     private ArrayList<ProfileData> profileList;
+    private NotificationsAdapter adapter;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,12 +55,13 @@ public class NotificationsActivity extends ListActivity {
                 profilesDao.bulkInsert(profileList);
             }
         })).start();
-        setListAdapter(new NotificationsAdapter(this, notificationList));
+        adapter = new NotificationsAdapter(this,notificationList);
+        setListAdapter(adapter);
     }
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        NotificationData notificationData = notificationList.get(position);
+        NotificationData notificationData = adapter.getItem(position);
         String objectId = notificationData.getObjectId();
         String objectType = notificationData.getObjectType();
         String url = notificationData.getHref();

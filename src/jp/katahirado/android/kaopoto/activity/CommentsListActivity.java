@@ -94,7 +94,7 @@ public class CommentsListActivity extends Activity
     public void onItemClick(AdapterView<?> adapterView, final View view, int position, long id) {
         dialog = ProgressDialog.show(this, "",
                 getString(jp.katahirado.android.kaopoto.R.string.loading), true, true);
-        Utility.mAsyncRunner.request(comments.get(position).getCommentId() + "/" + Const.LIKES,
+        Utility.mAsyncRunner.request(adapter.getItem(position).getCommentId() + "/" + Const.LIKES,
                 new Bundle(), Const.POST, new BaseRequestListener() {
             @Override
             public void onComplete(String response, Object state) {

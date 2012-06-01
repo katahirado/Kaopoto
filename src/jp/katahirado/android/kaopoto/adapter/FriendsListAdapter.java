@@ -31,6 +31,11 @@ public class FriendsListAdapter extends FacebookBaseAdapter {
     }
 
     @Override
+    public ProfileData getItem(int position) {
+        return friendsList.get(position);
+    }
+
+    @Override
     public View getView(int position, View convertView, ViewGroup viewGroup) {
         friendData = friendsList.get(position);
         View view = convertView;
