@@ -13,9 +13,9 @@ import jp.katahirado.android.kaopoto.Const;
 import jp.katahirado.android.kaopoto.R;
 import jp.katahirado.android.kaopoto.adapter.NotificationsAdapter;
 import jp.katahirado.android.kaopoto.dao.DBOpenHelper;
-import jp.katahirado.android.kaopoto.model.ProfileData;
 import jp.katahirado.android.kaopoto.dao.ProfilesDao;
 import jp.katahirado.android.kaopoto.model.NotificationData;
+import jp.katahirado.android.kaopoto.model.ProfileData;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,7 +54,7 @@ public class NotificationsActivity extends ListActivity {
                 profilesDao.bulkInsert(profileList);
             }
         })).start();
-        setListAdapter(new NotificationsAdapter(this, notificationList, profileList));
+        setListAdapter(new NotificationsAdapter(this, notificationList));
     }
 
     @Override
@@ -123,5 +123,4 @@ public class NotificationsActivity extends ListActivity {
         }
         return resultList;
     }
-
 }

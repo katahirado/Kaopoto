@@ -11,8 +11,8 @@ import com.facebook.android.FriendsGetProfilePics;
 import com.facebook.android.Utility;
 import jp.katahirado.android.kaopoto.R;
 import jp.katahirado.android.kaopoto.activity.NotificationsActivity;
-import jp.katahirado.android.kaopoto.model.ProfileData;
 import jp.katahirado.android.kaopoto.model.NotificationData;
+import jp.katahirado.android.kaopoto.model.ProfileData;
 
 import java.util.ArrayList;
 
@@ -27,20 +27,16 @@ public class NotificationsAdapter extends BaseAdapter {
     private ImageView profile_pic;
     private TextView firstText;
     private NotificationData notificationData;
-    private ArrayList<ProfileData> profileList;
     private ProfileData profileData;
     private NotificationsActivity activity;
 
-    public NotificationsAdapter(NotificationsActivity context,
-                                ArrayList<NotificationData> notificationList,
-                                ArrayList<ProfileData> profileList) {
+    public NotificationsAdapter(NotificationsActivity context, ArrayList<NotificationData> notificationList) {
         if (Utility.model == null) {
             Utility.model = new FriendsGetProfilePics();
         }
         Utility.model.setListener(this);
         this.activity = context;
         this.notificationList = notificationList;
-        this.profileList = profileList;
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -67,10 +63,8 @@ public class NotificationsAdapter extends BaseAdapter {
         if (convertView == null) {
             view = layoutInflater.inflate(R.layout.notification_row, null);
         }
-
         profile_pic = (ImageView) view.findViewById(R.id.notification_pic);
         firstText = (TextView) view.findViewById(R.id.notification_title);
-
         profile_pic.setImageBitmap(Utility.model.getImage(notificationData.getSenderId(), profileData.getPicture()));
         firstText.setText(notificationData.getTitleText());
         return view;
