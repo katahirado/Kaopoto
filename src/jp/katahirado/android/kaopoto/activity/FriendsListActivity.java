@@ -14,7 +14,7 @@ import jp.katahirado.android.kaopoto.Const;
 import jp.katahirado.android.kaopoto.R;
 import jp.katahirado.android.kaopoto.adapter.FriendsListAdapter;
 import jp.katahirado.android.kaopoto.dao.DBOpenHelper;
-import jp.katahirado.android.kaopoto.dao.ProfileData;
+import jp.katahirado.android.kaopoto.model.ProfileData;
 import jp.katahirado.android.kaopoto.dao.ProfilesDao;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -122,7 +122,7 @@ public class FriendsListActivity extends Activity implements View.OnClickListene
         try {
             JSONArray jArray = new JSONObject(response).getJSONArray(Const.DATA);
             for (int i = 0; i < jArray.length(); i++) {
-                resultList.add(new ProfileData(jArray.getJSONObject(i)));
+                resultList.add(new ProfileData(jArray.getJSONObject(i),Const.PICTURE));
             }
         } catch (JSONException e) {
             e.printStackTrace();

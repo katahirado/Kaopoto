@@ -11,7 +11,7 @@ import com.facebook.android.*;
 import jp.katahirado.android.kaopoto.Const;
 import jp.katahirado.android.kaopoto.dao.DBOpenHelper;
 import jp.katahirado.android.kaopoto.dao.ProfilesDao;
-import jp.katahirado.android.kaopoto.dao.ProfileData;
+import jp.katahirado.android.kaopoto.model.ProfileData;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -31,8 +31,6 @@ public class KaopotoActivity extends Activity implements AdapterView.OnItemClick
     private ProgressDialog dialog;
     private Bundle params;
     private Intent intent;
-    private String uid;
-    private String picURL;
     private ProfilesDao profilesDao;
 
 
@@ -210,7 +208,7 @@ public class KaopotoActivity extends Activity implements AdapterView.OnItemClick
                 final ProfileData currentUser;
 //                JSONObject jsonObject;
                 try {
-                    currentUser = new ProfileData(new JSONObject(response));
+                    currentUser = new ProfileData(new JSONObject(response),Const.PICTURE);
 
 //                    uid = jsonObject.getString(Const.ID);
 //                    picURL = jsonObject.getString(Const.PICTURE);
@@ -223,7 +221,7 @@ public class KaopotoActivity extends Activity implements AdapterView.OnItemClick
                             profilesDao.insert(currentUser);
                         }
                     })).start();
-                    Utility.userUID = uid;
+                    Utility.userUID = currentUser.getUid();
 
                     handler.post(new Runnable() {
                         @Override

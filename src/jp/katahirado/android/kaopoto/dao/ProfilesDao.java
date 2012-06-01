@@ -4,7 +4,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import jp.katahirado.android.kaopoto.Const;
-import jp.katahirado.android.kaopoto.JsonManager;
+import jp.katahirado.android.kaopoto.model.ProfileData;
 
 import java.util.ArrayList;
 
@@ -23,32 +23,6 @@ public class ProfilesDao {
 
     public ProfilesDao(SQLiteDatabase database) {
         this.database = database;
-    }
-
-    public void bulkInsert() {
-        ArrayList<ProfileData> aList = new ArrayList<ProfileData>();
-        for (ProfileData data : JsonManager.getAList()) {
-            aList.add(data);
-        }
-        if (aList.size() > 0) {
-            internalBulkInsert(aList);
-        }
-    }
-
-    private void internalBulkInsert(ArrayList<ProfileData> aList) {
-        database.beginTransaction();
-        try {
-            SQLiteStatement statement = database.compileStatement(INSERT_PROFILES);
-            for (ProfileData object : aList) {
-                statement.bindString(1, object.getUid());
-                statement.bindString(2, object.getName());
-                statement.bindString(3, object.getPicture());
-                statement.executeInsert();
-            }
-            database.setTransactionSuccessful();
-        } finally {
-            database.endTransaction();
-        }
     }
 
     public void insert(ProfileData profileData) {

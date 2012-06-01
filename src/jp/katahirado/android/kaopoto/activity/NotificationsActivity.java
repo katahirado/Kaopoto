@@ -10,75 +10,65 @@ import android.widget.ListView;
 import com.facebook.android.BaseRequestListener;
 import com.facebook.android.Utility;
 import jp.katahirado.android.kaopoto.Const;
-import jp.katahirado.android.kaopoto.JsonManager;
-import jp.katahirado.android.kaopoto.KaopotoUtil;
 import jp.katahirado.android.kaopoto.R;
 import jp.katahirado.android.kaopoto.adapter.NotificationsAdapter;
 import jp.katahirado.android.kaopoto.dao.DBOpenHelper;
+import jp.katahirado.android.kaopoto.model.ProfileData;
 import jp.katahirado.android.kaopoto.dao.ProfilesDao;
+import jp.katahirado.android.kaopoto.model.NotificationData;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * Created with IntelliJ IDEA.
  * Author: yuichi_katahira
  */
 public class NotificationsActivity extends ListActivity {
-    private JSONArray notificationArray;
     private Intent intent;
     private ProgressDialog dialog;
     private ProfilesDao profilesDao;
+    private ArrayList<NotificationData> notificationList;
+    private ArrayList<ProfileData> profileList;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.notifications);
 
-        intent = getIntent();
-        Bundle extras = intent.getExtras();
-        JSONArray profileArray;
+        Bundle extras = getIntent().getExtras();
         try {
             JSONArray array = new JSONObject(extras.getString(Const.API_RESPONSE)).getJSONArray(Const.DATA);
-            JSONObject q1 = array.getJSONObject(0);
-            JSONObject q2 = array.getJSONObject(1);
-            notificationArray = q1.getJSONArray(Const.FQL_RESULT_SET);
-            profileArray = q2.getJSONArray(Const.FQL_RESULT_SET);
+            notificationList = parseNotifications(array.getJSONObject(0));
+            profileList = parseProfileList(array.getJSONObject(1));
         } catch (JSONException e) {
             e.printStackTrace();
-            notificationArray = new JSONArray();
-            profileArray = new JSONArray();
+            notificationList = new ArrayList<NotificationData>();
+            profileList = new ArrayList<ProfileData>();
         }
-        JsonManager.mJsonArray = profileArray;
         profilesDao = new ProfilesDao(new DBOpenHelper(this).getWritableDatabase());
         (new Thread(new Runnable() {
             @Override
             public void run() {
-                JsonManager.setAList(Const.PIC_SQUARE);
-                profilesDao.bulkInsert();
+                profilesDao.bulkInsert(profileList);
             }
         })).start();
-        setListAdapter(new NotificationsAdapter(this, notificationArray));
+        setListAdapter(new NotificationsAdapter(this, notificationList, profileList));
     }
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        String objectId = "";
-        String objectType = "";
-        String fUrl = "";
-        try {
-            JSONObject object = notificationArray.getJSONObject(position);
-            objectId = object.getString(Const.OBJECT_ID);
-            objectType = object.getString("object_type");
-            fUrl = KaopotoUtil.getMobileURL(object.getString("href"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        NotificationData notificationData = notificationList.get(position);
+        String objectId = notificationData.getObjectId();
+        String objectType = notificationData.getObjectType();
+        String url = notificationData.getHref();
         if (objectType.equals(Const.STREAM)) {
             goToPostItem(objectId, PostItemActivity.class);
         } else if (objectType.equals(Const.EVENT)) {
             goToPostItem(objectId, EventItemActivity.class);
         } else {
-            intent = new Intent(Intent.ACTION_VIEW, Uri.parse(fUrl));
+            intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
             startActivity(intent);
         }
     }
@@ -97,4 +87,41 @@ public class NotificationsActivity extends ListActivity {
             }
         });
     }
+
+    public ProfileData getImageProfile(String senderId) {
+        ProfileData profileData = new ProfileData(new JSONObject(), Const.PIC_SQUARE);
+        for (ProfileData object : profileList) {
+            if (object.getUid().equals(senderId)) {
+                profileData = object;
+            }
+        }
+        return profileData;
+    }
+
+    private ArrayList<ProfileData> parseProfileList(JSONObject jsonObject) {
+        ArrayList<ProfileData> resultList = new ArrayList<ProfileData>();
+        try {
+            JSONArray array = jsonObject.getJSONArray(Const.FQL_RESULT_SET);
+            for (int i = 0; i < array.length(); i++) {
+                resultList.add(new ProfileData(array.getJSONObject(i), Const.PIC_SQUARE));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return resultList;
+    }
+
+    private ArrayList<NotificationData> parseNotifications(JSONObject jsonObject) {
+        ArrayList<NotificationData> resultList = new ArrayList<NotificationData>();
+        try {
+            JSONArray array = jsonObject.getJSONArray(Const.FQL_RESULT_SET);
+            for (int i = 0; i < array.length(); i++) {
+                resultList.add(new NotificationData(array.getJSONObject(i)));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return resultList;
+    }
+
 }

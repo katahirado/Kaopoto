@@ -1,45 +1,68 @@
 package jp.katahirado.android.kaopoto.adapter;
 
+import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.facebook.android.FriendsGetProfilePics;
 import com.facebook.android.Utility;
-import jp.katahirado.android.kaopoto.Const;
-import jp.katahirado.android.kaopoto.JsonManager;
 import jp.katahirado.android.kaopoto.R;
 import jp.katahirado.android.kaopoto.activity.NotificationsActivity;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import jp.katahirado.android.kaopoto.model.ProfileData;
+import jp.katahirado.android.kaopoto.model.NotificationData;
+
+import java.util.ArrayList;
 
 /**
  * Created with IntelliJ IDEA.
  * Author: yuichi_katahira
  */
-public class NotificationsAdapter extends FacebookBaseAdapter {
+public class NotificationsAdapter extends BaseAdapter {
 
-    public NotificationsAdapter(NotificationsActivity context, JSONArray jsonArray) {
-        super(context, jsonArray);
+    private LayoutInflater layoutInflater;
+    private ArrayList<NotificationData> notificationList;
+    private ImageView profile_pic;
+    private TextView firstText;
+    private NotificationData notificationData;
+    private ArrayList<ProfileData> profileList;
+    private ProfileData profileData;
+    private NotificationsActivity activity;
+
+    public NotificationsAdapter(NotificationsActivity context,
+                                ArrayList<NotificationData> notificationList,
+                                ArrayList<ProfileData> profileList) {
+        if (Utility.model == null) {
+            Utility.model = new FriendsGetProfilePics();
+        }
+        Utility.model.setListener(this);
+        this.activity = context;
+        this.notificationList = notificationList;
+        this.profileList = profileList;
+        layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public int getCount() {
-        return _jsonArray.length();
+        return notificationList.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return null;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup viewGroup) {
-        JSONObject jsonObject = null;
-        JSONObject imageObject = null;
-        String senderId = "";
-        try {
-            jsonObject = _jsonArray.getJSONObject(position);
-            senderId = jsonObject.getString(Const.SENDER_ID);
-            imageObject = JsonManager.getImageObject(senderId);
-        } catch (JSONException e1) {
-            e1.printStackTrace();
-        }
+        notificationData = notificationList.get(position);
+        profileData = activity.getImageProfile(notificationData.getSenderId());
         View view = convertView;
         if (convertView == null) {
             view = layoutInflater.inflate(R.layout.notification_row, null);
@@ -48,17 +71,8 @@ public class NotificationsAdapter extends FacebookBaseAdapter {
         profile_pic = (ImageView) view.findViewById(R.id.notification_pic);
         firstText = (TextView) view.findViewById(R.id.notification_title);
 
-        try {
-            profile_pic.setImageBitmap(Utility.model.getImage(senderId,
-                    imageObject.getString(Const.PIC_SQUARE)));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        try {
-            firstText.setText(jsonObject.getString("title_text"));
-        } catch (JSONException e) {
-            firstText.setText("");
-        }
+        profile_pic.setImageBitmap(Utility.model.getImage(notificationData.getSenderId(), profileData.getPicture()));
+        firstText.setText(notificationData.getTitleText());
         return view;
     }
 }

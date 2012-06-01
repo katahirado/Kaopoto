@@ -11,7 +11,7 @@ import com.facebook.android.FriendsGetProfilePics;
 import com.facebook.android.Utility;
 import jp.katahirado.android.kaopoto.R;
 import jp.katahirado.android.kaopoto.activity.FriendsListActivity;
-import jp.katahirado.android.kaopoto.dao.ProfileData;
+import jp.katahirado.android.kaopoto.model.ProfileData;
 
 import java.util.ArrayList;
 
