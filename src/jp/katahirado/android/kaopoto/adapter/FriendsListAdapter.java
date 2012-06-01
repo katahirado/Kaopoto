@@ -11,7 +11,7 @@ import com.facebook.android.FriendsGetProfilePics;
 import com.facebook.android.Utility;
 import jp.katahirado.android.kaopoto.R;
 import jp.katahirado.android.kaopoto.activity.FriendsListActivity;
-import jp.katahirado.android.kaopoto.model.FriendData;
+import jp.katahirado.android.kaopoto.dao.ProfileData;
 
 import java.util.ArrayList;
 
@@ -22,13 +22,13 @@ import java.util.ArrayList;
 public class FriendsListAdapter extends BaseAdapter {
 
     private FriendsListActivity activity;
-    private ArrayList<FriendData> friendsList;
+    private ArrayList<ProfileData> friendsList;
     private LayoutInflater layoutInflater;
     private ImageView profile_pic;
     private TextView firstText;
     private TextView secondText;
 
-    public FriendsListAdapter(FriendsListActivity context, ArrayList<FriendData> friendsList) {
+    public FriendsListAdapter(FriendsListActivity context, ArrayList<ProfileData> friendsList) {
         if (Utility.model == null) {
             Utility.model = new FriendsGetProfilePics();
         }
@@ -55,7 +55,7 @@ public class FriendsListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup viewGroup) {
-        FriendData friendData = friendsList.get(position);
+        ProfileData friendData = friendsList.get(position);
         View view = convertView;
         if (convertView == null) {
             view = layoutInflater.inflate(R.layout.friend_row, null);

@@ -207,18 +207,20 @@ public class KaopotoActivity extends Activity implements AdapterView.OnItemClick
         Utility.mAsyncRunner.request("me", params, new BaseRequestListener() {
             @Override
             public void onComplete(final String response, final Object state) {
-                JSONObject jsonObject;
+                final ProfileData currentUser;
+//                JSONObject jsonObject;
                 try {
-                    jsonObject = new JSONObject(response);
+                    currentUser = new ProfileData(new JSONObject(response));
 
-                    uid = jsonObject.getString(Const.ID);
-                    picURL = jsonObject.getString(Const.PICTURE);
-                    final String name = jsonObject.getString(Const.NAME);
+//                    uid = jsonObject.getString(Const.ID);
+//                    picURL = jsonObject.getString(Const.PICTURE);
+//                    final String name = jsonObject.getString(Const.NAME);
                     profilesDao = new ProfilesDao(new DBOpenHelper(getApplicationContext()).getWritableDatabase());
                     (new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            profilesDao.insert(new ProfileData(uid, name, picURL));
+//                            profilesDao.insert(new ProfileData(uid, name, picURL));
+                            profilesDao.insert(currentUser);
                         }
                     })).start();
                     Utility.userUID = uid;
@@ -226,8 +228,8 @@ public class KaopotoActivity extends Activity implements AdapterView.OnItemClick
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            text.setText(name);
-                            userPicture.setImageBitmap(Utility.getBitmap(picURL));
+                            text.setText(currentUser.getName());
+                            userPicture.setImageBitmap(Utility.getBitmap(currentUser.getPicture()));
                         }
                     });
 

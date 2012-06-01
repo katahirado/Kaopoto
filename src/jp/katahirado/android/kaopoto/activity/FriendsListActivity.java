@@ -14,8 +14,8 @@ import jp.katahirado.android.kaopoto.Const;
 import jp.katahirado.android.kaopoto.R;
 import jp.katahirado.android.kaopoto.adapter.FriendsListAdapter;
 import jp.katahirado.android.kaopoto.dao.DBOpenHelper;
+import jp.katahirado.android.kaopoto.dao.ProfileData;
 import jp.katahirado.android.kaopoto.dao.ProfilesDao;
-import jp.katahirado.android.kaopoto.model.FriendData;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,12 +27,11 @@ import java.util.ArrayList;
  * Author: yuichi_katahira
  */
 public class FriendsListActivity extends Activity implements View.OnClickListener, AdapterView.OnItemClickListener {
-    private JSONArray jsonArray;
     private EditText searchText;
     private ListView listView;
     private ProfilesDao profilesDao;
-    private ArrayList<FriendData> friendsList;
-    private ArrayList<FriendData> originalFriendsList;
+    private ArrayList<ProfileData> friendsList;
+    private ArrayList<ProfileData> originalFriendsList;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,16 +45,13 @@ public class FriendsListActivity extends Activity implements View.OnClickListene
         Bundle extras = getIntent().getExtras();
         friendsList = parseFriends(extras.getString(Const.API_RESPONSE));
         originalFriendsList = parseFriends(extras.getString(Const.API_RESPONSE));
-//        JsonManager.mJsonArray = jsonArray;
         profilesDao = new ProfilesDao(new DBOpenHelper(this).getWritableDatabase());
         (new Thread(new Runnable() {
             @Override
             public void run() {
-//                JsonManager.setAList(Const.PICTURE);
                 profilesDao.bulkInsert(friendsList);
             }
         })).start();
-//        listView.setAdapter(new FriendsListAdapter(this, jsonArray));
         listView.setAdapter(new FriendsListAdapter(this, friendsList));
         listView.setOnItemClickListener(this);
         listView.requestFocus();
@@ -81,8 +77,6 @@ public class FriendsListActivity extends Activity implements View.OnClickListene
                 }
                 friendsList = friendsListFilter(query);
                 listView.setAdapter(new FriendsListAdapter(this, friendsList));
-//                jsonArray = JsonManager.querySearchFriends(query);
-//                listView.setAdapter(new FriendsListAdapter(this, jsonArray));
                 searchText.setText("");
                 setTitle(getString(R.string.app_name) + " : Friends Search : " + query);
                 hideIME();
@@ -90,12 +84,12 @@ public class FriendsListActivity extends Activity implements View.OnClickListene
         }
     }
 
-    private ArrayList<FriendData> friendsListFilter(String query) {
+    private ArrayList<ProfileData> friendsListFilter(String query) {
         if (query.equals("*")) {
             return originalFriendsList;
         }
-        ArrayList<FriendData> resultList = new ArrayList<FriendData>();
-        for (FriendData object : originalFriendsList) {
+        ArrayList<ProfileData> resultList = new ArrayList<ProfileData>();
+        for (ProfileData object : originalFriendsList) {
             String name;
             if (query.matches("^[0-9/]*")) {
                 name = object.getBirthday();
@@ -112,13 +106,7 @@ public class FriendsListActivity extends Activity implements View.OnClickListene
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         Bundle params = new Bundle();
-        long friendId = 0;
-        try {
-            friendId = jsonArray.getJSONObject(position).getLong(Const.ID);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        params.putString(Const.TO, String.valueOf(friendId));
+        params.putString(Const.TO, friendsList.get(position).getUid());
         params.putString(Const.CAPTION, getString(jp.katahirado.android.kaopoto.R.string.app_name));
         Utility.mFacebook.dialog(this, Const.FEED, params, new BaseDialogListener() {
             @Override
@@ -132,12 +120,12 @@ public class FriendsListActivity extends Activity implements View.OnClickListene
         });
     }
 
-    private ArrayList<FriendData> parseFriends(String response) {
-        ArrayList<FriendData> resultList = new ArrayList<FriendData>();
+    private ArrayList<ProfileData> parseFriends(String response) {
+        ArrayList<ProfileData> resultList = new ArrayList<ProfileData>();
         try {
             JSONArray jArray = new JSONObject(response).getJSONArray(Const.DATA);
             for (int i = 0; i < jArray.length(); i++) {
-                resultList.add(new FriendData(jArray.getJSONObject(i)));
+                resultList.add(new ProfileData(jArray.getJSONObject(i)));
             }
         } catch (JSONException e) {
             e.printStackTrace();
