@@ -3,12 +3,16 @@ package jp.katahirado.android.kaopoto.activity;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 import com.facebook.android.BaseRequestListener;
 import com.facebook.android.Utility;
-import jp.katahirado.android.kaopoto.*;
+import jp.katahirado.android.kaopoto.Const;
+import jp.katahirado.android.kaopoto.JsonManager;
+import jp.katahirado.android.kaopoto.KaopotoUtil;
+import jp.katahirado.android.kaopoto.R;
 import jp.katahirado.android.kaopoto.adapter.NotificationsAdapter;
 import jp.katahirado.android.kaopoto.dao.DBOpenHelper;
 import jp.katahirado.android.kaopoto.dao.ProfilesDao;
@@ -24,7 +28,6 @@ public class NotificationsActivity extends ListActivity {
     private JSONArray notificationArray;
     private Intent intent;
     private ProgressDialog dialog;
-    private Class<?> cls;
     private ProfilesDao profilesDao;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -60,22 +63,27 @@ public class NotificationsActivity extends ListActivity {
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         String objectId = "";
-        int typeId = 0;
+        String objectType = "";
+        String fUrl = "";
         try {
             JSONObject object = notificationArray.getJSONObject(position);
             objectId = object.getString(Const.OBJECT_ID);
-            typeId = KaopotoUtil.stringToTypeID(object.getString("object_type"));
+            objectType = object.getString("object_type");
+            fUrl = KaopotoUtil.getMobileURL(object.getString("href"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        switch (typeId) {
-            case Const.STREAM_ID:
-                cls = PostItemActivity.class;
-                break;
-            case Const.EVENT_ID:
-                cls = EventItemActivity.class;
-                break;
+        if (objectType.equals(Const.STREAM)) {
+            goToPostItem(objectId, PostItemActivity.class);
+        } else if (objectType.equals(Const.EVENT)) {
+            goToPostItem(objectId, EventItemActivity.class);
+        } else {
+            intent = new Intent(Intent.ACTION_VIEW, Uri.parse(fUrl));
+            startActivity(intent);
         }
+    }
+
+    private void goToPostItem(String objectId, final Class<?> cls) {
         dialog = ProgressDialog.show(this, "", getString(R.string.loading), true, true);
         Bundle params = new Bundle();
         params.putString("date_format", "U");

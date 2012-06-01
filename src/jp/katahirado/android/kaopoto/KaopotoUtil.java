@@ -16,21 +16,15 @@ public class KaopotoUtil {
         return Const.FACEBOOK_MOBILE_URL + Const.PROF_URL + id;
     }
 
-    public static int stringToTypeID(String object_type) {
-        int result = 0;
-        if (object_type.equals(Const.STREAM)) {
-            result = Const.STREAM_ID;
-        } else if (object_type.equals(Const.EVENT)) {
-            result = Const.EVENT_ID;
-        }
-        return result;
-    }
-
     public static String formattedDateString(Date date) {
         return new SimpleDateFormat(FORMAT_DATE + " " + FORMAT_TIME).format(date);
     }
 
     public static String formattedTimeString(Date date) {
         return new SimpleDateFormat(FORMAT_TIME).format(date);
+    }
+
+    public static String getMobileURL(String href) {
+        return href.replace("http://www.facebook.com/",Const.FACEBOOK_MOBILE_URL);
     }
 }

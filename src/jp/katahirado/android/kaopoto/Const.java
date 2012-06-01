@@ -25,8 +25,6 @@ public class Const {
     public static final String OBJECT_ID = "object_id";
     public static final String STREAM = "stream";
     public static final String EVENT = "event";
-    public static final int STREAM_ID = 0;
-    public static final int EVENT_ID = 1;
     public static final String PIC_SQUARE = "pic_square";
     public static final String DESCRIPTION = "description";
     public static final int MILLISECOND = 1000;
