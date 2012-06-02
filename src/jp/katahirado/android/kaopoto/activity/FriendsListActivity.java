@@ -14,8 +14,8 @@ import jp.katahirado.android.kaopoto.Const;
 import jp.katahirado.android.kaopoto.R;
 import jp.katahirado.android.kaopoto.adapter.FriendsListAdapter;
 import jp.katahirado.android.kaopoto.dao.DBOpenHelper;
-import jp.katahirado.android.kaopoto.model.ProfileData;
 import jp.katahirado.android.kaopoto.dao.ProfilesDao;
+import jp.katahirado.android.kaopoto.model.ProfileData;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,7 +26,8 @@ import java.util.ArrayList;
  * Created with IntelliJ IDEA.
  * Author: yuichi_katahira
  */
-public class FriendsListActivity extends Activity implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class FriendsListActivity extends Activity
+        implements View.OnClickListener, AdapterView.OnItemClickListener {
     private EditText searchText;
     private ListView listView;
     private ProfilesDao profilesDao;
@@ -51,7 +52,7 @@ public class FriendsListActivity extends Activity implements View.OnClickListene
                 profilesDao.bulkInsert(friendsList);
             }
         })).start();
-        adapter = new FriendsListAdapter(this,friendsList);
+        adapter = new FriendsListAdapter(this, friendsList);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
         listView.requestFocus();
@@ -75,7 +76,7 @@ public class FriendsListActivity extends Activity implements View.OnClickListene
                 if (query.length() == 0) {
                     return;
                 }
-                adapter = new FriendsListAdapter(this,friendsListFilter(query));
+                adapter = new FriendsListAdapter(this, friendsListFilter(query));
                 listView.setAdapter(adapter);
                 searchText.setText("");
                 setTitle(getString(R.string.app_name) + " : Friends Search : " + query);
@@ -125,7 +126,7 @@ public class FriendsListActivity extends Activity implements View.OnClickListene
         try {
             JSONArray jArray = new JSONObject(response).getJSONArray(Const.DATA);
             for (int i = 0; i < jArray.length(); i++) {
-                resultList.add(new ProfileData(jArray.getJSONObject(i),Const.PICTURE));
+                resultList.add(new ProfileData(jArray.getJSONObject(i), Const.PICTURE));
             }
         } catch (JSONException e) {
             e.printStackTrace();

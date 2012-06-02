@@ -32,7 +32,6 @@ import java.util.ArrayList;
 public class CommentsListActivity extends Activity
         implements View.OnClickListener, AdapterView.OnItemClickListener {
     private EditText commentText;
-    private ArrayList<CommentData> comments;
     private DialogInterface dialog;
     private String postItemId;
     private String message;
@@ -49,7 +48,7 @@ public class CommentsListActivity extends Activity
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
-        comments = parseComments(extras.getString(Const.API_RESPONSE));
+        ArrayList<CommentData> comments = parseComments(extras.getString(Const.API_RESPONSE));
         postItemId = extras.getString(Const.ID);
         adapter = new CommentsListAdapter(this, comments);
         commentsListView.setAdapter(adapter);

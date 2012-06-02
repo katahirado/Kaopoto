@@ -32,7 +32,6 @@ public class PagesListActivity extends Activity implements
         View.OnClickListener, AdapterView.OnItemClickListener {
     private ListView listView;
     private EditText searchText;
-    private Intent intent;
     private ArrayList<PageData> pageList;
     private PagesListAdapter adapter;
 
@@ -44,8 +43,7 @@ public class PagesListActivity extends Activity implements
         Button searchButton = (Button) findViewById(R.id.pages_search_button);
         searchText = (EditText) findViewById(R.id.pages_search_text);
 
-        intent = getIntent();
-        Bundle extras = intent.getExtras();
+        Bundle extras = getIntent().getExtras();
         pageList = parsePageList(extras.getString(Const.API_RESPONSE));
         adapter = new PagesListAdapter(this, pageList);
         listView.setAdapter(adapter);
@@ -64,7 +62,7 @@ public class PagesListActivity extends Activity implements
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        intent = new Intent(Intent.ACTION_VIEW,
+        Intent intent = new Intent(Intent.ACTION_VIEW,
                 Uri.parse(KaopotoUtil.getProfileURL(adapter.getItem(position).getUid())));
         startActivity(intent);
     }
@@ -78,7 +76,6 @@ public class PagesListActivity extends Activity implements
                 if (query.length() == 0) {
                     return;
                 }
-                pageList = pageListFilter(query);
                 adapter = new PagesListAdapter(this, pageListFilter(query));
                 listView.setAdapter(adapter);
                 searchText.setText("");
