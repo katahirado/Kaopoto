@@ -1,7 +1,6 @@
 package jp.katahirado.android.kaopoto.activity;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 import jp.katahirado.android.kaopoto.Const;
@@ -27,8 +26,7 @@ public class EventItemActivity extends Activity {
         TextView location = (TextView) findViewById(R.id.event_item_location);
         TextView description = (TextView) findViewById(R.id.event_item_description);
 
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
+        Bundle extras = getIntent().getExtras();
         try {
             eventData = new EventData(new JSONObject(extras.getString(Const.API_RESPONSE)));
         } catch (JSONException e) {
@@ -36,10 +34,10 @@ public class EventItemActivity extends Activity {
         }
 
         name.setText(eventData.getName());
-        privacy.setText(eventData.getPrivacy()+" : ");
+        privacy.setText(eventData.getPrivacy() + " : ");
         ownerName.setText(eventData.getOwner().getName());
-        startAndEndTime.setText("日時 : "+eventData.getStartAndEnd());
-        location.setText("場所 : "+eventData.getLocation());
+        startAndEndTime.setText("日時 : " + eventData.getStartAndEnd());
+        location.setText("場所 : " + eventData.getLocation());
         description.setText(eventData.getDescription());
     }
 }

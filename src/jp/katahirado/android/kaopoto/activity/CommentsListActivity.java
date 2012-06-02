@@ -3,7 +3,6 @@ package jp.katahirado.android.kaopoto.activity;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -46,8 +45,7 @@ public class CommentsListActivity extends Activity
         Button commentButton = (Button) findViewById(R.id.comments_list_post_button);
         profilesDao = new ProfilesDao(new DBOpenHelper(this).getReadableDatabase());
 
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
+        Bundle extras = getIntent().getExtras();
         ArrayList<CommentData> comments = parseComments(extras.getString(Const.API_RESPONSE));
         postItemId = extras.getString(Const.ID);
         adapter = new CommentsListAdapter(this, comments);
