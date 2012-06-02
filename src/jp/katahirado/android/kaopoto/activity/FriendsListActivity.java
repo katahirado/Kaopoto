@@ -72,22 +72,20 @@ public class FriendsListActivity extends Activity
             case R.id.friends_search_button:
                 SpannableStringBuilder builder = (SpannableStringBuilder) searchText.getText();
                 String query = builder.toString().trim().toLowerCase();
-                if (query.length() == 0) {
-                    return;
-                }
                 adapter = new FriendsListAdapter(this, friendsListFilter(query));
                 listView.setAdapter(adapter);
                 searchText.setText("");
-                setTitle(getString(R.string.app_name) + " : Friends Search : " + query);
                 hideIME();
                 break;
         }
     }
 
     private ArrayList<ProfileData> friendsListFilter(String query) {
-        if (query.equals("*")) {
+        if (query.length() == 0) {
+            setTitle(getString(R.string.app_name) + " : Friends");
             return friendsList;
         }
+        setTitle(getString(R.string.app_name) + " : Friends Search : " + query);
         ArrayList<ProfileData> resultList = new ArrayList<ProfileData>();
         for (ProfileData object : friendsList) {
             String name;
