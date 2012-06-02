@@ -43,8 +43,7 @@ public class FriendsListActivity extends Activity
         Button searchButton = (Button) findViewById(R.id.friends_search_button);
         searchText = (EditText) findViewById(R.id.friends_search_text);
 
-        Bundle extras = getIntent().getExtras();
-        friendsList = parseFriends(extras.getString(Const.API_RESPONSE));
+        friendsList = parseFriends(getIntent().getStringExtra(Const.API_RESPONSE));
         profilesDao = new ProfilesDao(new DBOpenHelper(this).getWritableDatabase());
         (new Thread(new Runnable() {
             @Override

@@ -43,8 +43,7 @@ public class PagesListActivity extends Activity implements
         Button searchButton = (Button) findViewById(R.id.pages_search_button);
         searchText = (EditText) findViewById(R.id.pages_search_text);
 
-        Bundle extras = getIntent().getExtras();
-        pageList = parsePageList(extras.getString(Const.API_RESPONSE));
+        pageList = parsePageList(getIntent().getStringExtra(Const.API_RESPONSE));
         adapter = new PagesListAdapter(this, pageList);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);

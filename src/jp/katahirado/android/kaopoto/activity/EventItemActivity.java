@@ -26,9 +26,8 @@ public class EventItemActivity extends Activity {
         TextView location = (TextView) findViewById(R.id.event_item_location);
         TextView description = (TextView) findViewById(R.id.event_item_description);
 
-        Bundle extras = getIntent().getExtras();
         try {
-            eventData = new EventData(new JSONObject(extras.getString(Const.API_RESPONSE)));
+            eventData = new EventData(new JSONObject(getIntent().getStringExtra(Const.API_RESPONSE)));
         } catch (JSONException e) {
             e.printStackTrace();
         }

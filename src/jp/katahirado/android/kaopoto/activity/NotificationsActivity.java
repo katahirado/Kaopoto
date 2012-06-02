@@ -37,10 +37,9 @@ public class NotificationsActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.notifications);
 
-        Bundle extras = getIntent().getExtras();
         ArrayList<NotificationData> notificationList;
         try {
-            JSONArray array = new JSONObject(extras.getString(Const.API_RESPONSE)).getJSONArray(Const.DATA);
+            JSONArray array = new JSONObject(getIntent().getStringExtra(Const.API_RESPONSE)).getJSONArray(Const.DATA);
             notificationList = parseNotifications(array.getJSONObject(0));
             profileList = parseProfileList(array.getJSONObject(1));
         } catch (JSONException e) {
