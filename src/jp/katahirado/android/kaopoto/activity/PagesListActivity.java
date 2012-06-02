@@ -61,9 +61,8 @@ public class PagesListActivity extends Activity implements
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        Intent intent = new Intent(Intent.ACTION_VIEW,
-                Uri.parse(KaopotoUtil.getProfileURL(adapter.getItem(position).getUid())));
-        startActivity(intent);
+        startActivity(new Intent(Intent.ACTION_VIEW,
+                Uri.parse(KaopotoUtil.getProfileURL(adapter.getItem(position).getUid()))));
     }
 
     @Override

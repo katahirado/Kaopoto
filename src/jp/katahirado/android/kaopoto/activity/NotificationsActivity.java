@@ -69,8 +69,7 @@ public class NotificationsActivity extends ListActivity {
         } else if (objectType.equals(Const.EVENT)) {
             goToPostItem(objectId, EventItemActivity.class);
         } else {
-            intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            startActivity(intent);
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
         }
     }
 
