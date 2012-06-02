@@ -71,22 +71,20 @@ public class PagesListActivity extends Activity implements
             case R.id.pages_search_button:
                 SpannableStringBuilder builder = (SpannableStringBuilder) searchText.getText();
                 String query = builder.toString().trim().toLowerCase();
-                if (query.length() == 0) {
-                    return;
-                }
                 adapter = new PagesListAdapter(this, pageListFilter(query));
                 listView.setAdapter(adapter);
                 searchText.setText("");
-                setTitle(getString(R.string.app_name) + " : Pages Search : " + query);
                 hideIME();
                 break;
         }
     }
 
     private ArrayList<PageData> pageListFilter(String query) {
-        if (query.equals("*")) {
+        if (query.length() == 0) {
+            setTitle(getString(R.string.app_name) + " : Pages");
             return pageList;
         }
+        setTitle(getString(R.string.app_name) + " : Pages Search : " + query);
         ArrayList<PageData> resultList = new ArrayList<PageData>();
         for (PageData object : pageList) {
             if (object.getName().toLowerCase().contains(query)) {
