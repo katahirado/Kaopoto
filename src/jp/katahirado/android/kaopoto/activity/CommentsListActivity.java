@@ -50,8 +50,8 @@ public class CommentsListActivity extends Activity
         postItemId = extras.getString(Const.ID);
         adapter = new CommentsListAdapter(this, comments);
         commentsListView.setAdapter(adapter);
-        commentsListView.setOnItemClickListener(this);
 
+        commentsListView.setOnItemClickListener(this);
         commentButton.setOnClickListener(this);
 
     }
