@@ -17,6 +17,8 @@ import jp.katahirado.android.kaopoto.Const;
 import jp.katahirado.android.kaopoto.KaopotoUtil;
 import jp.katahirado.android.kaopoto.R;
 import jp.katahirado.android.kaopoto.adapter.PagesListAdapter;
+import jp.katahirado.android.kaopoto.dao.DBOpenHelper;
+import jp.katahirado.android.kaopoto.dao.ProfilesDao;
 import jp.katahirado.android.kaopoto.model.PageData;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -57,6 +59,13 @@ public class PagesListActivity extends Activity implements
         });
 
         searchButton.setOnClickListener(this);
+        final ProfilesDao profilesDao = new ProfilesDao(new DBOpenHelper(this).getWritableDatabase());
+        (new Thread(new Runnable() {
+            @Override
+            public void run() {
+                profilesDao.vacuum();
+            }
+        })).start();
     }
 
     @Override

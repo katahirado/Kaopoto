@@ -1,6 +1,7 @@
 package jp.katahirado.android.kaopoto.dao;
 
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import jp.katahirado.android.kaopoto.Const;
@@ -15,9 +16,11 @@ import java.util.ArrayList;
  */
 public class ProfilesDao {
 
-    private static final String INSERT_PROFILES = "insert or replace into profiles (uid,name,picture) values (?,?,?);";
-    private static final String SELECT_PROFILES_PICTURE = "select picture from profiles where uid = ?";
-    private static final String SELECT_PROFILES_NAME = "select name from profiles where uid = ?";
+    private static final String TABLE_NAME= "profiles";
+    private static final String INSERT_PROFILES = "insert or replace into "+TABLE_NAME+
+            " (uid,name,picture) values (?,?,?);";
+    private static final String SELECT_PROFILES_PICTURE = "select picture from "+TABLE_NAME+" where uid = ?";
+    private static final String SELECT_PROFILES_NAME = "select name from "+TABLE_NAME+" where uid = ?";
 
     private SQLiteDatabase database;
 
@@ -66,6 +69,14 @@ public class ProfilesDao {
             database.setTransactionSuccessful();
         } finally {
             database.endTransaction();
+        }
+    }
+
+    public void vacuum() {
+        try{
+            database.execSQL("VACUUM "+TABLE_NAME);
+        }catch (SQLException e){
+            e.printStackTrace();
         }
     }
 }
