@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import jp.katahirado.android.kaopoto.Const;
 import jp.katahirado.android.kaopoto.R;
 
 /**
@@ -12,6 +13,9 @@ import jp.katahirado.android.kaopoto.R;
  * Author: yuichi_katahira
  */
 public class LikeUrlReceiveActivity extends Activity {
+    private static final String MATCH_URL =
+            "^(https?|ftp)(:\\/\\/[-_.!~*\\'()a-zA-Z0-9;\\/?:\\@&=+\\$,%#]+)$";
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.like_url_receive);
@@ -26,7 +30,13 @@ public class LikeUrlReceiveActivity extends Activity {
         if (Intent.ACTION_SEND.equals(action)) {
             String url = intent.getExtras().getCharSequence(Intent.EXTRA_TEXT).toString();
             if (url != null) {
-                likeBox.loadData(buildLikeBoxURLString(url), "text/html", "UTF-8");
+                if (url.matches(MATCH_URL)) {
+                    likeBox.loadData(buildLikeBoxURLString(url), "text/html", "UTF-8");
+                } else {
+                    intent = new Intent(this, KaopotoActivity.class);
+                    intent.putExtra(Const.MESSAGE, url);
+                    startActivity(intent);
+                }
             }
         }
     }
