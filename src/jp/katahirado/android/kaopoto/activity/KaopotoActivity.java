@@ -84,6 +84,13 @@ public class KaopotoActivity extends Activity implements AdapterView.OnItemClick
         mainList.setOnItemClickListener(this);
         mainList.setAdapter(new ArrayAdapter<String>(this,
                 jp.katahirado.android.kaopoto.R.layout.main_list_row, main_items));
+
+        String message = getIntent().getStringExtra(Const.MESSAGE);
+        if (message != null) {
+            if (Utility.mFacebook.isSessionValid()) {
+                goToWallPost(message);
+            }
+        }
     }
 
     @Override
@@ -113,19 +120,7 @@ public class KaopotoActivity extends Activity implements AdapterView.OnItemClick
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         switch (position) {
             case UPDATE_STATUS:
-                params = new Bundle();
-                params.putString(Const.CAPTION, getString(jp.katahirado.android.kaopoto.R.string.app_name));
-                Utility.mFacebook.dialog(this, Const.FEED, params, new BaseDialogListener() {
-                    @Override
-                    public void onComplete(Bundle values) {
-                        final String postId = values.getString(Const.POST_ID);
-                        if (postId != null) {
-                            Toast.makeText(getApplicationContext(),
-                                    getString(jp.katahirado.android.kaopoto.R.string.PostedOnTheWall),
-                                    Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
+                goToWallPost(null);
                 break;
             case GET_FRIENDS:
                 if (!Utility.mFacebook.isSessionValid()) {
@@ -196,6 +191,14 @@ public class KaopotoActivity extends Activity implements AdapterView.OnItemClick
                 }
                 break;
         }
+    }
+
+    private void goToWallPost(String message) {
+        intent = new Intent(this, WallPostActivity.class);
+        if (message != null) {
+            intent.putExtra(Const.MESSAGE, message);
+        }
+        startActivity(intent);
     }
 
     private void requestUserData() {

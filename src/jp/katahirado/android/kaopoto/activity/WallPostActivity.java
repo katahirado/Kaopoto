@@ -63,12 +63,13 @@ public class WallPostActivity extends Activity implements View.OnClickListener {
                 }
                 final ProgressDialog dialog = ProgressDialog.show(this, "",
                         getString(R.string.loading), true, true);
+                String profileId = "me";
                 Bundle params = new Bundle();
                 if (toId != null) {
-                    params.putString(Const.TO, toId);
+                    profileId = toId;
                 }
                 params.putString(Const.MESSAGE, wallPostMessage.getText().toString());
-                Utility.mAsyncRunner.request("me/feed", params, "POST",
+                Utility.mAsyncRunner.request(profileId + "/" + Const.FEED, params, Const.POST,
                         new BaseRequestListener() {
                             @Override
                             public void onComplete(final String response, final Object state) {

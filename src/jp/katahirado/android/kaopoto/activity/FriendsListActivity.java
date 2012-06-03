@@ -2,14 +2,16 @@ package jp.katahirado.android.kaopoto.activity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.*;
-import com.facebook.android.BaseDialogListener;
-import com.facebook.android.Utility;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
 import jp.katahirado.android.kaopoto.Const;
 import jp.katahirado.android.kaopoto.R;
 import jp.katahirado.android.kaopoto.adapter.FriendsListAdapter;
@@ -103,19 +105,11 @@ public class FriendsListActivity extends Activity
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        Bundle params = new Bundle();
-        params.putString(Const.TO, adapter.getItem(position).getUid());
-        params.putString(Const.CAPTION, getString(jp.katahirado.android.kaopoto.R.string.app_name));
-        Utility.mFacebook.dialog(this, Const.FEED, params, new BaseDialogListener() {
-            @Override
-            public void onComplete(Bundle values) {
-                final String postId = values.getString(Const.POST_ID);
-                if (postId != null) {
-                    Toast.makeText(getApplicationContext(), getString(R.string.PostedOnTheWall),
-                            Toast.LENGTH_LONG).show();
-                }
-            }
-        });
+        ProfileData profileData = adapter.getItem(position);
+        Intent intent = new Intent(this, WallPostActivity.class);
+        intent.putExtra(Const.TO, profileData.getUid());
+        intent.putExtra(Const.NAME, profileData.getName());
+        startActivity(intent);
     }
 
     private ArrayList<ProfileData> parseFriends(String response) {

@@ -20,7 +20,6 @@ public class Const {
     public static final String FQL_RESULT_SET = "fql_result_set";
     public static final String CAPTION = "caption";
     public static final String FEED = "feed";
-    public static final String POST_ID = "post_id";
     public static final String SENDER_ID = "sender_id";
     public static final String OBJECT_ID = "object_id";
     public static final String STREAM = "stream";
