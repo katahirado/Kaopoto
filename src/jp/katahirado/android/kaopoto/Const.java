@@ -27,7 +27,7 @@ public class Const {
     public static final String PIC_SQUARE = "pic_square";
     public static final String DESCRIPTION = "description";
     public static final int MILLISECOND = 1000;
-    public static final int TIMEZONE_OFFSET = 32400000;
+    public static final int TIMEZONE_OFFSET = 28800000;
     public static final String TO = "to";
     public static final String COUNT = "count";
     public static final String COMMENTS = "comments";
