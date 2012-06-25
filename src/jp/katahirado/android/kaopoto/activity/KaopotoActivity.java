@@ -22,13 +22,13 @@ public class KaopotoActivity extends Activity implements AdapterView.OnItemClick
     private final static int GET_FRIENDS = 1;
     private final static int GET_PAGES = 2;
     private final static int NOTIFICATIONS = 3;
-    private final static int IN_BOX =4;
+    private final static int IN_BOX = 4;
     private TextView text;
     private ImageView userPicture;
     private Handler handler;
     private String[] permissions = {"publish_stream", "read_stream", "user_likes",
-            "manage_notifications", "friends_birthday","read_mailbox"};
-    private String[] main_items = {"Update Status", "Friends", "Pages", "Notifications","InBox"};
+            "manage_notifications", "friends_birthday", "read_mailbox"};
+    private String[] main_items = {"Update Status", "Friends", "Pages", "Notifications", "InBox"};
     private ProgressDialog dialog;
     private Bundle params;
     private Intent intent;
@@ -192,6 +192,7 @@ public class KaopotoActivity extends Activity implements AdapterView.OnItemClick
                 }
                 break;
             case IN_BOX:
+                startActivity(new Intent(this, InBoxActivity.class));
                 break;
         }
     }

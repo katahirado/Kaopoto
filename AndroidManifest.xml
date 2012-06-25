@@ -36,5 +36,7 @@
                   android:theme="@android:style/Theme.Light"/>
         <activity android:name=".activity.WallPostActivity"
                   android:theme="@android:style/Theme.Light"/>
+        <activity android:name=".activity.InBoxActivity"
+                  android:theme="@android:style/Theme.Light"/>
     </application>
 </manifest> 
