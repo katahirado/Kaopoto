@@ -192,7 +192,24 @@ public class KaopotoActivity extends Activity implements AdapterView.OnItemClick
                 }
                 break;
             case IN_BOX:
-                startActivity(new Intent(this, InBoxActivity.class));
+                if (!Utility.mFacebook.isSessionValid()) {
+                    Util.showAlert(this, getString(jp.katahirado.android.kaopoto.R.string.warning),
+                            getString(jp.katahirado.android.kaopoto.R.string.firstLogin));
+                } else {
+                    dialog = ProgressDialog.show(this, "",
+                            getString(jp.katahirado.android.kaopoto.R.string.loading), true, true);
+                    params = new Bundle();
+                    params.putString("date_format", "U");
+                    Utility.mAsyncRunner.request("me/inbox",params,new BaseRequestListener() {
+                        @Override
+                        public void onComplete(String response, Object state) {
+                            dialog.dismiss();
+                            intent = new Intent(getApplicationContext(), InBoxActivity.class);
+                            intent.putExtra(Const.API_RESPONSE, response);
+                            startActivity(intent);
+                        }
+                    });
+                }
                 break;
         }
     }
