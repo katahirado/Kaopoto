@@ -3,6 +3,7 @@ package jp.katahirado.android.kaopoto.adapter;
 import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
+import jp.katahirado.android.kaopoto.R;
 import jp.katahirado.android.kaopoto.model.MessageThreadData;
 
 import java.util.ArrayList;
@@ -32,6 +33,10 @@ public class InBoxAdapter extends FacebookBaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup viewGroup) {
-        return super.getView(position, convertView, viewGroup);
+        View view = convertView;
+        if (convertView == null) {
+            view = layoutInflater.inflate(R.layout.in_box_row, null);
+        }
+        return view;
     }
 }
