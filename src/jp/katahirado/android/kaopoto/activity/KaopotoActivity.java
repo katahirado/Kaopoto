@@ -199,7 +199,7 @@ public class KaopotoActivity extends Activity implements AdapterView.OnItemClick
                     dialog = ProgressDialog.show(this, "",
                             getString(jp.katahirado.android.kaopoto.R.string.loading), true, true);
                     params = new Bundle();
-                    params.putString("date_format", "U");
+                    params.putString(Const.DATE_FORMAT, "U");
                     Utility.mAsyncRunner.request("me/inbox",params,new BaseRequestListener() {
                         @Override
                         public void onComplete(String response, Object state) {

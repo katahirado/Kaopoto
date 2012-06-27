@@ -76,7 +76,7 @@ public class NotificationsActivity extends ListActivity {
     private void goToPostItem(String objectId, final Class<?> cls) {
         dialog = ProgressDialog.show(this, "", getString(R.string.loading), true, true);
         Bundle params = new Bundle();
-        params.putString("date_format", "U");
+        params.putString(Const.DATE_FORMAT, "U");
         Utility.mAsyncRunner.request(objectId, params, new BaseRequestListener() {
             @Override
             public void onComplete(final String response, final Object state) {

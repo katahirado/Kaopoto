@@ -36,7 +36,7 @@ public class InBoxAdapter extends FacebookBaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public MessageThreadData getItem(int position) {
         return messageThreadList.get(position);
     }
 

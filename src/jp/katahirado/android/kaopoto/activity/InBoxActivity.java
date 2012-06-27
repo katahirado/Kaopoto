@@ -1,9 +1,13 @@
 package jp.katahirado.android.kaopoto.activity;
 
 import android.app.ListActivity;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
+import com.facebook.android.BaseRequestListener;
+import com.facebook.android.Utility;
 import jp.katahirado.android.kaopoto.Const;
 import jp.katahirado.android.kaopoto.R;
 import jp.katahirado.android.kaopoto.adapter.InBoxAdapter;
@@ -38,7 +42,19 @@ public class InBoxActivity extends ListActivity {
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
+        final ProgressDialog dialog = ProgressDialog.show(this, "", getString(R.string.loading), true, true);
+        MessageThreadData threadData = adapter.getItem(position);
+        Bundle params = new Bundle();
+        params.putString(Const.DATE_FORMAT,"U");
+        Utility.mAsyncRunner.request(threadData.getThreadId(),params,new BaseRequestListener() {
+            @Override
+            public void onComplete(String response, Object state) {
+                dialog.dismiss();
+                Intent intent = new Intent(getApplicationContext(),MessageThreadActivity.class);
+                intent.putExtra(Const.API_RESPONSE,response);
+                startActivity(intent);
+            }
+        });
     }
 
     private ArrayList<MessageThreadData> parseMessageThread(String response) {
