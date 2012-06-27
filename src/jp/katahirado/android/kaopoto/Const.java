@@ -37,4 +37,5 @@ public class Const {
     public static final String FROM = "from";
     public static final String UPDATED_TIME = "updated_time";
     public static final String CREATED_TIME = "created_time";
+    public static final String DATE_FORMAT = "date_format";
 }
