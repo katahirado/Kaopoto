@@ -80,7 +80,7 @@ public class MessageThreadData {
     public String getToUsersName() {
         String result = "";
         for (UserData user : toUsers) {
-            if (Utility.userUID != user.getUid()) {
+            if (!Utility.userUID.equals(user.getUid())) {
                 result = result + " " + user.getName();
             }
         }
