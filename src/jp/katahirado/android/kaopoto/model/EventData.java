@@ -61,7 +61,7 @@ public class EventData {
         }
         try {
             updatedTime = new Date(jsonObject.getLong(Const.UPDATED_TIME)
-                    * Const.MILLISECOND + Const.TIMEZONE_OFFSET);
+                    * Const.MILLISECOND);
         } catch (JSONException e) {
             updatedTime = null;
         }

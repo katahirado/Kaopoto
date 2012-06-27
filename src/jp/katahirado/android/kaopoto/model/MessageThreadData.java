@@ -19,6 +19,7 @@ public class MessageThreadData {
     private Date updatedTime;
     private String threadId;
     private UserData fromUser;
+    private String message;
 
     public MessageThreadData(JSONObject object) {
         try {
@@ -51,9 +52,14 @@ public class MessageThreadData {
         }
         try {
             updatedTime = new Date(object.getLong(Const.UPDATED_TIME)
-                    * Const.MILLISECOND + Const.TIMEZONE_OFFSET);
+                    * Const.MILLISECOND);
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+        try {
+            message = object.getString(Const.MESSAGE);
+        } catch (JSONException e) {
+            message = "";
         }
     }
 
@@ -85,5 +91,9 @@ public class MessageThreadData {
             }
         }
         return result;
+    }
+
+    public String getMessage() {
+        return message;
     }
 }

@@ -40,7 +40,7 @@ public class CommentData {
         }
         try {
             createdTime = new Date(jsonObject.getLong(Const.CREATED_TIME)
-                    * Const.MILLISECOND + Const.TIMEZONE_OFFSET);
+                    * Const.MILLISECOND);
         } catch (JSONException e) {
             e.printStackTrace();
         }
