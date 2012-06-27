@@ -46,6 +46,13 @@ public class CommentData {
         }
     }
 
+    public CommentData(MessageThreadData threadData) {
+        this.commentId = threadData.getThreadId();
+        this.fromUser = threadData.getFromUser();
+        this.message = threadData.getMessage();
+        this.createdTime = threadData.getUpdatedTime();
+    }
+
     public CommentData() {
     }
 

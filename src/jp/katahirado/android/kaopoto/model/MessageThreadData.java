@@ -96,4 +96,8 @@ public class MessageThreadData {
     public String getMessage() {
         return message;
     }
+
+    public ArrayList<CommentData> getComments() {
+        return comments;
+    }
 }
