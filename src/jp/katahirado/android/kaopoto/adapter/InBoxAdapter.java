@@ -48,13 +48,16 @@ public class InBoxAdapter extends FacebookBaseAdapter {
             view = layoutInflater.inflate(R.layout.in_box_row, null);
         }
         profile_pic = (ImageView) view.findViewById(R.id.picture);
+        firstText = (TextView) view.findViewById(R.id.name);
         CommentData commentData = messageThreadData.getLastCommentData();
         if (commentData != null) {
             String uid = commentData.getFromUser().getUid();
             String fromPic = activity.getImageURLFromDB(uid);
             profile_pic.setImageBitmap(Utility.model.getImage(uid, fromPic));
+            firstText.setText(commentData.getMessage());
         } else {
             profile_pic.setImageBitmap(null);
+            firstText.setText("");
         }
         updatedTimeText = (TextView) view.findViewById(R.id.updated_time);
         updatedTimeText.setText(KaopotoUtil.formattedDateString(messageThreadData.getUpdatedTime()));
