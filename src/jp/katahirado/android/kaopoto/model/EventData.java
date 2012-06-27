@@ -60,7 +60,8 @@ public class EventData {
             privacy = "";
         }
         try {
-            updatedTime = new Date(jsonObject.getLong("updated_time"));
+            updatedTime = new Date(jsonObject.getLong(Const.UPDATED_TIME)
+                    * Const.MILLISECOND + Const.TIMEZONE_OFFSET);
         } catch (JSONException e) {
             updatedTime = null;
         }

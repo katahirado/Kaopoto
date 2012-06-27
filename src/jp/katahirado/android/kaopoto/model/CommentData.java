@@ -4,6 +4,8 @@ import jp.katahirado.android.kaopoto.Const;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Date;
+
 /**
  * Created with IntelliJ IDEA.
  * Author: yuichi_katahira
@@ -13,6 +15,7 @@ public class CommentData {
     private UserData fromUser;
     private String message;
     private int likes;
+    private Date createdTime;
 
     public CommentData(JSONObject jsonObject) {
         try {
@@ -34,6 +37,12 @@ public class CommentData {
             likes = jsonObject.getInt(Const.LIKES);
         } catch (JSONException e) {
             likes = 0;
+        }
+        try {
+            createdTime = new Date(jsonObject.getLong(Const.CREATED_TIME)
+                    * Const.MILLISECOND + Const.TIMEZONE_OFFSET);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 
@@ -79,5 +88,9 @@ public class CommentData {
         commentData.setLikes(0);
         commentData.setFromUser(userData);
         return commentData;
+    }
+
+    public Date getCreatedTime() {
+        return createdTime;
     }
 }
