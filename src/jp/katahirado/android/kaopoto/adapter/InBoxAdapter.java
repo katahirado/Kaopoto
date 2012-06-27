@@ -49,6 +49,7 @@ public class InBoxAdapter extends FacebookBaseAdapter {
         }
         profile_pic = (ImageView) view.findViewById(R.id.picture);
         firstText = (TextView) view.findViewById(R.id.name);
+        firstText.setText(messageThreadData.getToUsersName());
         secondText = (TextView) view.findViewById(R.id.message);
         CommentData commentData = messageThreadData.getLastCommentData();
         if (commentData != null) {

@@ -1,5 +1,6 @@
 package jp.katahirado.android.kaopoto.model;
 
+import com.facebook.android.Utility;
 import jp.katahirado.android.kaopoto.Const;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -62,5 +63,15 @@ public class MessageThreadData {
         } else {
             return null;
         }
+    }
+
+    public String getToUsersName() {
+        String result="";
+        for (UserData user : toUsers) {
+            if (Utility.userUID != user.getUid()) {
+                result = result + " "+user.getName();
+            }
+        }
+        return result;
     }
 }
