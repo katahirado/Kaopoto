@@ -1,12 +1,14 @@
 package jp.katahirado.android.kaopoto.adapter;
 
-import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.facebook.android.Utility;
 import jp.katahirado.android.kaopoto.KaopotoUtil;
 import jp.katahirado.android.kaopoto.R;
+import jp.katahirado.android.kaopoto.activity.InBoxActivity;
+import jp.katahirado.android.kaopoto.model.CommentData;
 import jp.katahirado.android.kaopoto.model.MessageThreadData;
 
 import java.util.ArrayList;
@@ -20,9 +22,11 @@ public class InBoxAdapter extends FacebookBaseAdapter {
     private ArrayList<MessageThreadData> messageThreadList;
     private MessageThreadData messageThreadData;
     private TextView updatedTimeText;
+    private InBoxActivity activity;
 
-    public InBoxAdapter(Activity context, ArrayList<MessageThreadData> list) {
+    public InBoxAdapter(InBoxActivity context, ArrayList<MessageThreadData> list) {
         super(context);
+        activity = context;
         messageThreadList = list;
     }
 
@@ -44,6 +48,14 @@ public class InBoxAdapter extends FacebookBaseAdapter {
             view = layoutInflater.inflate(R.layout.in_box_row, null);
         }
         profile_pic = (ImageView) view.findViewById(R.id.picture);
+        CommentData commentData = messageThreadData.getLastCommentData();
+        if (commentData != null) {
+            String uid = commentData.getFromUser().getUid();
+            String fromPic = activity.getImageURLFromDB(uid);
+            profile_pic.setImageBitmap(Utility.model.getImage(uid, fromPic));
+        } else {
+            profile_pic.setImageBitmap(null);
+        }
         updatedTimeText = (TextView) view.findViewById(R.id.updated_time);
         updatedTimeText.setText(KaopotoUtil.formattedDateString(messageThreadData.getUpdatedTime()));
         return view;

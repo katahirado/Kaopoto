@@ -55,4 +55,12 @@ public class MessageThreadData {
     public Date getUpdatedTime() {
         return updatedTime;
     }
+
+    public CommentData getLastCommentData() {
+        if (comments.size() > 0) {
+            return comments.get(comments.size() - 1);
+        } else {
+            return null;
+        }
+    }
 }
