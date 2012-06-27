@@ -18,6 +18,7 @@ public class MessageThreadData {
     private ArrayList<CommentData> comments;
     private Date updatedTime;
     private String threadId;
+    private UserData fromUser;
 
     public MessageThreadData(JSONObject object) {
         try {
@@ -33,6 +34,11 @@ public class MessageThreadData {
             }
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+        try {
+            fromUser = new UserData(object.getJSONObject(Const.FROM));
+        } catch (JSONException e) {
+            fromUser = new UserData(new JSONObject());
         }
         comments = new ArrayList<CommentData>();
         try {
@@ -53,6 +59,10 @@ public class MessageThreadData {
 
     public String getThreadId() {
         return threadId;
+    }
+
+    public UserData getFromUser() {
+        return fromUser;
     }
 
     public Date getUpdatedTime() {
