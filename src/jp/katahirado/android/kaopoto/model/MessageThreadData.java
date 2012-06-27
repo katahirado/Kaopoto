@@ -17,8 +17,14 @@ public class MessageThreadData {
     private ArrayList<UserData> toUsers;
     private ArrayList<CommentData> comments;
     private Date updatedTime;
+    private String threadId;
 
     public MessageThreadData(JSONObject object) {
+        try {
+            threadId = object.getString(Const.ID);
+        } catch (JSONException e) {
+            threadId = "";
+        }
         toUsers = new ArrayList<UserData>();
         try {
             JSONArray toUserArray = object.getJSONObject(Const.TO).getJSONArray(Const.DATA);
@@ -45,12 +51,8 @@ public class MessageThreadData {
         }
     }
 
-    public ArrayList<UserData> getToUsers() {
-        return toUsers;
-    }
-
-    public ArrayList<CommentData> getComments() {
-        return comments;
+    public String getThreadId() {
+        return threadId;
     }
 
     public Date getUpdatedTime() {
@@ -66,10 +68,10 @@ public class MessageThreadData {
     }
 
     public String getToUsersName() {
-        String result="";
+        String result = "";
         for (UserData user : toUsers) {
             if (Utility.userUID != user.getUid()) {
-                result = result + " "+user.getName();
+                result = result + " " + user.getName();
             }
         }
         return result;
