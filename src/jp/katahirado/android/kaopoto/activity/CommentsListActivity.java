@@ -12,15 +12,13 @@ import android.widget.ListView;
 import com.facebook.android.BaseRequestListener;
 import com.facebook.android.Utility;
 import jp.katahirado.android.kaopoto.Const;
+import jp.katahirado.android.kaopoto.KaopotoUtil;
 import jp.katahirado.android.kaopoto.R;
 import jp.katahirado.android.kaopoto.adapter.CommentsListAdapter;
 import jp.katahirado.android.kaopoto.dao.DBOpenHelper;
 import jp.katahirado.android.kaopoto.dao.ProfilesDao;
 import jp.katahirado.android.kaopoto.model.CommentData;
 import jp.katahirado.android.kaopoto.model.UserData;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -46,7 +44,7 @@ public class CommentsListActivity extends Activity
         profilesDao = new ProfilesDao(new DBOpenHelper(this).getReadableDatabase());
 
         Bundle extras = getIntent().getExtras();
-        ArrayList<CommentData> comments = parseComments(extras.getString(Const.API_RESPONSE));
+        ArrayList<CommentData> comments = KaopotoUtil.parseComments(extras.getString(Const.API_RESPONSE));
         postItemId = extras.getString(Const.ID);
         adapter = new CommentsListAdapter(this, comments);
         commentsListView.setAdapter(adapter);
@@ -103,7 +101,7 @@ public class CommentsListActivity extends Activity
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                ArrayList<CommentData> results = parseComments(res);
+                                ArrayList<CommentData> results = KaopotoUtil.parseComments(res);
                                 adapter.addAll(results);
                                 dialog.dismiss();
                             }
@@ -121,19 +119,5 @@ public class CommentsListActivity extends Activity
 
     public String getImageURLFromDB(String fromUid) {
         return profilesDao.getImageUrl(fromUid);
-    }
-
-    private ArrayList<CommentData> parseComments(String response) {
-        ArrayList<CommentData> resultList;
-        try {
-            JSONArray cArray = new JSONObject(response).getJSONArray(Const.DATA);
-            resultList = new ArrayList<CommentData>();
-            for (int i = 0; i < cArray.length(); i++) {
-                resultList.add(new CommentData(cArray.getJSONObject(i)));
-            }
-        } catch (JSONException e) {
-            resultList = new ArrayList<CommentData>();
-        }
-        return resultList;
     }
 }

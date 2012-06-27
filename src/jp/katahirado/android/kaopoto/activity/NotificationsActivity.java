@@ -10,6 +10,7 @@ import android.widget.ListView;
 import com.facebook.android.BaseRequestListener;
 import com.facebook.android.Utility;
 import jp.katahirado.android.kaopoto.Const;
+import jp.katahirado.android.kaopoto.KaopotoUtil;
 import jp.katahirado.android.kaopoto.R;
 import jp.katahirado.android.kaopoto.adapter.NotificationsAdapter;
 import jp.katahirado.android.kaopoto.dao.DBOpenHelper;
@@ -40,8 +41,8 @@ public class NotificationsActivity extends ListActivity {
         ArrayList<NotificationData> notificationList;
         try {
             JSONArray array = new JSONObject(getIntent().getStringExtra(Const.API_RESPONSE)).getJSONArray(Const.DATA);
-            notificationList = parseNotifications(array.getJSONObject(0));
-            profileList = parseProfileList(array.getJSONObject(1));
+            notificationList = KaopotoUtil.parseNotifications(array.getJSONObject(0));
+            profileList = KaopotoUtil.parseProfileList(array.getJSONObject(1));
         } catch (JSONException e) {
             e.printStackTrace();
             notificationList = new ArrayList<NotificationData>();
@@ -96,31 +97,5 @@ public class NotificationsActivity extends ListActivity {
             }
         }
         return profileData;
-    }
-
-    private ArrayList<ProfileData> parseProfileList(JSONObject jsonObject) {
-        ArrayList<ProfileData> resultList = new ArrayList<ProfileData>();
-        try {
-            JSONArray array = jsonObject.getJSONArray(Const.FQL_RESULT_SET);
-            for (int i = 0; i < array.length(); i++) {
-                resultList.add(new ProfileData(array.getJSONObject(i), Const.PIC_SQUARE));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return resultList;
-    }
-
-    private ArrayList<NotificationData> parseNotifications(JSONObject jsonObject) {
-        ArrayList<NotificationData> resultList = new ArrayList<NotificationData>();
-        try {
-            JSONArray array = jsonObject.getJSONArray(Const.FQL_RESULT_SET);
-            for (int i = 0; i < array.length(); i++) {
-                resultList.add(new NotificationData(array.getJSONObject(i)));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return resultList;
     }
 }

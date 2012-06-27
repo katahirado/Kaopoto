@@ -9,14 +9,12 @@ import android.widget.ListView;
 import com.facebook.android.BaseRequestListener;
 import com.facebook.android.Utility;
 import jp.katahirado.android.kaopoto.Const;
+import jp.katahirado.android.kaopoto.KaopotoUtil;
 import jp.katahirado.android.kaopoto.R;
 import jp.katahirado.android.kaopoto.adapter.InBoxAdapter;
 import jp.katahirado.android.kaopoto.dao.DBOpenHelper;
 import jp.katahirado.android.kaopoto.dao.ProfilesDao;
 import jp.katahirado.android.kaopoto.model.MessageThreadData;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -35,7 +33,7 @@ public class InBoxActivity extends ListActivity {
 
         profilesDao = new ProfilesDao(new DBOpenHelper(this).getReadableDatabase());
         ArrayList<MessageThreadData> messageThreadList =
-                parseMessageThread(getIntent().getStringExtra(Const.API_RESPONSE));
+                KaopotoUtil.parseMessageThread(getIntent().getStringExtra(Const.API_RESPONSE));
         adapter = new InBoxAdapter(this, messageThreadList);
         setListAdapter(adapter);
     }
@@ -45,29 +43,16 @@ public class InBoxActivity extends ListActivity {
         final ProgressDialog dialog = ProgressDialog.show(this, "", getString(R.string.loading), true, true);
         MessageThreadData threadData = adapter.getItem(position);
         Bundle params = new Bundle();
-        params.putString(Const.DATE_FORMAT,"U");
-        Utility.mAsyncRunner.request(threadData.getThreadId(),params,new BaseRequestListener() {
+        params.putString(Const.DATE_FORMAT, "U");
+        Utility.mAsyncRunner.request(threadData.getThreadId(), params, new BaseRequestListener() {
             @Override
             public void onComplete(String response, Object state) {
                 dialog.dismiss();
-                Intent intent = new Intent(getApplicationContext(),MessageThreadActivity.class);
-                intent.putExtra(Const.API_RESPONSE,response);
+                Intent intent = new Intent(getApplicationContext(), MessageThreadActivity.class);
+                intent.putExtra(Const.API_RESPONSE, response);
                 startActivity(intent);
             }
         });
-    }
-
-    private ArrayList<MessageThreadData> parseMessageThread(String response) {
-        ArrayList<MessageThreadData> resultList = new ArrayList<MessageThreadData>();
-        try {
-            JSONArray jsonArray = new JSONObject(response).getJSONArray(Const.DATA);
-            for (int i = 0; i < jsonArray.length(); i++) {
-                resultList.add(new MessageThreadData(jsonArray.getJSONObject(i)));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return resultList;
     }
 
     public String getImageURLFromDB(String fromUid) {

@@ -20,9 +20,6 @@ import jp.katahirado.android.kaopoto.adapter.PagesListAdapter;
 import jp.katahirado.android.kaopoto.dao.DBOpenHelper;
 import jp.katahirado.android.kaopoto.dao.ProfilesDao;
 import jp.katahirado.android.kaopoto.model.PageData;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -45,7 +42,7 @@ public class PagesListActivity extends Activity implements
         Button searchButton = (Button) findViewById(R.id.pages_search_button);
         searchText = (EditText) findViewById(R.id.pages_search_text);
 
-        pageList = parsePageList(getIntent().getStringExtra(Const.API_RESPONSE));
+        pageList = KaopotoUtil.parsePageList(getIntent().getStringExtra(Const.API_RESPONSE));
         adapter = new PagesListAdapter(this, pageList);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
@@ -99,19 +96,6 @@ public class PagesListActivity extends Activity implements
             if (object.getName().toLowerCase().contains(query)) {
                 resultList.add(object);
             }
-        }
-        return resultList;
-    }
-
-    private ArrayList<PageData> parsePageList(String response) {
-        ArrayList<PageData> resultList = new ArrayList<PageData>();
-        try {
-            JSONArray jsonArray = new JSONObject(response).getJSONArray(Const.DATA);
-            for (int i = 0; i < jsonArray.length(); i++) {
-                resultList.add(new PageData(jsonArray.getJSONObject(i)));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
         return resultList;
     }

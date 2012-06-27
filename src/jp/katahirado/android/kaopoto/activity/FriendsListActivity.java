@@ -13,14 +13,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import jp.katahirado.android.kaopoto.Const;
+import jp.katahirado.android.kaopoto.KaopotoUtil;
 import jp.katahirado.android.kaopoto.R;
 import jp.katahirado.android.kaopoto.adapter.FriendsListAdapter;
 import jp.katahirado.android.kaopoto.dao.DBOpenHelper;
 import jp.katahirado.android.kaopoto.dao.ProfilesDao;
 import jp.katahirado.android.kaopoto.model.ProfileData;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -45,7 +43,7 @@ public class FriendsListActivity extends Activity
         Button searchButton = (Button) findViewById(R.id.friends_search_button);
         searchText = (EditText) findViewById(R.id.friends_search_text);
 
-        friendsList = parseFriends(getIntent().getStringExtra(Const.API_RESPONSE));
+        friendsList = KaopotoUtil.parseFriends(getIntent().getStringExtra(Const.API_RESPONSE));
         profilesDao = new ProfilesDao(new DBOpenHelper(this).getWritableDatabase());
         (new Thread(new Runnable() {
             @Override
@@ -110,19 +108,6 @@ public class FriendsListActivity extends Activity
         intent.putExtra(Const.TO, profileData.getUid());
         intent.putExtra(Const.NAME, profileData.getName());
         startActivity(intent);
-    }
-
-    private ArrayList<ProfileData> parseFriends(String response) {
-        ArrayList<ProfileData> resultList = new ArrayList<ProfileData>();
-        try {
-            JSONArray jArray = new JSONObject(response).getJSONArray(Const.DATA);
-            for (int i = 0; i < jArray.length(); i++) {
-                resultList.add(new ProfileData(jArray.getJSONObject(i), Const.PICTURE));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return resultList;
     }
 
     private void hideIME() {

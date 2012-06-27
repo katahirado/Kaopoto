@@ -44,6 +44,8 @@ public class MessageThreadActivity extends Activity
         commentLists.add(new CommentData(messageThreadData));
         commentLists.addAll(messageThreadData.getComments());
         adapter = new MessageListAdapter(this,commentLists);
+        commentsListView.setAdapter(adapter);
+
         button.setOnClickListener(this);
     }
 
