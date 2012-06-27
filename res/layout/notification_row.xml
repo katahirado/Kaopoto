@@ -11,14 +11,6 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentBottom="true"
             android:layout_marginRight="6dip" />
-    <!--
-    <TextView android:id="@+id/notification_picture"
-              android:layout_height="wrap_content"
-              android:layout_width="wrap_content"
-              android:layout_alignParentTop="true"
-              android:layout_alignParentBottom="true"
-              android:layout_marginRight="6dip"/>
-            -->
     <TextView
             android:id="@+id/notification_title"
             android:layout_width="fill_parent"
