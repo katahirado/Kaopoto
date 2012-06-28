@@ -50,7 +50,8 @@ public class CommentData {
         this.commentId = threadData.getThreadId();
         this.fromUser = threadData.getFromUser();
         this.message = threadData.getMessage();
-        this.createdTime = threadData.getUpdatedTime();
+//        this.createdTime = threadData.getUpdatedTime();
+        this.createdTime = null;
     }
 
     public CommentData() {

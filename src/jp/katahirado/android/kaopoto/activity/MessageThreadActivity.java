@@ -9,6 +9,8 @@ import android.widget.ListView;
 import jp.katahirado.android.kaopoto.Const;
 import jp.katahirado.android.kaopoto.R;
 import jp.katahirado.android.kaopoto.adapter.MessageListAdapter;
+import jp.katahirado.android.kaopoto.dao.DBOpenHelper;
+import jp.katahirado.android.kaopoto.dao.ProfilesDao;
 import jp.katahirado.android.kaopoto.model.CommentData;
 import jp.katahirado.android.kaopoto.model.MessageThreadData;
 import org.json.JSONException;
@@ -25,6 +27,7 @@ public class MessageThreadActivity extends Activity
     private EditText messageText;
     private MessageThreadData messageThreadData;
     private MessageListAdapter adapter;
+    public ProfilesDao profilesDao;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +36,7 @@ public class MessageThreadActivity extends Activity
         ListView commentsListView = (ListView) findViewById(R.id.comments_listview);
         messageText = (EditText) findViewById(R.id.message_text);
         Button button = (Button) findViewById(R.id.message_button);
+        profilesDao = new ProfilesDao(new DBOpenHelper(this).getReadableDatabase());
 
         try {
             messageThreadData =

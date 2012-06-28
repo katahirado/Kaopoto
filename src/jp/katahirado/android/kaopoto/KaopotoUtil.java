@@ -23,7 +23,11 @@ public class KaopotoUtil {
     }
 
     public static String formattedDateString(Date date) {
-        return new SimpleDateFormat(FORMAT_DATE + " " + FORMAT_TIME).format(date);
+        if (date != null) {
+            return new SimpleDateFormat(FORMAT_DATE + " " + FORMAT_TIME).format(date);
+        } else {
+            return null;
+        }
     }
 
     public static String formattedTimeString(Date date) {
