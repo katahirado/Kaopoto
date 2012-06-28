@@ -42,7 +42,6 @@ public class CommentsListAdapter extends FacebookBaseAdapter {
         this.notifyDataSetChanged();
     }
 
-
     public void addAll(ArrayList<CommentData> comments) {
         commentsList = comments;
         this.notifyDataSetChanged();
@@ -58,7 +57,7 @@ public class CommentsListAdapter extends FacebookBaseAdapter {
 
         commentData = commentsList.get(position);
         if (commentData != null) {
-            String fromPic = activity.getImageURLFromDB(commentData.getFromUser().getUid());
+            String fromPic = activity.profilesDao.getImageUrl(commentData.getFromUser().getUid());
             profile_pic = (ImageView) view.findViewById(R.id.comment_row_image);
             profile_pic.setImageBitmap(Utility.model.getImage(commentData.getCommentId(), fromPic));
 

@@ -25,7 +25,7 @@ import java.util.ArrayList;
 public class InBoxActivity extends ListActivity {
 
     private InBoxAdapter adapter;
-    private ProfilesDao profilesDao;
+    public ProfilesDao profilesDao;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,9 +53,5 @@ public class InBoxActivity extends ListActivity {
                 startActivity(intent);
             }
         });
-    }
-
-    public String getImageURLFromDB(String fromUid) {
-        return profilesDao.getImageUrl(fromUid);
     }
 }

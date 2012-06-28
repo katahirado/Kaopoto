@@ -54,7 +54,7 @@ public class InBoxAdapter extends FacebookBaseAdapter {
         CommentData commentData = messageThreadData.getLastCommentData();
         if (commentData != null) {
             String uid = commentData.getFromUser().getUid();
-            String fromPic = activity.getImageURLFromDB(uid);
+            String fromPic = activity.profilesDao.getImageUrl(uid);
             profile_pic.setImageBitmap(Utility.model.getImage(uid, fromPic));
             secondText.setText(commentData.getMessage());
         } else {

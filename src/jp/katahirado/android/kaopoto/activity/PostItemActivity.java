@@ -97,7 +97,7 @@ public class PostItemActivity extends Activity implements View.OnClickListener {
         (new Thread(new Runnable() {
             @Override
             public void run() {
-                String fromPic = getImageURLFromDB(postData.getFromUser().getUid());
+                String fromPic = profilesDao.getImageUrl(postData.getFromUser().getUid());
                 GetProfilePicTask getProfilePicTask = new GetProfilePicTask();
                 getProfilePicTask.execute(fromPic);
             }
@@ -183,10 +183,6 @@ public class PostItemActivity extends Activity implements View.OnClickListener {
     private UserData getUserDataFromDB() {
         String userName = profilesDao.getUserName(Utility.userUID);
         return new UserData(Utility.userUID, userName);
-    }
-
-    public String getImageURLFromDB(String fromUid) {
-        return profilesDao.getImageUrl(fromUid);
     }
 
     private boolean isLike() {

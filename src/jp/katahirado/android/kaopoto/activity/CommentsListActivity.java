@@ -33,7 +33,7 @@ public class CommentsListActivity extends Activity
     private String postItemId;
     private String message;
     private CommentsListAdapter adapter;
-    private ProfilesDao profilesDao;
+    public ProfilesDao profilesDao;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,9 +115,5 @@ public class CommentsListActivity extends Activity
     private UserData getUserDataFromDB() {
         String userName = profilesDao.getUserName(Utility.userUID);
         return new UserData(Utility.userUID, userName);
-    }
-
-    public String getImageURLFromDB(String fromUid) {
-        return profilesDao.getImageUrl(fromUid);
     }
 }
