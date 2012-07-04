@@ -30,9 +30,9 @@ public class KaopotoUtil {
         }
     }
 
-    public static String formattedTimeString(Date date) {
-        return new SimpleDateFormat(FORMAT_TIME).format(date);
-    }
+//    public static String formattedTimeString(Date date) {
+//        return new SimpleDateFormat(FORMAT_TIME).format(date);
+//    }
 
     public static String getMobileURL(String href) {
         return href.replace("http://www.facebook.com/", Const.FACEBOOK_MOBILE_URL);

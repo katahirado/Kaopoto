@@ -1,7 +1,6 @@
 package jp.katahirado.android.kaopoto.model;
 
 import jp.katahirado.android.kaopoto.Const;
-import jp.katahirado.android.kaopoto.KaopotoUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -15,13 +14,19 @@ public class EventData {
     private UserData owner;
     private String name;
     private String description;
-    private Date startTime;
-    private Date endTime;
+    private String startTime;
+    private String endTime;
     private String location;
     private String privacy;
     private Date updatedTime;
+    private String eventId;
 
     public EventData(JSONObject jsonObject) {
+        try {
+            eventId = jsonObject.getString(Const.ID);
+        } catch (JSONException e) {
+            eventId = "";
+        }
         try {
             owner = new UserData(jsonObject.getJSONObject("owner"));
         } catch (JSONException e) {
@@ -38,14 +43,16 @@ public class EventData {
             description = "";
         }
         try {
-            startTime = new Date(jsonObject.getLong("start_time") *
-                    Const.MILLISECOND + Const.TIMEZONE_OFFSET);
+            startTime = jsonObject.getString("start_time");
+//            startTime = new Date(jsonObject.getLong("start_time") *
+//                    Const.MILLISECOND + Const.TIMEZONE_OFFSET);
         } catch (JSONException e) {
             startTime = null;
         }
         try {
-            endTime = new Date(jsonObject.getLong("end_time") *
-                    Const.MILLISECOND + Const.TIMEZONE_OFFSET);
+            endTime = jsonObject.getString("end_time");
+//            endTime = new Date(jsonObject.getLong("end_time") *
+//                    Const.MILLISECOND + Const.TIMEZONE_OFFSET);
         } catch (JSONException e) {
             endTime = null;
         }
@@ -80,7 +87,9 @@ public class EventData {
     }
 
     public String getStartAndEnd() {
-        return KaopotoUtil.formattedDateString(startTime) + " - " + KaopotoUtil.formattedTimeString(endTime);
+//        return KaopotoUtil.formattedDateString(startTime) + " - "
+// + KaopotoUtil.formattedTimeString(endTime);
+        return startTime + "\n     - " + endTime;
     }
 
     public String getLocation() {
@@ -101,5 +110,9 @@ public class EventData {
 
     public Date getUpdatedTime() {
         return updatedTime;
+    }
+
+    public String getEventId() {
+        return eventId;
     }
 }
